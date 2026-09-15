@@ -1,0 +1,236 @@
+{
+  "dataset_name": "sample_flow",
+  "file_name": "sample_flow.csv",
+  "file_path": "C:\\Users\\Vignesh\\Desktop\\Final yr project\\data_engineering\\adaptive-temporal-relational-ids\\data\\raw\\nf-test-sample\\sample_flow.csv",
+  "file_size": {
+    "size_bytes": 584,
+    "size_mb": 0.0,
+    "size_gb": 0.0
+  },
+  "total_records_estimate": 5,
+  "total_features": 14,
+  "columns": [
+    "IPV4_SRC_ADDR",
+    "L4_SRC_PORT",
+    "IPV4_DST_ADDR",
+    "L4_DST_PORT",
+    "PROTOCOL",
+    "L4_TCP_FLAGS",
+    "FLOW_DURATION_MILLISECONDS",
+    "IN_BYTES",
+    "OUT_BYTES",
+    "IN_PKTS",
+    "OUT_PKTS",
+    "FLOW_START_MILLISECONDS",
+    "Label",
+    "Attack"
+  ],
+  "column_profiles": [
+    {
+      "column_name": "IPV4_SRC_ADDR",
+      "data_type": "object",
+      "null_percent": 0.0,
+      "unique_values_sample": 4,
+      "sample_values": [
+        "192.168.1.100",
+        "192.168.1.101",
+        "192.168.1.105"
+      ]
+    },
+    {
+      "column_name": "L4_SRC_PORT",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 5,
+      "sample_values": [
+        54321,
+        54322,
+        48920
+      ]
+    },
+    {
+      "column_name": "IPV4_DST_ADDR",
+      "data_type": "object",
+      "null_percent": 0.0,
+      "unique_values_sample": 3,
+      "sample_values": [
+        "10.0.0.1",
+        "10.0.0.2",
+        "10.0.0.1"
+      ]
+    },
+    {
+      "column_name": "L4_DST_PORT",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 3,
+      "sample_values": [
+        80,
+        443,
+        22
+      ]
+    },
+    {
+      "column_name": "PROTOCOL",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 1,
+      "sample_values": [
+        6,
+        6,
+        6
+      ]
+    },
+    {
+      "column_name": "L4_TCP_FLAGS",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 4,
+      "sample_values": [
+        24,
+        27,
+        2
+      ]
+    },
+    {
+      "column_name": "FLOW_DURATION_MILLISECONDS",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 5,
+      "sample_values": [
+        1520,
+        320,
+        45
+      ]
+    },
+    {
+      "column_name": "IN_BYTES",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 4,
+      "sample_values": [
+        4096,
+        1200,
+        120
+      ]
+    },
+    {
+      "column_name": "OUT_BYTES",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 4,
+      "sample_values": [
+        8192,
+        4500,
+        60
+      ]
+    },
+    {
+      "column_name": "IN_PKTS",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 4,
+      "sample_values": [
+        20,
+        10,
+        2
+      ]
+    },
+    {
+      "column_name": "OUT_PKTS",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 4,
+      "sample_values": [
+        35,
+        15,
+        1
+      ]
+    },
+    {
+      "column_name": "FLOW_START_MILLISECONDS",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 5,
+      "sample_values": [
+        1600000000000,
+        1600000000500,
+        1600000001000
+      ]
+    },
+    {
+      "column_name": "Label",
+      "data_type": "int64",
+      "null_percent": 0.0,
+      "unique_values_sample": 2,
+      "sample_values": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "column_name": "Attack",
+      "data_type": "object",
+      "null_percent": 0.0,
+      "unique_values_sample": 3,
+      "sample_values": [
+        "Benign",
+        "Benign",
+        "SSH-Bruteforce"
+      ]
+    }
+  ],
+  "temporal_relational_evaluation": {
+    "score": 90,
+    "graph_ready": true,
+    "temporal_order_ready": true,
+    "netflow_standard_ready": true,
+    "relational_fields": {
+      "source_ip": "IPV4_SRC_ADDR",
+      "destination_ip": "IPV4_DST_ADDR",
+      "source_port": "L4_SRC_PORT",
+      "destination_port": "L4_DST_PORT",
+      "protocol": "PROTOCOL"
+    },
+    "temporal_fields": {
+      "timestamp": "FLOW_START_MILLISECONDS",
+      "duration": "FLOW_DURATION_MILLISECONDS",
+      "iat_features": [],
+      "active_idle_features": []
+    },
+    "volume_fields": {
+      "byte_features": [
+        "IN_BYTES",
+        "OUT_BYTES"
+      ],
+      "packet_features": [
+        "IN_PKTS",
+        "OUT_PKTS"
+      ],
+      "rate_features": []
+    },
+    "label_fields": [
+      "Label",
+      "Attack"
+    ]
+  },
+  "labels_distribution": {
+    "Label": {
+      "1": 3,
+      "0": 2
+    },
+    "Attack": {
+      "Benign": 2,
+      "SSH-Bruteforce": 2,
+      "DoS-HTTP": 1
+    }
+  },
+  "temporal_summary": {
+    "column": "FLOW_START_MILLISECONDS",
+    "sample_value": "1600000000000",
+    "is_numeric": true,
+    "min_sample": "1600000000000",
+    "max_sample": "1600000002000"
+  }
+}

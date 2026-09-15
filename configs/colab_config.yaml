@@ -1,0 +1,16 @@
+# ==============================================================================
+# Google Colab Environment Configuration
+# ==============================================================================
+
+colab:
+  mount_google_drive: true
+  google_drive_mount_point: "/content/drive"
+  project_root_in_drive: "/content/drive/MyDrive/IDS_Research_Project"
+  runtime_local_data_dir: "/content/data/raw"
+  persisted_data_dir: "/content/drive/MyDrive/IDS_Research_Project/data/raw"
+  persisted_metadata_dir: "/content/drive/MyDrive/IDS_Research_Project/metadata_reports"
+  
+  # Resource optimization
+  use_polars: true
+  chunk_size_records: 250000
+  low_memory_mode: true

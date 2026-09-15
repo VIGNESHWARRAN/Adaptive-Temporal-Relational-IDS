@@ -1,0 +1,86 @@
+# ==============================================================================
+# Git Ignore - Adaptive Temporal-Relational IDS
+# ==============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Large Datasets & Raw Captures (Crucial: never commit raw dataset files)
+data/raw/
+data/processed/
+data/interim/
+data/cache/
+*.csv
+*.pcap
+*.pcapng
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.zip
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# Model checkpoints & Experiment outputs
+checkpoints/
+models/*.pt
+models/*.pth
+models/*.onnx
+runs/
+wandb/
+logs/
+
+# Secrets & Credentials
+kaggle.json
+.env
+credentials.json
+token.json
