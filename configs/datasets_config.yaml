@@ -20,7 +20,7 @@ datasets:
     format: "csv"
     publication_year: 2021
     creators: "University of Queensland (Sarhan et al.)"
-    download_method: "kaggle" # or direct
+    download_method: "direct"
     kaggle_slug: "mfaizanur/nf-csecicids2018-v2"
     direct_url: "https://rdm.uq.edu.au/files/ce5161d0-ef9c-11ed-827d-e762de186848/download"
     mirror_url: "https://zenodo.org/records/5034177/files/NF-CSE-CIC-IDS2018-v2.csv.gz"
@@ -38,7 +38,7 @@ datasets:
     format: "csv"
     publication_year: 2021
     creators: "University of Queensland (Sarhan et al.)"
-    download_method: "kaggle"
+    download_method: "direct"
     kaggle_slug: "mfaizanur/nf-unswnb15-v2"
     direct_url: "https://rdm.uq.edu.au/files/8c6e2a00-ef9c-11ed-827d-e762de186848/download"
     mirror_url: "https://zenodo.org/records/5034177/files/NF-UNSW-NB15-v2.csv.gz"
@@ -57,7 +57,7 @@ datasets:
     publication_year: 2018
     creators: "Communications Security Establishment (CSE) & Canadian Institute for Cybersecurity (CIC)"
     doi: "10.17632/29hdbdzx2r.1"
-    download_method: "kaggle"
+    download_method: "direct"
     kaggle_slug: "solarmainframe/ids-intrusion-csv"
     direct_url: "https://data.mendeley.com/public-api/zip/29hdbdzx2r/download/1"
     estimated_size_mb: 1200
@@ -77,7 +77,7 @@ datasets:
     format: "csv"
     publication_year: 2021
     creators: "University of Queensland (Sarhan et al.)"
-    download_method: "kaggle"
+    download_method: "direct"
     kaggle_slug: "mfaizanur/nf-toniot-v2"
     direct_url: "https://rdm.uq.edu.au/files/a4ad7080-ef9c-11ed-a964-b70596e96ad5/download"
     mirror_url: "https://zenodo.org/records/5034177/files/NF-ToN-IoT-v2.csv.gz"

@@ -5,11 +5,13 @@ and automated archive decompression.
 """
 
 import os
+import re
 import sys
 import gzip
 import shutil
 import zipfile
 import tarfile
+import urllib.parse
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 import requests
@@ -45,6 +47,15 @@ class DatasetDownloader:
         try:
             response = requests.get(url, headers=headers, stream=True, timeout=30)
             
+            # Check for Content-Disposition filename header to get original archive name
+            content_disp = response.headers.get("Content-Disposition", "")
+            if content_disp:
+                match = re.search(r'filename\*?=(?:UTF-8\'\')?["\']?([^";\r\n]+)["\']?', content_disp, re.IGNORECASE)
+                if match:
+                    header_filename = urllib.parse.unquote(match.group(1).strip())
+                    if header_filename:
+                        destination = destination.parent / header_filename
+
             # Check for range header support or fresh start
             if response.status_code == 416: # Range not satisfiable (completed)
                 if temp_dest.exists():
@@ -207,7 +218,10 @@ class DatasetDownloader:
                 dest_file = target_dir / filename
                 
                 downloaded_file = self.download_file_http(url, dest_file)
-                if auto_extract and downloaded_file.suffix in (".gz", ".zip", ".tar", ".tgz"):
+                if auto_extract and (
+                    downloaded_file.name.lower().endswith((".gz", ".zip", ".tar", ".tgz", ".tar.gz"))
+                    or downloaded_file.suffix.lower() in (".gz", ".zip", ".tar", ".tgz")
+                ):
                     self.extract_archive(downloaded_file, target_dir)
                 return target_dir
             except Exception as e:
