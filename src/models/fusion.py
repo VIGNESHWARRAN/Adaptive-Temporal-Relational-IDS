@@ -1,5 +1,5 @@
-"""
-The 6 Controlled Multimodal Fusion Modules:
+"""The 6 Controlled Multimodal Fusion Modules:
+
 1. ConcatenationFusion (Early baseline)
 2. GatedAdaptiveFusion (Adaptive gating weight)
 3. BilinearTensorFusion (Second-order bilinear interaction)
@@ -9,33 +9,67 @@ The 6 Controlled Multimodal Fusion Modules:
 """
 
 import math
+from typing import Dict, Any, Optional
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import Dict, Any
 
 
 # ---------------------------------------------------------
 # 1. Early Concatenation Fusion Baseline
 # ---------------------------------------------------------
 class ConcatenationFusion(nn.Module):
-    def __init__(self, embed_dim: int = 64, out_dim: int = 64):
+    """Concatenation Multimodal Fusion Module.
+
+    Concatenates Temporal Embedding and Relational Embedding -> Linear -> BatchNorm1d -> ReLU.
+    """
+
+    def __init__(
+        self,
+        embed_dim: int = 64,
+        out_dim: int = 64,
+        temp_dim: Optional[int] = None,
+        rel_dim: Optional[int] = None,
+        fused_dim: Optional[int] = None,
+    ):
         super().__init__()
-        self.fc = nn.Sequential(
-            nn.Linear(embed_dim * 2, out_dim),
-            nn.BatchNorm1d(out_dim),
-            nn.ReLU(),
-        )
+        t_dim = temp_dim if temp_dim is not None else embed_dim
+        r_dim = rel_dim if rel_dim is not None else embed_dim
+        f_dim = fused_dim if fused_dim is not None else out_dim
+
+        self.temp_dim = t_dim
+        self.rel_dim = r_dim
+        self.fused_dim = f_dim
+
+        in_dim = t_dim + r_dim
+        self.linear = nn.Linear(in_dim, f_dim)
+        self.bn = nn.BatchNorm1d(f_dim)
+        self.relu = nn.ReLU()
 
     def forward(self, h_temp: torch.Tensor, h_rel: torch.Tensor) -> torch.Tensor:
-        concat_h = torch.cat([h_temp, h_rel], dim=-1)
-        return self.fc(concat_h)
+        """Forward pass.
+
+        Args:
+            h_temp: Temporal embedding tensor of shape (batch_size, temp_dim)
+            h_rel: Relational embedding tensor of shape (batch_size, rel_dim)
+
+        Returns:
+            Fused embedding tensor of shape (batch_size, fused_dim)
+        """
+        concat = torch.cat([h_temp, h_rel], dim=-1)
+        out = self.linear(concat)
+        if out.size(0) > 1:
+            out = self.bn(out)
+        out = self.relu(out)
+        return out
 
 
 # ---------------------------------------------------------
 # 2. Gated Adaptive Multimodal Fusion
 # ---------------------------------------------------------
 class GatedAdaptiveFusion(nn.Module):
+    """Adaptive Gated Fusion Module."""
+
     def __init__(self, embed_dim: int = 64):
         super().__init__()
         self.gate_fc = nn.Linear(embed_dim * 2, embed_dim)
@@ -51,6 +85,8 @@ class GatedAdaptiveFusion(nn.Module):
 # 3. Bilinear / Tensor Product Fusion
 # ---------------------------------------------------------
 class BilinearTensorFusion(nn.Module):
+    """Bilinear Tensor Interaction Fusion Module."""
+
     def __init__(self, embed_dim: int = 64, out_dim: int = 64):
         super().__init__()
         self.bilinear = nn.Bilinear(embed_dim, embed_dim, out_dim)
@@ -67,14 +103,19 @@ class BilinearTensorFusion(nn.Module):
 # 4. Cross-Attention Co-Attention Fusion
 # ---------------------------------------------------------
 class CrossAttentionFusion(nn.Module):
+    """Cross-Attention Co-Attention Fusion Module."""
+
     def __init__(self, embed_dim: int = 64, num_heads: int = 4):
         super().__init__()
-        self.attn_temp2rel = nn.MultiheadAttention(embed_dim=embed_dim, num_heads=num_heads, batch_first=True)
-        self.attn_rel2temp = nn.MultiheadAttention(embed_dim=embed_dim, num_heads=num_heads, batch_first=True)
+        self.attn_temp2rel = nn.MultiheadAttention(
+            embed_dim=embed_dim, num_heads=num_heads, batch_first=True
+        )
+        self.attn_rel2temp = nn.MultiheadAttention(
+            embed_dim=embed_dim, num_heads=num_heads, batch_first=True
+        )
         self.fc_proj = nn.Linear(embed_dim * 2, embed_dim)
 
     def forward(self, h_temp: torch.Tensor, h_rel: torch.Tensor) -> torch.Tensor:
-        # Unsqueeze for sequence length 1: (B, 1, D)
         t_seq = h_temp.unsqueeze(1)
         r_seq = h_rel.unsqueeze(1)
 
@@ -89,6 +130,8 @@ class CrossAttentionFusion(nn.Module):
 # 5. Late / Decision-Level Ensemble Fusion
 # ---------------------------------------------------------
 class DecisionLevelEnsembleFusion(nn.Module):
+    """Decision-Level Ensemble Fusion Module."""
+
     def __init__(self, embed_dim: int = 64, num_classes: int = 2):
         super().__init__()
         self.cls_temp = nn.Linear(embed_dim, num_classes)
@@ -99,7 +142,6 @@ class DecisionLevelEnsembleFusion(nn.Module):
         logits_temp = self.cls_temp(h_temp)
         logits_rel = self.cls_rel(h_rel)
         alpha = torch.sigmoid(self.weight_alpha)
-        # Return fused logits directly
         return alpha * logits_temp + (1.0 - alpha) * logits_rel
 
 
@@ -107,52 +149,42 @@ class DecisionLevelEnsembleFusion(nn.Module):
 # 6. Quantum / Variational Circuit (PQC) Fusion Layer
 # ---------------------------------------------------------
 class QuantumCircuitFusion(nn.Module):
-    """
-    Parameterized Quantum Circuit (PQC) Fusion Layer.
+    """Parameterized Quantum Circuit (PQC) Fusion Layer.
+
     Simulates a variational quantum circuit with N qubits, Ry parameter encoding,
     CNOT entangling gates, and Pauli-Z expectation value measurements in PyTorch.
     """
 
-    def __init__(self, embed_dim: int = 64, num_qubits: int = 4, n_layers: int = 2, out_dim: int = 64):
+    def __init__(
+        self,
+        embed_dim: int = 64,
+        num_qubits: int = 4,
+        n_layers: int = 2,
+        out_dim: int = 64,
+    ):
         super().__init__()
         self.num_qubits = num_qubits
         self.n_layers = n_layers
 
-        # Linear reduction from (h_temp, h_rel) -> num_qubits rotation angles theta_in
         self.in_proj = nn.Linear(embed_dim * 2, num_qubits)
-
-        # Variational trainable quantum parameters theta_v: (n_layers, num_qubits)
         self.theta_v = nn.Parameter(torch.randn(n_layers, num_qubits) * 0.1)
-
-        # Output projection from qubit Pauli-Z expectation measurements -> out_dim
         self.out_proj = nn.Linear(num_qubits, out_dim)
         self.layer_norm = nn.LayerNorm(out_dim)
 
     def _pqc_quantum_simulator(self, theta_input: torch.Tensor) -> torch.Tensor:
-        """
-        Differentiable Quantum State Simulator:
-        |psi> = Prod_l [ CNOT_layer * R_y(theta_v[l]) ] * R_y(theta_input) |00..0>
-        Evaluates expectation values <psi| Z_q |psi> = cos(2 * theta_tot_q).
-        """
-        # Sum rotation angles across variational layers and entangling phase shifts
         total_theta = theta_input.clone()
-
         for l in range(self.n_layers):
             layer_params = self.theta_v[l]
-            # Ry rotation gate addition
             total_theta = total_theta + layer_params
-            
-            # CNOT entangling shift: Qubit q entangles with (q+1)%n
             entangled_shift = torch.roll(total_theta, shifts=1, dims=-1) * 0.5
             total_theta = total_theta + entangled_shift
 
-        # Expectation measurement <Z_q> in [-1, +1]
         expectation_z = torch.cos(2.0 * total_theta)
         return expectation_z
 
     def forward(self, h_temp: torch.Tensor, h_rel: torch.Tensor) -> torch.Tensor:
         concat_h = torch.cat([h_temp, h_rel], dim=-1)
-        theta_input = torch.tanh(self.in_proj(concat_h)) * math.pi  # Angles in [-pi, +pi]
+        theta_input = torch.tanh(self.in_proj(concat_h)) * math.pi
 
         quantum_measurements = self._pqc_quantum_simulator(theta_input)
         fused_quantum = self.layer_norm(F.relu(self.out_proj(quantum_measurements)))
@@ -160,15 +192,23 @@ class QuantumCircuitFusion(nn.Module):
 
 
 # Helper factory for fusion modules
-def get_fusion_module(fusion_name: str, embed_dim: int = 64, num_classes: int = 2) -> nn.Module:
+def get_fusion_module(
+    fusion_name: str, embed_dim: int = 64, num_classes: int = 2
+) -> nn.Module:
     fusion_map = {
         "concat": ConcatenationFusion(embed_dim=embed_dim, out_dim=embed_dim),
         "gated": GatedAdaptiveFusion(embed_dim=embed_dim),
         "bilinear": BilinearTensorFusion(embed_dim=embed_dim, out_dim=embed_dim),
         "cross_attention": CrossAttentionFusion(embed_dim=embed_dim),
-        "decision_ensemble": DecisionLevelEnsembleFusion(embed_dim=embed_dim, num_classes=num_classes),
-        "quantum_pqc": QuantumCircuitFusion(embed_dim=embed_dim, num_qubits=4, out_dim=embed_dim),
+        "decision_ensemble": DecisionLevelEnsembleFusion(
+            embed_dim=embed_dim, num_classes=num_classes
+        ),
+        "quantum_pqc": QuantumCircuitFusion(
+            embed_dim=embed_dim, num_qubits=4, out_dim=embed_dim
+        ),
     }
     if fusion_name not in fusion_map:
-        raise ValueError(f"Unknown fusion_name: '{fusion_name}'. Valid choices: {list(fusion_map.keys())}")
+        raise ValueError(
+            f"Unknown fusion_name: '{fusion_name}'. Valid choices: {list(fusion_map.keys())}"
+        )
     return fusion_map[fusion_name]

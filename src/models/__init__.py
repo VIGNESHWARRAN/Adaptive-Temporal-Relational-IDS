@@ -1,6 +1,4 @@
-"""
-Model architectures, encoders, fusion strategies, and quantum PQC layers.
-"""
+"""Model architectures, encoders, fusion strategies, quantum PQC layers, and loss functions."""
 
 from .encoders import FixedTemporalEncoder, FixedRelationalEncoder
 from .fusion import (
@@ -13,6 +11,11 @@ from .fusion import (
     get_fusion_module,
 )
 from .classifiers import MultimodalFusionClassifier
+from .losses import (
+    StandardCrossEntropyLoss,
+    ClassWeightedCrossEntropyLoss,
+    FocalLoss,
+)
 
 __all__ = [
     "FixedTemporalEncoder",
@@ -25,4 +28,7 @@ __all__ = [
     "QuantumCircuitFusion",
     "get_fusion_module",
     "MultimodalFusionClassifier",
+    "StandardCrossEntropyLoss",
+    "ClassWeightedCrossEntropyLoss",
+    "FocalLoss",
 ]

@@ -53,6 +53,7 @@ Thumbs.db
 desktop.ini
 
 # Large Datasets & Raw Captures (Crucial: never commit raw dataset files)
+results
 data/raw/
 data/processed/
 data/interim/
@@ -85,4 +86,7 @@ kaggle.json
 credentials.json
 token.json
 
+#others
+task_to_complete.txt
+walkthrough.md
 results
