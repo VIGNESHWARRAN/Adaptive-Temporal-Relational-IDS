@@ -1,0 +1,79 @@
+# Harmonized 3-Tier Label Taxonomy Rules
+schema_version: "2.0.0"
+
+canonical_families:
+  BENIGN:
+    level_1: 0
+    raw_matches:
+      - "benign"
+      - "benigntraffic"
+
+  DoS:
+    level_1: 1
+    raw_matches:
+      - "dos attacks-slowloris"
+      - "dos attacks-slowhttptest"
+      - "dos attacks-hulk"
+      - "dos attacks-goldeneye"
+      - "dos-slowloris"
+      - "dos-slowhttptest"
+      - "dos-hulk"
+      - "dos-goldeneye"
+      - "dos"
+
+  DDoS:
+    level_1: 1
+    raw_matches:
+      - "ddos attack-hoic"
+      - "ddos attacks-loic-http"
+      - "ddos attack-loic-udp"
+      - "ddos-loic-http"
+      - "ddos-hoic"
+      - "ddos-loic-udp"
+      - "ddos"
+
+  RECON:
+    level_1: 1
+    raw_matches:
+      - "reconnaissance"
+      - "fuzzers"
+      - "scanning"
+      - "portscan"
+
+  BRUTE_FORCE:
+    level_1: 1
+    raw_matches:
+      - "ssh-bruteforce"
+      - "ftp-bruteforce"
+      - "brute force -web"
+      - "brute force -xss"
+      - "dictionarybruteforce"
+
+  BOTNET:
+    level_1: 1
+    raw_matches:
+      - "bot"
+      - "botnet"
+
+  WEB_ATTACK:
+    level_1: 1
+    raw_matches:
+      - "sql injection"
+      - "browserhijacking"
+      - "vulnerability-scan"
+
+  INFILTRATION:
+    level_1: 1
+    raw_matches:
+      - "infilteration"
+      - "infiltration"
+      - "backdoor"
+      - "shellcode"
+
+  EXPLOITS:
+    level_1: 1
+    raw_matches:
+      - "exploits"
+      - "generic"
+      - "worms"
+      - "analysis"

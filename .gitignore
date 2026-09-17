@@ -84,3 +84,5 @@ kaggle.json
 .env
 credentials.json
 token.json
+
+results

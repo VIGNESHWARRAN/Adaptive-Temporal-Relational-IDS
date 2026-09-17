@@ -1,0 +1,565 @@
+Listed directory data_engineering
+Listed directory datasets_data_and_paper
+Viewed task.txt:1-200
+Viewed task.txt:201-450
+Viewed task.txt:451-750
+Viewed task.txt:751-1000
+Viewed task.txt:1001-1236
+Viewed NFmetadata.txt:1-170
+Viewed dataset_metadata_template.md:1-100
+
+# Dataset Engineering Decision Analysis & Research Architecture
+
+**Project:** *Adaptive Temporal-Relational Intrusion Detection for Evolving Network Traffic: Investigating Classical, Quantum, and Continual Learning Approaches*
+
+---
+
+## 1. Executive Decision Summary & Architectural Philosophy
+
+Rather than building a single concatenated dataset, this project employs a **provenance-aware, multi-tiered data architecture**. This approach avoids combining datasets with shared underlying traffic while establishing a unified canonical schema capable of supporting:
+1. **Classical & Deep ML Baselines** (tabular flow features)
+2. **Temporal Sequence Models** (chronologically ordered event windows & IAT dynamics)
+3. **Dynamic Graph Neural Networks** (time-evolving relational graphs $G_t = (V_t, E_t)$)
+4. **Temporal–Relational Fusion Networks**
+5. **Zero-Day Generalization** (strict attack-family holdout)
+6. **Continual Learning & Concept Drift Streams** (chronological non-stationary domain shifts)
+
+```
+                            DATASET ECOSYSTEM
+                                   │
+         ┌─────────────────────────┼─────────────────────────┐
+         │                         │                         │
+    CIC ECOSYSTEM           UNSW ECOSYSTEM            IoT / SDN ECOSYSTEM
+  (Enterprise Emulation)    (Synthetic / Mixed)      (Specialized Environments)
+         │                         │                         │
+    ┌────┴────────────┐            ├── UNSW-NB15             ├── ToN_IoT (NF-ToN-IoT-v2/v3)
+    │                 │            │   (CSV / PCAP)          ├── CICIoT2023 (IoT Topology)
+CIC-IDS2017     CSE-CIC-IDS2018    └── NF-UNSW-NB15-v2/v3    └── InSDN (SDN Environment)
+    │                 │                (NetFlow v9/IPFIX)
+    └── LYCOS-IDS2017 └── NF-CSE-CIC-IDS2018-v2/v3
+       (LycoSTand)        (NetFlow v9/IPFIX)
+         
+    LEGACY BENCHMARK (Baseline reference only)
+    └── NSL-KDD (No IP/Port, synthetic time)
+```
+
+---
+
+## 2. Dataset Provenance & Lineage Analysis
+
+| Dataset Identifier | Underlying Raw Capture | Extraction Engine | Representation Type | Provenance Status | Same Traffic As |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **CIC-IDS2017** | ISCX B-Profile PCAP (2017) | CICFlowMeter v1 | Bidirectional Flow (80+ feats) | Original Extraction | LYCOS-IDS2017 |
+| **LYCOS-IDS2017** | ISCX B-Profile PCAP (2017) | LycoSTand (corrected) | Bidirectional Flow | Systematic Re-extraction | CIC-IDS2017 |
+| **CSE-CIC-IDS2018** | AWS Infrastructure PCAP (2018) | CICFlowMeter v3 | Bidirectional Flow (80 feats) | Original Extraction | NF-CSE-CIC-IDS2018 |
+| **NF-CSE-CIC-IDS2018-v2/v3** | AWS Infrastructure PCAP (2018) | nProbe (NetFlow v9/IPFIX) | Standardized NetFlow (43 feats) | NetFlow Conversion | CSE-CIC-IDS2018 |
+| **UNSW-NB15** | Cyber Range PCAP (IXIA PerfectStorm) | Argus / Bro-IDS / Custom | Hybrid Flow/Connection (49 feats) | Original Extraction | NF-UNSW-NB15 |
+| **NF-UNSW-NB15-v2/v3** | Cyber Range PCAP (IXIA PerfectStorm) | nProbe (NetFlow v9/IPFIX) | Standardized NetFlow (43 feats) | NetFlow Conversion | UNSW-NB15 |
+| **ToN_IoT / NF-ToN-IoT-v2/v3** | UNSW Canberra IoT Testbed PCAP | nProbe (NetFlow v9/IPFIX) | Standardized NetFlow / Telemetry | Original IoT Multi-source | NF-ToN-IoT |
+| **CICIoT2023** | 33 IoT Devices (105 attacks) | CICFlowMeter / PCAP | Real-time Flow / Sub-flow | Original IoT Flow | Standalone |
+| **InSDN** | Mininet SDN Topology PCAP | CICFlowMeter | SDN Flow (83 feats) | Standalone SDN | Standalone |
+| **NSL-KDD** | DARPA 1998/1999 (Synthetic simulated) | Bro/Custom Connection | Connection Vector (41 feats) | Legacy Filtered Vector | KDD'99 |
+
+> [!WARNING]
+> **Data Leakage Risk:** Training a model on `CIC-IDS2017` and evaluating on `LYCOS-IDS2017` or training on `UNSW-NB15` and evaluating on `NF-UNSW-NB15` is **not** an out-of-distribution cross-network generalization test. It evaluates **extractor tolerance**, as the underlying packet stream is identical.
+
+---
+
+## 3. Multi-Dimensional Compatibility Scoring Matrix
+
+Each candidate dataset is evaluated across 8 weighted criteria (Total = 100%):
+
+$$\text{Score} = 0.20 T + 0.20 R + 0.15 F + 0.10 A + 0.10 Q + 0.10 L + 0.10 P + 0.05 C$$
+
+* **$T$ (Temporal, 20%):** True timestamp availability, sub-second precision, inter-arrival time (IAT), flow duration.
+* **$R$ (Relational, 20%):** Unmasked Source/Destination IP, Source/Destination Port, Protocol, L4/L7 endpoints.
+* **$F$ (Feature Compatibility, 15%):** Bidirectional packet/byte counts, flow metrics, rate indicators.
+* **$A$ (Attack Diversity, 10%):** Attack classes, multi-stage attack scenarios, contemporary attack profiles.
+* **$Q$ (Data Quality, 10%):** Absence of corrupted records, infinite/NaN artifacts, duplicated rows, extraction bugs.
+* **$L$ (Label Quality, 10%):** Flow-level ground truth accuracy, verifiable timing alignment.
+* **$P$ (Provenance & Independence, 10%):** Verifiable capture pipeline, availability of raw PCAPs.
+* **$C$ (Continual Learning Suitability, 5%):** Natural chronological drift, distinct multi-day progression.
+
+### 10-Dataset Evaluation Scores (0–10 Scale)
+
+| Dataset | $T$ (20) | $R$ (20) | $F$ (15) | $A$ (10) | $Q$ (10) | $L$ (10) | $P$ (10) | $C$ (5) | **Total Score (100)** | **Role Tier** |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| **NF-CSE-CIC-IDS2018-v2/v3** | 19 | 19 | 15 | 9 | 9 | 8 | 9 | 5 | **93.0** | **Tier 1: Core Primary** |
+| **NF-UNSW-NB15-v2/v3** | 19 | 19 | 15 | 9 | 9 | 8 | 9 | 4 | **92.0** | **Tier 1: Core Primary** |
+| **CSE-CIC-IDS2018 (Original)** | 18 | 19 | 14 | 9 | 7 | 8 | 9 | 5 | **89.0** | **Tier 1: Core Primary** |
+| **NF-ToN-IoT-v2/v3** | 18 | 18 | 15 | 8 | 9 | 8 | 8 | 4 | **88.0** | **Tier 2: Cross-Domain (IoT)** |
+| **LYCOS-IDS2017** | 18 | 19 | 14 | 8 | 9 | 8 | 8 | 4 | **88.0** | **Tier 2: Quality-Sensitivity** |
+| **CIC-IDS2017 (Original)** | 18 | 19 | 13 | 8 | 5 | 6 | 8 | 4 | **81.0** | **Tier 2: Sensitivity Baseline** |
+| **UNSW-NB15 (Original)** | 17 | 18 | 13 | 9 | 7 | 7 | 8 | 3 | **82.0** | **Tier 2: Cross-Domain** |
+| **CICIoT2023** | 17 | 18 | 12 | 8 | 8 | 7 | 8 | 3 | **81.0** | **Tier 2: Auxiliary IoT** |
+| **InSDN** | 14 | 14 | 11 | 6 | 7 | 7 | 7 | 2 | **68.0** | **Tier 3: Reference (SDN)** |
+| **NSL-KDD** | 2 | 2 | 5 | 6 | 6 | 6 | 4 | 1 | **32.0** | **Excluded (Obsolete)** |
+
+---
+
+## 4. Dataset Role Stratification
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        DATASET ROLE HIERARCHY                          │
+├────────────────────────────────────────────────────────────────────────┤
+│ 1. PRIMARY UNIFIED BENCHMARK SUITE (Core Training & In-Domain)         │
+│    • NF-CSE-CIC-IDS2018-v2/v3 (Large-scale Enterprise NetFlow)         │
+│    • NF-UNSW-NB15-v2/v3 (Mixed Enterprise/Cyber-Range NetFlow)         │
+│    • CSE-CIC-IDS2018 (Deep Flow Feature Richness)                      │
+├────────────────────────────────────────────────────────────────────────┤
+│ 2. INDEPENDENT CROSS-DOMAIN GENERALIZATION (Zero-Shot Cross-Network)   │
+│    • NF-ToN-IoT-v2/v3 (Standardized NetFlow on IoT Infrastructure)     │
+│    • CICIoT2023 (High-density IoT Attack Traffic)                      │
+├────────────────────────────────────────────────────────────────────────┤
+│ 3. DATA-QUALITY & EXTRACTOR SENSITIVITY SUITE                         │
+│    • CIC-IDS2017 vs. LYCOS-IDS2017 (Same PCAP, Flawed vs. Corrected)   │
+├────────────────────────────────────────────────────────────────────────┤
+│ 4. EXCLUDED FROM PRIMARY TEMPORAL-RELATIONAL FUSION                    │
+│    • NSL-KDD: Lacks real IP addresses, port structure, & microsecond   │
+│      timestamps; relational graph and temporal windows cannot be built │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 5. The CIC-IDS2017 $\leftrightarrow$ LYCOS-IDS2017 Data-Quality Sensitivity Paradigm
+
+`CIC-IDS2017` and `LYCOS-IDS2017` share identical raw packet captures, but `LYCOS-IDS2017` addresses several known issues:
+* **TCP Flow Termination:** Fixes FIN/RST teardown handling that caused fragmented and mismatched bidirectional flow summaries in `CICFlowMeter`.
+* **Calculation Flaws:** Corrects negative IAT values, zero-duration division errors, and NaN values.
+* **Feature Redundancies:** Eliminates collinear duplicate features (e.g., `Fwd Header Length` vs. `Fwd Header Length.1`).
+* **Ground Truth Realignment:** Aligns flow timestamps with attack execution schedules.
+
+### Experimental Design for Extractor Sensitivity
+```
+  [Train on CICFlowMeter Features] ──► [Test on LycoSTand Features]  (Tests vulnerability to extraction bugs)
+  [Train on LycoSTand Features]    ──► [Test on CICFlowMeter Features] (Tests robustness to feature drift)
+```
+This isolates the impact of extraction artifacts on intrusion detection performance while keeping the underlying traffic distribution constant.
+
+---
+
+## 6. The Standardized NetFlow Architecture & Common Flow Representation
+
+The University of Queensland NetFlow initiative (`NF-UNSW-NB15-v2/v3`, `NF-CSE-CIC-IDS2018-v2/v3`, `NF-ToN-IoT-v2/v3`, `NF-BoT-IoT-v2/v3`) provides a standard base schema across heterogeneous captures:
+* Identical NetFlow v9/IPFIX 43-feature canonical format.
+* Consistent units: Duration in milliseconds, rates in bytes/pkts per sec, timestamps in Unix Epoch.
+* Preserved endpoint identities (`IPV4_SRC_ADDR`, `IPV4_DST_ADDR`, `L4_SRC_PORT`, `L4_DST_PORT`, `PROTOCOL`).
+
+```
+                    HETEROGENEOUS NETWORK CAPTURES
+               (UNSW-NB15, CSE-CIC-IDS2018, ToN-IoT, etc.)
+                                  │
+                                  ▼
+                     CANONICAL 6-GROUP FLOW SCHEMA
+                                  │
+          ┌───────────────────────┴───────────────────────┐
+          ▼                                               ▼
+  TEMPORAL WINDOWING ENGINE                      DYNAMIC GRAPH ENGINE
+ (Chronological Slotted Windows)              (Temporal Snapshots $G_t$)
+          │                                               │
+  [Sequence: $F_{t-k} \dots F_t$]               [Nodes: IPs | Edges: Flows]
+  • Inter-arrival time dynamics                  • Topological centrality
+  • Burst metrics & rate shifts                  • Neighbor communication patterns
+          │                                               │
+          └───────────────────────┬───────────────────────┘
+                                  ▼
+                    TEMPORAL-RELATIONAL FUSION
+             (Classical ML, GNN-LSTM/Transformer, Quantum)
+```
+
+---
+
+## 7. Semantic Feature Mapping & 6-Group Canonical Taxonomy
+
+Features are organized into 6 distinct groups. Every feature is categorized as **Raw Core** (extracted directly) or **Derived** (engineered through temporal/graph aggregation).
+
+```yaml
+schema_version: "2.0.0"
+canonical_groups:
+  group_1_identity_relational:
+    - canonical_name: src_ip
+      type: string (categorical / node_id)
+      aliases: ["IPV4_SRC_ADDR", "Source IP", "srcip", "Src IP"]
+      role: graph_source_node
+    - canonical_name: dst_ip
+      type: string (categorical / node_id)
+      aliases: ["IPV4_DST_ADDR", "Destination IP", "dstip", "Dst IP"]
+      role: graph_destination_node
+    - canonical_name: src_port
+      type: integer (1-65535)
+      aliases: ["L4_SRC_PORT", "Source Port", "sport", "Src Port"]
+      role: edge_attribute
+    - canonical_name: dst_port
+      type: integer (1-65535)
+      aliases: ["L4_DST_PORT", "Destination Port", "dsport", "Dst Port"]
+      role: edge_attribute
+    - canonical_name: protocol
+      type: integer / enum (IANA proto)
+      aliases: ["PROTOCOL", "Protocol", "proto"]
+      role: edge_attribute
+
+  group_2_temporal_dynamics:
+    - canonical_name: timestamp_start
+      type: timestamp_unix_epoch_ms
+      aliases: ["FLOW_START_TIMESTAMP", "Timestamp", "start_time", "stmp"]
+    - canonical_name: timestamp_end
+      type: timestamp_unix_epoch_ms
+      aliases: ["FLOW_END_TIMESTAMP", "Last_Time", "end_time"]
+    - canonical_name: flow_duration_ms
+      type: float (continuous, milliseconds)
+      aliases: ["FLOW_DURATION_MILLISECONDS", "Flow Duration", "dur", "Duration"]
+    - canonical_name: flow_iat_mean
+      type: float (continuous, microseconds)
+      aliases: ["Flow IAT Mean", "flow_iat_avg", "MEAN_FLOW_IAT"]
+    - canonical_name: flow_iat_std
+      type: float (continuous, microseconds)
+      aliases: ["Flow IAT Std", "flow_iat_std", "STD_FLOW_IAT"]
+    - canonical_name: fwd_iat_total
+      type: float (continuous)
+      aliases: ["Fwd IAT Total", "fwd_iat_tot"]
+    - canonical_name: bwd_iat_total
+      type: float (continuous)
+      aliases: ["Bwd IAT Total", "bwd_iat_tot"]
+
+  group_3_volume_metrics:
+    - canonical_name: total_fwd_packets
+      type: integer (count)
+      aliases: ["IN_PKTS", "Total Fwd Packets", "spkts", "Tot Fwd Pkts"]
+    - canonical_name: total_bwd_packets
+      type: integer (count)
+      aliases: ["OUT_PKTS", "Total Backward Packets", "dpkts", "Tot Bwd Pkts"]
+    - canonical_name: total_fwd_bytes
+      type: integer (bytes)
+      aliases: ["IN_BYTES", "Total Length of Fwd Packets", "sbytes", "TotLen Fwd Pkts"]
+    - canonical_name: total_bwd_bytes
+      type: integer (bytes)
+      aliases: ["OUT_BYTES", "Total Length of Bwd Packets", "dbytes", "TotLen Bwd Pkts"]
+
+  group_4_directional_rates:
+    - canonical_name: fwd_packet_rate
+      type: float (pkts/sec)
+      aliases: ["Fwd Packets/s", "fwd_pkt_rate"]
+    - canonical_name: bwd_packet_rate
+      type: float (pkts/sec)
+      aliases: ["Bwd Packets/s", "bwd_pkt_rate"]
+    - canonical_name: fwd_byte_rate
+      type: float (bytes/sec)
+      aliases: ["Fwd Bytes/s", "fwd_byte_rate"]
+    - canonical_name: bwd_byte_rate
+      type: float (bytes/sec)
+      aliases: ["Bwd Bytes/s", "bwd_byte_rate"]
+
+  group_5_statistical_behavior:
+    - canonical_name: pkt_len_mean
+      type: float (bytes)
+      aliases: ["Packet Length Mean", "Average Packet Size", "pkt_len_avg"]
+    - canonical_name: pkt_len_std
+      type: float (bytes)
+      aliases: ["Packet Length Std", "std_pkt_len"]
+    - canonical_name: tcp_flags
+      type: bitmask / integer
+      aliases: ["TCP_FLAGS", "Flags", "Flag"]
+
+  group_6_ground_truth_labels:
+    - canonical_name: label_binary
+      type: integer (0 = Benign, 1 = Attack)
+    - canonical_name: label_attack_family
+      type: string (Canonical Tier-2 Class)
+    - canonical_name: label_specific_attack
+      type: string (Original raw dataset attack name)
+    - canonical_name: provenance_dataset_id
+      type: string (e.g., "NF-CSE-CIC-IDS2018-v3")
+```
+
+---
+
+## 8. Derived Temporal Features & Dynamic Windowing Engine
+
+Raw network flow records are sorted in strict chronological order ($t_0 \le t_1 \le t_2 \le \dots \le t_N$).
+
+```
+             TIME-SLICED CHRONOLOGICAL WINDOW ($W_{\Delta t}$)
+    ├─────────────────────────────────────────────────────────────────┤
+    │ Flow 1: [Host A ──► Host B] (t = 0.01s, 443, 1420 bytes)        │
+    │ Flow 2: [Host A ──► Host C] (t = 0.04s,  80,  512 bytes)        │
+    │ Flow 3: [Host D ──► Host A] (t = 0.09s,  22,   64 bytes)        │
+    │ Flow 4: [Host A ──► Host E] (t = 0.12s, 445, 1024 bytes)        │
+    └─────────────────────────────────────────────────────────────────┘
+```
+
+### Derived Features per Window ($\Delta t = 10\text{s}, 30\text{s}, 60\text{s}$ or $K = 32, 64, 128$ events)
+
+1. **Entity-Level Flow Deltas:**
+   $$\Delta t_{\text{prev\_src}}(i) = t_i - \max \{ t_j \mid j < i, \text{src}(j) = \text{src}(i) \}$$
+   $$\Delta t_{\text{prev\_dst}}(i) = t_i - \max \{ t_j \mid j < i, \text{dst}(j) = \text{dst}(i) \}$$
+
+2. **Pairwise Inter-Flow Velocity:**
+   $$\Delta t_{\text{pair}}(i) = t_i - \max \{ t_j \mid j < i, \text{src}(j) = \text{src}(i) \land \text{dst}(j) = \text{dst}(i) \}$$
+
+3. **Window Burst Rates:**
+   $$\text{FlowRate}_{W}(u) = \frac{|\{f \in W \mid \text{src}(f) = u\}|}{|W|}$$
+   $$\text{ByteBurst}_{W}(u) = \sum_{f \in W, \text{src}(f) = u} \text{bytes}(f)$$
+
+---
+
+## 9. Relational Graph Construction: Evolving Temporal Snapshots
+
+For each discrete temporal window $W_k = [t_k, t_k + \tau]$, we construct a directed multi-graph snapshot:
+
+$$G_k = (V_k, E_k, X_{v,k}, X_{e,k})$$
+
+```
+                   DYNAMIC GRAPH SNAPSHOT: G_k
+                          (Window: [t_k, t_k + \tau])
+
+         [Host A] ──────────────── (443, TLS, 8.2KB) ───────────────► [Host B]
+            │                                                            ▲
+            │                                                            │
+    (80, HTTP, 1.2KB)                                            (22, SSH, 450B)
+            │                                                            │
+            ▼                                                            │
+         [Host C] ──────────────── (445, SMB, 3.4KB) ───────────────► [Host D]
+```
+
+* **Nodes ($V_k$):** Unique IP addresses active in $W_k$.
+* **Node Feature Vector ($X_{v,k}$):**
+  * In-degree: $d_{\text{in}}(v) = |\{ (u, v) \in E_k \}|$
+  * Out-degree: $d_{\text{out}}(v) = |\{ (v, w) \in E_k \}|$
+  * Unique Destination Ratio: $\frac{|\{w \mid (v, w) \in E_k\}|}{d_{\text{out}}(v)}$
+  * Destination Port Diversity (Entropy): $H_p(v) = -\sum_{p} P(p) \log_2 P(p)$
+  * Transmitted/Received Volume Ratio: $\frac{\sum \text{bytes}_{\text{out}}(v)}{\sum \text{bytes}_{\text{in}}(v) + \epsilon}$
+* **Directed Edges ($E_k$):** Communication flows from $\text{src\_ip} \to \text{dst\_ip}$.
+* **Edge Feature Vector ($X_{e,k}$):** Standardized bidirectional flow features (bytes, packets, rates, duration, flags).
+
+---
+
+## 10. Hierarchical 3-Level Label Normalization Taxonomy
+
+To enable both binary classification and cross-dataset attack-family generalization, labels are mapped across three standardized tiers:
+
+```
+LEVEL 1 (Binary) ────────────────────────► BENIGN (0) vs. ATTACK (1)
+                                                 │
+LEVEL 2 (Canonical Attack Family) ───────────────┼── DoS (Denial of Service)
+                                                 ├── DDoS (Distributed DoS)
+                                                 ├── RECON (PortScan, OS Fingerprinting)
+                                                 ├── BRUTE_FORCE (SSH, FTP, Web)
+                                                 ├── BOTNET (C&C, Infected nodes)
+                                                 ├── WEB_ATTACK (SQLi, XSS, Cmd Injection)
+                                                 ├── INFILTRATION (Privilege Escalation)
+                                                 └── EXPLOITS (Vulnerability probes)
+                                                 │
+LEVEL 3 (Original Specific Label) ───────────────┴── e.g., "DoS-Slowloris", "DDoS-LOIC-HTTP"
+```
+
+### Label Mapping Matrix
+
+| Canonical Family (Level 2) | CSE-CIC-IDS2018 | UNSW-NB15 / NF-UNSW | ToN-IoT / NF-ToN-IoT | CICIoT2023 |
+| :--- | :--- | :--- | :--- | :--- |
+| **BENIGN** | Benign | Benign | Benign | BenignTraffic |
+| **DoS** | DoS-Slowloris, DoS-SlowHTTPTest, DoS-Hulk, DoS-GoldenEye | DoS | DoS | DoS-TCP-SYN, DoS-UDP-Flood, etc. |
+| **DDoS** | DDoS-LOIC-HTTP, DDoS-HOIC, DDoS-LOIC-UDP | *N/A (Grouped in DoS)* | DDoS | DDoS-ICMP_Flood, DDoS-SynonymousIP |
+| **RECON** | *N/A* | Reconnaissance | Scanning | Recon-PortScan, Recon-OSScan |
+| **BRUTE_FORCE** | FTP-BruteForce, SSH-Bruteforce | *N/A* | Password | DictionaryBruteForce |
+| **BOTNET** | Botnet | *N/A* | Backdoor | Mirai-*, Gafgyt-* |
+| **WEB_ATTACK** | Brute Force -Web, Brute Force -XSS, SQL Injection | Analysis | Injection, XSS | Vulnerability-Scan, SqlInjection, BrowserHijacking |
+| **INFILTRATION** | Infiltration | Backdoor, Shellcode | *N/A* | CommandInjection, Backdoor_Malware |
+| **EXPLOITS** | *N/A* | Exploits, Generic, Worms | Ransomware, MITM | *N/A* |
+
+---
+
+## 11. Comprehensive Experimental Design Matrix
+
+```
+       EXPERIMENT E1: IN-DOMAIN TEMPORAL BASELINE
+       [NF-CSE-CIC-IDS2018 Day 1-7] ──────► [NF-CSE-CIC-IDS2018 Day 8-10]
+       
+       EXPERIMENT E2: TRUE CROSS-DATASET GENERALIZATION
+       [Train: Enterprise NetFlow (NF-CSE-CIC-2018)] ──────► [Test: IoT NetFlow (NF-ToN-IoT-v3)]
+       
+       EXPERIMENT E3: DATA-QUALITY SENSITIVITY (Same PCAP)
+       [Train: CIC-IDS2017 (CICFlowMeter)] ──────► [Test: LYCOS-IDS2017 (LycoSTand)]
+       
+       EXPERIMENT E4: ZERO-DAY ATTACK-FAMILY HOLDOUT
+       [Train: Benign + DoS + DDoS + Recon + BruteForce] ──────► [Test: WEB_ATTACK + INFILTRATION]
+       
+       EXPERIMENT E5: CONTINUAL LEARNING / NON-STATIONARY DRIFT
+       Experience 1 (T1: Benign + Recon) ──► Experience 2 (T2: DoS) ──► Experience 3 (T3: Botnet)
+```
+
+### Complete Research Experiment Plan
+
+| Exp ID | Experiment Focus | Training Domain | Evaluation Domain | Target Phenomena Evaluated |
+| :--- | :--- | :--- | :--- | :--- |
+| **E1.1** | **In-Domain Flow Baseline** | NF-CSE-CIC-2018 ($T_1$) | NF-CSE-CIC-2018 ($T_2$) | Tabular vs. Temporal baseline in same enterprise environment |
+| **E1.2** | **In-Domain Graph-Temporal** | NF-UNSW-NB15 ($T_1$) | NF-UNSW-NB15 ($T_2$) | Gain from dynamic relational graph features ($G_t$) |
+| **E2.1** | **Cross-Domain Transfer** | NF-CSE-CIC-2018 | NF-UNSW-NB15 | Transferability across distinct corporate networks |
+| **E2.2** | **Enterprise $\to$ IoT Transfer**| NF-CSE-CIC-2018 | NF-ToN-IoT-v3 | Transferability from enterprise servers to IoT edge topologies |
+| **E3.1** | **Extractor Sensitivity** | CIC-IDS2017 | LYCOS-IDS2017 | Impact of feature calculation bugs on model accuracy |
+| **E3.2** | **Corrected Robustness** | LYCOS-IDS2017 | CIC-IDS2017 | Clean representations evaluated on noisy extraction environments |
+| **E4.1** | **Zero-Day Holdout: Web** | All Families except Web | Web Attack Family | Unseen application-layer exploit detection |
+| **E4.2** | **Zero-Day Holdout: Infiltr** | All Families except Infiltr | Infiltration Family | Unseen multi-stage lateral movement detection |
+| **E5.1** | **Continual Class Incremental** | Day-by-day chronological | Sequential future stream | Backward retention (forgetting) & forward adaptation |
+| **E5.2** | **Concept Drift Adaptation** | $D_{\text{Enterprise}} \to D_{\text{IoT}}$ | Dynamic stream | Adaptation to topology and traffic-volume distribution shifts |
+
+---
+
+## 12. Next Steps & Implementation Roadmap
+
+1. **Phase 1: Decision Documentation & Formal Specifications**
+   * Generate `metadata/dataset_catalog.csv` and `metadata/dataset_provenance.csv`.
+   * Formalize `schemas/unified_flow_schema.yaml` with the 6-group structure.
+   * Publish `labels/attack_taxonomy.md` with explicit mapping rules.
+
+2. **Phase 2: Modular Pipeline Implementation**
+   * `preprocessing/cleaning.py`: Missing values, infinite float repair, unit alignment.
+   * `preprocessing/temporal_windows.py`: Chronological windowing and inter-flow delta calculations.
+   * `preprocessing/graph_generation.py`: PyTorch Geometric dynamic graph snapshot generation ($G_t$).
+   * `eda/`: Automated data profiling verifying absence of train/test leakage.
+
+3. **Phase 3: Model Execution & Fusion**
+   * Tabular ML baseline $\to$ Temporal LSTM/GRU $\to$ Relational GNN $\to$ Temporal-Relational Fusion.
+
+---
+
+### Key Takeaway
+We have established a clear dataset selection and engineering structure. The datasets are organized by provenance, mapped to a unified canonical schema with temporal and relational extensions, and prepared for rigorous cross-dataset and continual-learning evaluation.
+
+
+
+
+This sharpens your research focus into a **scientifically rigorous, controlled comparative experiment**.
+
+When evaluating multimodal or multi-branch architectures (such as **Temporal + Relational Fusion**), varying both the encoders and the fusion mechanism simultaneously introduces confounding variables. 
+
+By **holding the dataset representation, the temporal encoder, and the behavioral/relational encoder constant**, any variation in detection accuracy, convergence rate, zero-day resilience, or computational efficiency is **strictly attributable to the fusion strategy itself**.
+
+---
+
+## 1. The Controlled Experimental Paradigm
+
+```
+                   CHRONOLOGICAL FLOW STREAM / DATASET
+                                   │
+                   ┌───────────────┴───────────────┐
+                   ▼                               ▼
+       [FIXED TEMPORAL ENCODER]        [FIXED GRAPH/RELATIONAL ENCODER]
+          (Sequence: $S_t$)                (Topology Snapshot: $G_t$)
+                   │                               │
+       Temporal Embedding: $h_{\text{temp}}$   Relational Embedding: $h_{\text{rel}}$
+                   │                               │
+                   └───────────────┬───────────────┘
+                                   ▼
+                       ╔═══════════════════════╗
+                       ║   FUSION STRATEGY     ║  ◄── [VARIABLE UNDER TEST]
+                       ║  (Strategy 1 ... K)   ║
+                       ╚═══════════════════════╝
+                                   │
+                                   ▼
+                        FINAL INTRUSION DECISION
+```
+
+---
+
+## 2. Dataset Selection: What Datasets Justify This Evaluation?
+
+To fairly benchmark fusion strategies without dataset artifacts, the dataset must satisfy three strict requirements:
+1. **Rich Temporal Structure:** Continuous microsecond/millisecond timestamps with natural burstiness and inter-arrival time (IAT) dynamics.
+2. **Rich Relational Structure:** Sufficiently dense multi-host communication (unmasked IP/ports) so that the graph branch has genuine topological signal (centrality, degree distribution, community structure).
+3. **Attack Heterogeneity:** Attacks that express themselves *temporally* (e.g., slow DoS, brute force), *relationally* (e.g., distributed DDoS, port scans), and *both* (e.g., multi-stage botnets/infiltration).
+
+### Recommended Primary Dataset Selection
+
+| Dataset | Why It Justifies the Fusion Experiment |
+| :--- | :--- |
+| **Primary: `NF-CSE-CIC-IDS2018-v3`** *(or `CSE-CIC-IDS2018`)* | **Best overall candidate.** Contains a large enterprise topology (hundreds of victim servers and attacking hosts), spans multiple days with clear chronological progression, and includes attacks where neither temporal nor relational alone is sufficient (e.g., Botnet, Infiltration, Multi-source DDoS). |
+| **Validation / Secondary: `NF-UNSW-NB15-v3`** | Cyber-range environment with 9 diverse attack families. Used to confirm that the best fusion strategy is not overfitted to the CIC network topology. |
+
+> [!IMPORTANT]
+> **Why NSL-KDD is disqualified:** NSL-KDD lacks real IP addresses and continuous time. You cannot construct dynamic topological graphs ($G_t$) from it, rendering the relational branch trivial and invalidating fusion comparison.
+
+---
+
+## 3. The Fixed Components Specification
+
+To isolate the fusion module, the two input branches remain frozen in architecture across all fusion experiments:
+
+### A. Fixed Temporal Component ($\mathcal{E}_{\text{temp}}$)
+* **Input:** Chronological sequence of $K$ consecutive flows within window $W_t$:  
+  $$S_t = [f_{t-K+1}, f_{t-K+2}, \dots, f_t] \in \mathbb{R}^{K \times d_f}$$
+* **Encoder:** Fixed GRU / LSTM or 1D-CNN temporal feature extractor.
+* **Output:** Temporal embedding vector $h_{\text{temp}} \in \mathbb{R}^{D}$.
+
+### B. Fixed Behavioral / Relational Component ($\mathcal{E}_{\text{rel}}$)
+* **Input:** Directed graph snapshot $G_t = (V_t, E_t)$ corresponding to the exact same temporal window $W_t$, where nodes $V_t$ are active IP hosts and edges $E_t$ are active flows.
+* **Encoder:** Fixed 2-layer Graph Attention Network (GAT) or GraphSAGE.
+* **Output:** Graph/relational summary embedding $h_{\text{rel}} \in \mathbb{R}^{D}$ (via global graph pooling over active nodes).
+
+---
+
+## 4. The Fusion Strategies to Benchmark
+
+With $h_{\text{temp}}$ and $h_{\text{rel}}$ fixed to dimension $D$, you evaluate different fusion paradigms:
+
+```
+┌───────────────────────────┬─────────────────────────────────────────────────────────────┐
+│ Fusion Strategy           │ Mathematical Formulation & Mechanism                        │
+├───────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ 1. Early / Concatenation  │ $z = \text{MLP}([h_{\text{temp}} \,\|\, h_{\text{rel}}])$   │
+│    (Standard Baseline)    │ Simple linear/non-linear projection of joint representation │
+├───────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ 2. Gated / Adaptive       │ $g = \sigma(W_g [h_{\text{temp}} \,\|\, h_{\text{rel}}])$   │
+│    Multimodal Fusion      │ $z = g \odot h_{\text{temp}} + (1 - g) \odot h_{\text{rel}}$│
+│                           │ Dynamically weights temporal vs. relational importance     │
+├───────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ 3. Bilinear / Tensor      │ $z = h_{\text{temp}}^T \mathcal{W} h_{\text{rel}} + b$      │
+│    Product Fusion         │ Captures full second-order cross-modal feature interactions │
+├───────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ 4. Cross-Attention        │ $Q = W_Q h_{\text{temp}}, \; K = W_K h_{\text{rel}}, \; V = W_V h_{\text{rel}}$ │
+│    Co-Attention Fusion    │ Temporal features query relational topology & vice versa    │
+├───────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ 5. Late / Decision-Level  │ $\hat{y} = \alpha \cdot \text{Softmax}(C_{\text{temp}}(h_{\text{temp}})) + (1-\alpha) \cdot \text{Softmax}(C_{\text{rel}}(h_{\text{rel}}))$ │
+│    Ensemble Fusion        │ Independent branch predictions combined at probability tier │
+├───────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ 6. Quantum / Variational  │ $| \psi(h_{\text{temp}}, h_{\text{rel}}) \rangle = U_{\text{PQC}}(\theta) | \phi(h) \rangle$ │
+│    Quantum Circuit Fusion │ Quantum state entanglement of temporal & relational states  │
+└───────────────────────────┴─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 5. Dataset Engineering Requirements to Support This Design
+
+To make this benchmark work without data flaws, our dataset engineering pipeline must provide **synchronized dual-representation generation**:
+
+```
+                       RAW FLOW DATASET (Chronologically Ordered)
+                                          │
+                        SLICED INTO FIXED TIME WINDOWS (W_t)
+                                          │
+               ┌──────────────────────────┴──────────────────────────┐
+               ▼                                                     ▼
+     WINDOW FLOW SEQUENCE (S_t)                           GRAPH SNAPSHOT (G_t)
+     • Array of shape (K, d_features)                     • PyTorch Geometric Data object:
+     • Retains inter-flow time deltas                       - x: Node features (degree, host profile)
+     • Sorted: t_1 <= t_2 <= ... <= t_K                     - edge_index: [src_ips, dst_ips]
+                                                            - edge_attr: flow statistical features
+               │                                                     │
+               └──────────────────────────┬──────────────────────────┘
+                                          ▼
+                      SYNCHRONIZED BENCHMARK SAMPLE: (S_t, G_t, Y_t)
+```
+
+### Key Engineering Guarantees We Must Implement:
+1. **Temporal-Relational Synchronization:** For every window index $t$, the flow sequence $S_t$ and graph $G_t$ contain the exact same underlying network events.
+2. **Deterministic Windowing:** Standardize window size (e.g., fixed $\Delta t = 30\text{s}$ or fixed $K = 64$ flows) across all experiments.
+3. **Consistent Ground Truth ($Y_t$):** Window is assigned an attack label if any flow within $W_t$ is malicious, with the dominant attack family recorded.
+4. **Leakage-Free Splits:** Chronological split (e.g., first 70% time for train, next 15% validation, final 15% test) so temporal dependencies are respected.
+
+---
+
+## Recommended Next Step
+
+We can generate the dataset engineering scripts that transform the chosen primary dataset (`NF-CSE-CIC-IDS2018-v3` / `CSE-CIC-IDS2018`) into synchronized `(S_t, G_t, Y_t)` sample pairs, ready to feed directly into the fixed encoders and fusion test harness.

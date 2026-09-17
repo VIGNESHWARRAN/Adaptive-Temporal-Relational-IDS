@@ -1,0 +1,23 @@
+{
+  "nf_unsw_nb15_v2": {
+    "total_candidates": 43,
+    "selected_count": 25,
+    "temporal_count": 4,
+    "relational_count": 9,
+    "behavioral_count": 12
+  },
+  "nf_cse_cic_ids2018_v2": {
+    "total_candidates": 43,
+    "selected_count": 25,
+    "temporal_count": 6,
+    "relational_count": 7,
+    "behavioral_count": 12
+  },
+  "cse_cic_ids2018": {
+    "total_candidates": 83,
+    "selected_count": 28,
+    "temporal_count": 9,
+    "relational_count": 1,
+    "behavioral_count": 18
+  }
+}
