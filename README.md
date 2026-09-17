@@ -12,11 +12,12 @@
 
 Conventional intrusion detection systems treat network flows as independent tabular records, discarding critical **temporal sequences** (event ordering, inter-arrival times, multi-stage burst dynamics) and **relational topology** (communication graphs $G_t = (V_t, E_t)$, entity interactions, host connectivity).
 
-This repository provides the core data engineering and pipeline foundation:
+This repository provides the core data engineering, architecture modules, and experimental harness:
 1. **Multi-Source Dataset Ingestion Engine:** Resilient, chunked downloading supporting direct HTTP/HTTPS, Zenodo, and Kaggle API.
 2. **Standardized NetFlow & Deep Flow Schema Alignment:** Supporting Tier 1 core enterprise NetFlow (`NF-CSE-CIC-IDS2018-v2`, `NF-UNSW-NB15-v2`), deep flow statistics (`CSE-CIC-IDS2018`), and cross-domain IoT benchmarks (`NF-ToN-IoT-v2`, `CICIoT2023`).
-3. **Automated Metadata Profiler & Readiness Evaluator:** Inspects schemas, null rates, record counts, and scores datasets on **Temporal & Relational readiness** for Graph Neural Networks and Sequence Models.
-4. **Zero-Laptop-Spec Google Colab Workflow:** Ready-to-run Colab integration with automatic Google Drive persistence.
+3. **Automated Metadata Profiler & Leakage Checker:** Inspects schemas, null rates, record counts, and enforces a mandatory 7-point data leakage protocol.
+4. **Phase 1 Controlled Loss-Function Experimentation Harness:** Evaluates **Standard Cross Entropy**, **Class-Weighted Cross Entropy**, and **Focal Loss** ($\gamma=2.0$) across 3 benchmark datasets under strictly frozen model architectures.
+5. **Zero-Laptop-Spec Google Colab Workflow:** Ready-to-run Colab notebooks with automatic Google Drive persistence.
 
 ---
 
@@ -32,40 +33,68 @@ adaptive-temporal-relational-ids/
 │   └── colab_config.yaml               # Google Colab & Google Drive paths
 ├── src/
 │   ├── __init__.py
-│   ├── download/
+│   ├── data/
 │   │   ├── __init__.py
+│   │   └── loader.py                   # Data split (70/15/15), scaler fit on train ONLY, class weights
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── encoders.py                 # FixedTemporalEncoder (GRU) & FixedRelationalEncoder
+│   │   ├── fusion.py                   # ConcatenationFusion (Concat 128 -> Linear 64 -> BatchNorm -> ReLU)
+│   │   ├── classifiers.py              # MultimodalFusionClassifier with fixed head (64->32->num_classes)
+│   │   └── losses.py                   # Standard CE, Class-Weighted CE, FocalLoss (gamma=2)
+│   ├── evaluation/
+│   │   ├── __init__.py
+│   │   ├── leakage_checker.py          # Mandatory 7-point data leakage protocol
+│   │   └── trainer.py                  # PyTorch trainer, early stopping, loss curves, confusion matrices
+│   ├── download/
 │   │   ├── dataset_registry.py         # Registry loader & tier filter
 │   │   └── downloader.py               # Resumable HTTP, KaggleHub & Zenodo downloader
-│   ├── metadata/
-│   │   ├── __init__.py
-│   │   ├── extractor.py                # Schema, null rate, and class distribution profiler
-│   │   ├── temporal_relational_eval.py # Relational/Temporal feature compatibility evaluator
-│   │   └── reporter.py                 # Generates Markdown and JSON metadata reports
-│   └── utils/
-│       ├── __init__.py
-│       └── colab_utils.py              # Environment diagnostics & Google Drive mount helper
+│   └── metadata/
+│       ├── extractor.py                # Schema, null rate, and class distribution profiler
+│       ├── temporal_relational_eval.py # Relational/Temporal feature compatibility evaluator
+│       └── reporter.py                 # Generates Markdown and JSON metadata reports
 ├── scripts/
 │   ├── download_datasets.py            # CLI script to download datasets
 │   ├── extract_metadata.py             # CLI script to profile datasets and create reports
-│   └── run_all_pipeline.py             # Master pipeline orchestrator
+│   ├── run_all_pipeline.py             # Master pipeline orchestrator
+│   ├── run_phase1_experiments.py       # Controlled CLI harness for Phase 1 9-experiment suite
+│   └── generate_phase1_report.py       # Aggregates Phase 1 metrics into master table & report
 ├── notebooks/
-│   └── 01_download_and_metadata_colab.ipynb  # Interactive 1-click Colab notebook
+│   ├── 01_download_and_metadata_colab.ipynb   # Metadata & dataset ingestion notebook
+│   └── 02_phase1_loss_experiments_colab.ipynb  # Interactive Phase 1 loss experiments notebook
+├── results/
+│   └── phase1_loss_experiments/        # Phase 1 experimental metrics, confusion matrices & reports
 └── metadata_reports/                   # Output folder for generated metadata JSON & MD reports
 ```
 
 ---
 
+## ⚡ Phase 1: Controlled Loss-Function Experimentation
+
+Phase 1 conducts a controlled comparative study of 3 classification loss functions across 3 benchmark datasets:
+
+**3 Datasets × 3 Loss Functions = 9 Controlled Experiments**
+
+### Experimental Controls
+- **Datasets:** `NF-CSE-CIC-IDS2018-v2`, `NF-UNSW-NB15-v2`, `CSE-CIC-IDS2018`
+- **Loss Functions:** Standard Cross Entropy (`standard_ce`), Class-Weighted Cross Entropy (`weighted_ce`), Focal Loss (`focal_loss`, $\gamma=2.0$)
+- **Fixed Model Architecture:** `FixedTemporalEncoder` (GRU-64d) + `FixedRelationalEncoder` (64d) + `ConcatenationFusion` (64d) + Classifier Head (`Linear 64->32 -> ReLU -> Dropout(0.2) -> Linear 32->num_classes`)
+- **Strict Invariants:** Preprocessing, feature selection, 70/15/15 splits, random seed (42), optimizer (Adam), learning rate (0.001), batch size, and evaluation criteria remain **strictly identical** across experiments.
+
+---
+
 ## 🚀 Quickstart: Running on Google Colab (Recommended)
 
-Since model training and large dataset preprocessing require compute and storage, use **Google Colab**:
-
 1. Open **[Google Colab](https://colab.research.google.com/)**.
-2. Upload and open [`notebooks/01_download_and_metadata_colab.ipynb`](notebooks/01_download_and_metadata_colab.ipynb).
-3. Execute the cells in order:
-   - **Cell 1 & 2:** Mounts your Google Drive at `/content/drive/MyDrive/IDS_Research_Project`.
-   - **Cell 3:** Installs lightweight dependencies.
-   - **Cell 4:** Downloads Tier 1 NetFlow datasets directly to Google Drive.
-   - **Cell 5 & 6:** Runs metadata extraction and previews the generated Markdown reports.
+2. Open [`notebooks/02_phase1_loss_experiments_colab.ipynb`](notebooks/02_phase1_loss_experiments_colab.ipynb).
+3. Execute the cells to run Phase 1 loss experiments remotely on GPU/CPU:
+   ```bash
+   # Run all 9 controlled experiments
+   !python scripts/run_phase1_experiments.py --dataset all --loss all --epochs 15
+   
+   # Generate Master Summary Report & Master Table
+   !python scripts/generate_phase1_report.py results/phase1_loss_experiments
+   ```
 
 ---
 
@@ -88,35 +117,28 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Check Dataset Registry (Dry Run)
+### 2. Run Phase 1 Controlled Experiments
 
 ```bash
-# Simulate download plan for Tier 1 datasets without fetching large files
-python scripts/download_datasets.py --tier 1 --dry-run
+# Execute specific dataset + loss experiment:
+python scripts/run_phase1_experiments.py --dataset nf_cse_cic_ids2018_v2 --loss standard_ce
+
+# Execute all 3 losses for a given dataset:
+python scripts/run_phase1_experiments.py --dataset nf_unsw_nb15_v2 --loss all --epochs 15
+
+# Execute all 9 controlled experiments:
+python scripts/run_phase1_experiments.py --dataset all --loss all --epochs 15
 ```
 
-### 3. Download Datasets
+### 3. Generate Master Summary Report
 
 ```bash
-# Download Tier 1 Core Primary NetFlow datasets (NF-CSE-CIC-IDS2018-v2 & NF-UNSW-NB15-v2)
-python scripts/download_datasets.py --tier 1
-
-# Or download specific datasets:
-python scripts/download_datasets.py --datasets nf-unsw-nb15-v2 nf-cse-cic-ids2018-v2
+python scripts/generate_phase1_report.py results/phase1_loss_experiments
 ```
 
-### 4. Extract Metadata & Generate Reports
-
-```bash
-# Scan data/raw/ and generate Markdown & JSON reports in metadata_reports/
-python scripts/extract_metadata.py
-```
-
-### 5. Run Entire Ingestion & Profiling Pipeline
-
-```bash
-python scripts/run_all_pipeline.py
-```
+Outputs:
+- `results/phase1_loss_experiments/phase1_summary/master_results_table.csv`
+- `results/phase1_loss_experiments/phase1_summary/PHASE_1_EXPERIMENTAL_REPORT.md`
 
 ---
 
@@ -134,20 +156,3 @@ python scripts/run_all_pipeline.py
 | **CICIoT2023** | **2** | Contemporary IoT Multi-Device Benchmark | CICFlowMeter (47 feats) | ~46.0M | **High (33 devices, 105 attack classes)** |
 | **InSDN** | **3** | SDN Virtual Network Reference | SDN Flow (83 feats) | ~340K | **Moderate (SDN-specific control flows)** |
 | **NSL-KDD** | **3** | Legacy Reference Baseline | KDD Vector (41 feats) | ~148K | **Excluded from Dynamic Graph Fusion** |
-
----
-
-## 🔧 Git Initialization & Setup
-
-To initialize this folder as a git repository and connect it to your GitHub / GitLab:
-
-```bash
-cd adaptive-temporal-relational-ids
-git init
-git add .
-git commit -m "feat: initial commit with dataset downloaders, metadata profilers, and Colab pipeline"
-git branch -M main
-# Add your remote repository:
-git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-git push -u origin main
-```
