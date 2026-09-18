@@ -49,13 +49,27 @@ def run_single_experiment(
     print(f" Target Directory: {exp_out_dir}")
     print(f"=======================================================")
 
-    # 1. Load Data Split & Metadata
+    # 1. Load Data Split & Metadata (Strictly using frozen Phase 0 selected features)
     data = load_dataset_split(
         dataset_name=dataset_name,
         base_data_dir=base_data_dir,
         sample_limit=sample_limit,
         seed=seed,
     )
+
+    # Save Dataset Integration Report
+    integration_report = data["integration_report"]
+    with open(os.path.join(exp_out_dir, "dataset_integration_report.json"), "w", encoding="utf-8") as f:
+        json.dump(integration_report, f, indent=2)
+
+    ds_report_dir = os.path.join(output_dir_base, dataset_name)
+    os.makedirs(ds_report_dir, exist_ok=True)
+    with open(os.path.join(ds_report_dir, "dataset_integration_report.json"), "w", encoding="utf-8") as f:
+        json.dump(integration_report, f, indent=2)
+
+    print(f" [INTEGRATION CONFIRMED] Config: {integration_report['loaded_feature_config_path']}")
+    print(f" [INTEGRATION CONFIRMED] Selected Features ({data['input_dim']}): {data['feature_names'][:5]}...")
+    print(f" [INTEGRATION CONFIRMED] Num Classes: {data['num_classes']} | Class Names: {data['class_names']}")
 
     # 2. Mandatory Data Leakage Checks
     leakage_res = run_mandatory_leakage_checks(
@@ -68,14 +82,15 @@ def run_single_experiment(
         feature_names=data["feature_names"],
         scaler_fitted_on_train_only=data["scaler_fitted_on_train_only"],
     )
-    with open(os.path.join(exp_out_dir, "leakage_report.json"), "w") as f:
+    with open(os.path.join(exp_out_dir, "leakage_report.json"), "w", encoding="utf-8") as f:
         json.dump(leakage_res, f, indent=2)
 
     if not leakage_res["all_passed"]:
         print(f"[WARN] Leakage check warnings detected for {exp_prefix}. Check leakage_report.json.")
 
-    # 3. Instantiate Fixed Architecture
+    # 3. Instantiate Fixed Architecture (Fixed Temporal + Fixed Relational + Concat Fusion + Classifier Head)
     model = MultimodalFusionClassifier(
+        fusion_type="concat",
         temp_input_dim=data["input_dim"],
         rel_node_dim=data["input_dim"],
         rel_edge_dim=0,
@@ -113,7 +128,7 @@ def run_single_experiment(
         "epochs": epochs,
         "early_stopping_patience": 5,
     }
-    with open(os.path.join(exp_out_dir, "config.json"), "w") as f:
+    with open(os.path.join(exp_out_dir, "config.json"), "w", encoding="utf-8") as f:
         json.dump(config, f, indent=2)
 
     # 5. Train Model
