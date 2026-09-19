@@ -9,6 +9,7 @@ import os
 import json
 from typing import Dict, Any, List, Tuple
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -32,7 +33,7 @@ def set_seed(seed: int = 42):
 
 
 class ExperimentTrainer:
-    """Standardized PyTorch Trainer for Phase 1 Loss Experiments."""
+    """Standardized PyTorch Trainer for Phase 1 Loss & Multimodal Fusion Experiments."""
 
     def __init__(
         self,
@@ -50,13 +51,21 @@ class ExperimentTrainer:
             self.device = device
 
         self.model.to(self.device)
+        self.criterion.to(self.device)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=learning_rate, weight_decay=weight_decay)
+        self.adaptive_loss_history: List[Dict[str, Any]] = []
 
     def train_epoch(self, train_loader: DataLoader) -> float:
         """Trains for one epoch and returns average loss."""
         self.model.train()
         total_loss = 0.0
         samples_count = 0
+
+        ref_params = None
+        if hasattr(self.model, "get_reference_parameters"):
+            ref_params = self.model.get_reference_parameters()
+        elif hasattr(self.model, "classifier_head") and self.model.classifier_head is not None:
+            ref_params = list(self.model.classifier_head.parameters())
 
         for batch_temp, batch_rel_node, batch_y in train_loader:
             batch_temp = batch_temp.to(self.device)
@@ -65,7 +74,13 @@ class ExperimentTrainer:
 
             self.optimizer.zero_grad()
             logits = self.model(batch_temp, batch_rel_node)
-            loss = self.criterion(logits, batch_y)
+
+            if hasattr(self.criterion, "latest_diagnostics"):
+                loss = self.criterion(logits, batch_y, ref_params=ref_params)
+                self.adaptive_loss_history.append(dict(self.criterion.latest_diagnostics))
+            else:
+                loss = self.criterion(logits, batch_y)
+
             loss.backward()
             self.optimizer.step()
 
@@ -161,6 +176,7 @@ class ExperimentTrainer:
             "train_losses": train_losses,
             "val_losses": val_losses,
             "val_macro_f1s": val_macro_f1s,
+            "adaptive_loss_history": self.adaptive_loss_history,
         }
 
 
@@ -221,6 +237,12 @@ def compute_metrics_and_plots(
     plt.savefig(curve_path, dpi=300)
     plt.close()
 
+    # 5. Export Adaptive Loss Diagnostics CSV if present
+    adaptive_history = train_history.get("adaptive_loss_history", [])
+    if adaptive_history:
+        diag_df = pd.DataFrame(adaptive_history)
+        diag_df.to_csv(os.path.join(output_dir, "adaptive_loss_diagnostics.csv"), index_label="step")
+
     metrics = {
         "accuracy": float(acc),
         "macro_precision": float(macro_p),
@@ -240,8 +262,19 @@ def compute_metrics_and_plots(
         "loss_curve_path": curve_path,
     }
 
+    if adaptive_history:
+        metrics["adaptive_loss_summary"] = {
+            "total_steps": len(adaptive_history),
+            "final_alpha": float(adaptive_history[-1]["alpha"]),
+            "final_beta": float(adaptive_history[-1]["beta"]),
+            "final_gamma": float(adaptive_history[-1]["gamma"]),
+            "clipping_events": int(sum(1 for d in adaptive_history if d.get("clipping_occurred"))),
+            "fallback_events": int(sum(1 for d in adaptive_history if d.get("fallback_occurred"))),
+        }
+
     # Save metrics JSON
     with open(os.path.join(output_dir, "metrics.json"), "w") as f:
         json.dump(metrics, f, indent=2)
 
     return metrics
+

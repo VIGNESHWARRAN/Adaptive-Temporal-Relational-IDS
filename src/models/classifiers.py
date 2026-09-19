@@ -101,3 +101,11 @@ class MultimodalFusionClassifier(nn.Module):
             logits = fused_out
 
         return logits
+
+    def get_reference_parameters(self) -> List[nn.Parameter]:
+        """Returns reference parameters used for gradient norm calculation in adaptive loss functions."""
+        if self.classifier_head is not None:
+            return list(self.classifier_head.parameters())
+        else:
+            return list(self.fusion_module.parameters())
+

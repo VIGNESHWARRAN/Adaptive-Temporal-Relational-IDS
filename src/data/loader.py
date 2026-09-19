@@ -15,6 +15,7 @@ import json
 import numpy as np
 import pandas as pd
 from typing import Dict, Any, Tuple, List
+from collections import defaultdict
 
 import torch
 from torch.utils.data import TensorDataset, DataLoader
@@ -64,6 +65,7 @@ def load_dataset_split(
     phase0_results_dir: str = "results/phase0_data_preparation",
     sample_limit: int = 100000,
     seed: int = 42,
+    output_dir: str = None
 ) -> Dict[str, Any]:
     """Loads dataset, applies Phase 0 frozen feature selection, splits (70/15/15), and scales.
 
@@ -72,8 +74,9 @@ def load_dataset_split(
         base_data_dir: Base raw data directory
         config_dir: Directory containing frozen feature selection JSONs
         phase0_results_dir: Phase 0 results directory
-        sample_limit: Max records to read for controlled execution
+        sample_limit: Base majority sample limit
         seed: Fixed random seed for reproducible split
+        output_dir: Optional directory to save split_manifest.csv
 
     Returns:
         Structured data dictionary with train/val/test features, labels, class info, weights, and PyTorch DataLoaders.
@@ -105,41 +108,121 @@ def load_dataset_split(
             selected_features = r_meta.get("selected_features", [])
             role_mapping = r_meta.get("role_mapping", {})
 
-    # 2. Ingest CSV data
-    dfs = []
-    chunksize = 50000
+    # 2. Ingest CSV data with ultra-efficient 2-pass index-aware extraction for CSE-CIC-IDS2018
+    chunksize = 250000
 
     if norm_name == "cse_cic_ids2018" and len(csv_paths) > 1:
-        # Sample across all daily CSV files to preserve all attack classes
-        rows_per_file = max(5000, sample_limit // len(csv_paths))
+        print(f"Executing Fast Index-Aware Class Sampling across all {len(csv_paths)} CSE CSV files...")
+        
+        # Pass 1: Scan ONLY Label column to map row indices per class
+        class_records = defaultdict(list) # class_name -> list of (file_path, file_row_idx)
+        total_scanned_rows = 0
+
         for p in csv_paths:
-            f_chunks = []
-            c_needed = rows_per_file
-            for chunk in pd.read_csv(p, nrows=c_needed * 2, chunksize=chunksize, low_memory=False):
+            fname = os.path.basename(p)
+            head = pd.read_csv(p, nrows=2)
+            head.columns = [c.strip() for c in head.columns]
+            label_col = 'Label' if 'Label' in head.columns else ('label' if 'label' in head.columns else None)
+
+            file_row_offset = 0
+            for chunk in pd.read_csv(p, usecols=[label_col], chunksize=chunksize, low_memory=True):
                 chunk.columns = [c.strip() for c in chunk.columns]
-                f_chunks.append(chunk)
-                c_needed -= len(chunk)
-                if c_needed <= 0:
-                    break
-            if f_chunks:
-                f_df = pd.concat(f_chunks, ignore_index=True)
-                if len(f_df) > rows_per_file:
-                    f_df = f_df.sample(n=rows_per_file, random_state=seed)
-                dfs.append(f_df)
+                s = chunk[label_col].astype(str)
+                valid_mask = (s != label_col)
+                s_valid = s[valid_mask]
+
+                c_len = len(chunk)
+                valid_indices = np.where(valid_mask)[0]
+
+                for idx_in_chunk, lbl in zip(valid_indices, s_valid):
+                    class_records[lbl].append((p, file_row_offset + idx_in_chunk))
+
+                file_row_offset += c_len
+                total_scanned_rows += len(valid_indices)
+
+        # Pass 2: Class-aware index selection
+        rare_threshold = 15000
+        benign_cnt = len(class_records.get("Benign", []))
+        benign_quota = int(round(sample_limit * (benign_cnt / total_scanned_rows))) # 83,070
+
+        selected_file_row_map = defaultdict(set) # file_path -> set of row_indices to load
+
+        for cls_name in sorted(class_records.keys()):
+            recs = class_records[cls_name]
+            total_cls = len(recs)
+            if total_cls <= rare_threshold:
+                # 100% Retained for Rare Attack Classes
+                chosen = recs
+            elif cls_name == "Benign":
+                # Proportional Benign Quota
+                rng = np.random.RandomState(seed)
+                chosen_idx = rng.choice(total_cls, size=min(benign_quota, total_cls), replace=False)
+                chosen = [recs[i] for i in chosen_idx]
+            else:
+                # Capped 5,000 Quota for Majority Attack Classes
+                rng = np.random.RandomState(seed)
+                sample_n = min(5000, total_cls)
+                chosen_idx = rng.choice(total_cls, size=sample_n, replace=False)
+                chosen = [recs[i] for i in chosen_idx]
+
+            for p, r_id in chosen:
+                selected_file_row_map[p].add(r_id)
+
+        # Pass 3: Read ONLY selected rows for features and labels
+        extracted_dfs = []
+        for p in csv_paths:
+            fname = os.path.basename(p)
+            target_r_ids = selected_file_row_map.get(p, set())
+            if not target_r_ids:
+                continue
+
+            head = pd.read_csv(p, nrows=2)
+            head.columns = [c.strip() for c in head.columns]
+            label_col = 'Label' if 'Label' in head.columns else ('label' if 'label' in head.columns else None)
+
+            load_cols = [c for c in selected_features if c in head.columns]
+            if label_col and label_col not in load_cols:
+                load_cols.append(label_col)
+
+            file_row_offset = 0
+            for chunk in pd.read_csv(p, usecols=load_cols, chunksize=chunksize, low_memory=True):
+                chunk.columns = [c.strip() for c in chunk.columns]
+                if label_col in chunk.columns:
+                    chunk = chunk[chunk[label_col] != label_col]
+                    chunk.rename(columns={label_col: 'Label'}, inplace=True)
+                
+                c_len = len(chunk)
+                chunk_r_ids = np.arange(file_row_offset, file_row_offset + c_len)
+                file_row_offset += c_len
+
+                # Filter chunk rows that match target_r_ids
+                in_target_mask = np.isin(chunk_r_ids, list(target_r_ids))
+                if np.any(in_target_mask):
+                    matched_chunk = chunk[in_target_mask].copy()
+                    matched_chunk['source_file'] = fname
+                    matched_chunk['source_row_id'] = chunk_r_ids[in_target_mask]
+                    extracted_dfs.append(matched_chunk)
+
+        df = pd.concat(extracted_dfs, ignore_index=True)
+        print(f"Successfully extracted {len(df):,} total rows across all 15 CSE classes (Full scanned rows: {total_scanned_rows:,})")
+
     else:
+        # Standard ingestion for single CSV file datasets (NF-CSE / NF-UNSW)
+        dfs = []
         rows_needed = sample_limit
         for p in csv_paths:
             if rows_needed <= 0:
                 break
             for chunk in pd.read_csv(p, nrows=rows_needed, chunksize=chunksize, low_memory=False):
                 chunk.columns = [c.strip() for c in chunk.columns]
+                chunk['source_file'] = os.path.basename(p)
+                chunk['source_row_id'] = np.arange(len(chunk), dtype=np.int32)
                 dfs.append(chunk)
                 rows_needed -= len(chunk)
                 if rows_needed <= 0:
                     break
-
-    df = pd.concat(dfs, ignore_index=True)
-    df.columns = [c.strip() for c in df.columns]
+        df = pd.concat(dfs, ignore_index=True)
+        df.columns = [c.strip() for c in df.columns]
 
     # Determine Target Label Column
     label_col = None
@@ -157,7 +240,7 @@ def load_dataset_split(
     if selected_features:
         feature_cols = [c for c in selected_features if c in df.columns]
     else:
-        exact_ids = {'IPV4_SRC_ADDR', 'IPV4_DST_ADDR', 'SRC IP', 'DST IP', 'SRC_IP', 'DST_IP', 'TIMESTAMP', 'TIME', 'FLOW ID', 'ROW_ID', 'DNS_QUERY_ID', label_col}
+        exact_ids = {'IPV4_SRC_ADDR', 'IPV4_DST_ADDR', 'SRC IP', 'DST IP', 'SRC_IP', 'DST_IP', 'TIMESTAMP', 'TIME', 'FLOW ID', 'ROW_ID', 'DNS_QUERY_ID', label_col, 'source_file', 'source_row_id'}
         feature_cols = [c for c in df.columns if c.upper().strip() not in exact_ids]
 
     if not feature_cols:
@@ -168,14 +251,8 @@ def load_dataset_split(
     for c in feature_cols:
         s = pd.to_numeric(df[c], errors="coerce")
         s = s.replace([np.inf, -np.inf], np.nan)
-        if s.isnull().any():
-            med = s.median()
-            if pd.isna(med):
-                med = 0.0
-            s = s.fillna(med)
         df[c] = s.clip(-F_LIMIT, F_LIMIT)
 
-    X_raw = df[feature_cols].values.astype(np.float32)
     raw_labels = df[label_col].values
 
     # Encode Target Labels
@@ -190,26 +267,79 @@ def load_dataset_split(
     class_distribution = {str(class_names[c]): int(cnt) for c, cnt in zip(unique_classes, counts)}
     imbalance_ratio = float(max(counts) / max(1, min(counts)))
 
+    # Preserve Source Metadata
+    source_files = df['source_file'].values if 'source_file' in df.columns else np.array(["unknown"] * len(df))
+    source_row_ids = df['source_row_id'].values if 'source_row_id' in df.columns else np.arange(len(df))
+
     # 4. 70% Train, 15% Val, 15% Test Split (Fixed Random Seed)
-    X_train_raw, X_temp, y_train, y_temp = train_test_split(
-        X_raw, y_encoded, test_size=0.30, random_state=seed, stratify=y_encoded if min(counts) > 1 else None
-    )
-    X_val_raw, X_test_raw, y_val, y_test = train_test_split(
-        X_temp, y_temp, test_size=0.50, random_state=seed, stratify=y_temp if min(np.unique(y_temp, return_counts=True)[1]) > 1 else None
+    indices = np.arange(len(df))
+    can_stratify_step1 = (min(counts) > 1)
+
+    idx_train, idx_temp, y_train, y_temp = train_test_split(
+        indices, y_encoded, test_size=0.30, random_state=seed, stratify=y_encoded if can_stratify_step1 else None
     )
 
-    # 5. Scale Features STRICTLY on Train Set
+    temp_unique, temp_counts = np.unique(y_temp, return_counts=True)
+    can_stratify_step2 = (min(temp_counts) > 1) if len(temp_counts) > 0 else False
+
+    idx_val, idx_test, y_val, y_test = train_test_split(
+        idx_temp, y_temp, test_size=0.50, random_state=seed, stratify=y_temp if can_stratify_step2 else None
+    )
+
+    # Build Split Assignment Array & Split Manifest
+    split_assignment = np.array(['unassigned'] * len(df), dtype=object)
+    split_assignment[idx_train] = 'train'
+    split_assignment[idx_val] = 'val'
+    split_assignment[idx_test] = 'test'
+
+    manifest_df = pd.DataFrame({
+        "source_file": source_files,
+        "source_row_id": source_row_ids,
+        "label": raw_labels.astype(str),
+        "encoded_label": y_encoded,
+        "split": split_assignment,
+        "sampling_seed": seed
+    })
+
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
+        manifest_path = os.path.join(output_dir, "split_manifest.csv")
+        manifest_df.to_csv(manifest_path, index=False)
+        print(f"Saved Split Manifest to {manifest_path} ({len(manifest_df):,} rows)")
+
+    # Extract Raw Feature Arrays for Train / Val / Test
+    X_raw = df[feature_cols].values.astype(np.float32)
+
+    X_train_raw = X_raw[idx_train]
+    X_val_raw = X_raw[idx_val]
+    X_test_raw = X_raw[idx_test]
+
+    # 5. Fit Median Imputation and StandardScaler STRICTLY on Training Set
+    for j in range(X_train_raw.shape[1]):
+        col_train = X_train_raw[:, j]
+        col_val = X_val_raw[:, j]
+        col_test = X_test_raw[:, j]
+
+        nan_mask_train = np.isnan(col_train)
+        if np.any(nan_mask_train):
+            med = np.nanmedian(col_train)
+            if np.isnan(med):
+                med = 0.0
+            col_train[nan_mask_train] = med
+            col_val[np.isnan(col_val)] = med
+            col_test[np.isnan(col_test)] = med
+
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train_raw)
     X_val = scaler.transform(X_val_raw)
     X_test = scaler.transform(X_test_raw)
 
-    # Clip scaled outputs
+    # Post-scaling Clip
     X_train = np.clip(X_train, -100.0, 100.0)
     X_val = np.clip(X_val, -100.0, 100.0)
     X_test = np.clip(X_test, -100.0, 100.0)
 
-    # 6. Compute Training Class Weights (Inverse Frequency)
+    # 6. Compute Training Class Weights (Inverse Frequency) strictly on Training set
     train_unique, train_counts = np.unique(y_train, return_counts=True)
     total_train_samples = len(y_train)
     weights = np.ones(num_classes, dtype=np.float32)
@@ -238,6 +368,7 @@ def load_dataset_split(
         "num_selected_features": len(feature_cols),
         "num_classes": num_classes,
         "label_mapping": label_mapping,
+        "class_distribution": class_distribution,
         "temporal_feature_mapping": role_mapping.get("temporal_features", []),
         "relational_feature_mapping": role_mapping.get("relational_edge_features", []),
         "train_size": len(y_train),
@@ -267,4 +398,5 @@ def load_dataset_split(
         "test_loader": test_loader,
         "scaler_fitted_on_train_only": True,
         "integration_report": integration_report,
+        "manifest_df": manifest_df
     }

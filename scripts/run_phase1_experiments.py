@@ -36,7 +36,7 @@ def run_single_experiment(
     sample_limit: int = 100000,
     seed: int = 42,
     base_data_dir: str = "data/raw",
-    output_dir_base: str = "results/phase1_loss_experiments",
+    output_dir_base: str = "results/phase1_corrected_v1",
 ):
     """Executes a single controlled experiment."""
     set_seed(seed)
@@ -55,6 +55,7 @@ def run_single_experiment(
         base_data_dir=base_data_dir,
         sample_limit=sample_limit,
         seed=seed,
+        output_dir=exp_out_dir,
     )
 
     # Save Dataset Integration Report
@@ -171,7 +172,7 @@ def main():
     parser.add_argument("--epochs", type=int, default=15, help="Number of training epochs")
     parser.add_argument("--sample-limit", type=int, default=100000, help="Max raw records to load per dataset")
     parser.add_argument("--data-dir", type=str, default="data/raw", help="Path to raw data folder")
-    parser.add_argument("--output-dir", type=str, default="results/phase1_loss_experiments", help="Path to results directory")
+    parser.add_argument("--output-dir", type=str, default="results/phase1_corrected_v1", help="Path to results directory")
 
     args = parser.parse_args()
 
