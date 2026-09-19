@@ -1,23 +1,105 @@
-# 🛡️ Adaptive Temporal-Relational Intrusion Detection System (IDS)
+# 🛡️ Multimodal Adaptive Temporal-Relational Classifier for Network Intrusion Detection
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch 2.0+](https://img.shields.io/badge/pytorch-2.0+-red.svg)](https://pytorch.org/)
 [![Platform: Colab / Local](https://img.shields.io/badge/platform-Google%20Colab%20%7C%20Local-orange.svg)]()
 [![License: Academic Research](https://img.shields.io/badge/license-Academic%20Research-green.svg)]()
 
-> **Project:** *Adaptive Temporal-Relational Intrusion Detection for Evolving Network Traffic: Investigating Classical, Quantum, and Continual Learning Approaches*
+> **Project:** *Multimodal Adaptive Temporal-Relational Classifier for Network Intrusion Detection: Investigating Classical, Quantum, Gradient-Adaptive, and Continual Learning Approaches*
 
 ---
 
 ## 📖 Overview
 
-Conventional intrusion detection systems treat network flows as independent tabular records, discarding critical **temporal sequences** (event ordering, inter-arrival times, multi-stage burst dynamics) and **relational topology** (communication graphs $G_t = (V_t, E_t)$, entity interactions, host connectivity).
+Conventional Network Intrusion Detection Systems (NIDS) treat network flows as isolated tabular records, ignoring crucial **temporal dynamics** (inter-arrival times, sequence ordering, burst behavior) and **relational interactions** (communication topology $G_t = (V_t, E_t)$, entity connectivity).
 
-This repository provides the core data engineering, architecture modules, and experimental harness:
-1. **Multi-Source Dataset Ingestion Engine:** Resilient, chunked downloading supporting direct HTTP/HTTPS, Zenodo, and Kaggle API.
-2. **Standardized NetFlow & Deep Flow Schema Alignment:** Supporting Tier 1 core enterprise NetFlow (`NF-CSE-CIC-IDS2018-v2`, `NF-UNSW-NB15-v2`), deep flow statistics (`CSE-CIC-IDS2018`), and cross-domain IoT benchmarks (`NF-ToN-IoT-v2`, `CICIoT2023`).
-3. **Automated Metadata Profiler & Leakage Checker:** Inspects schemas, null rates, record counts, and enforces a mandatory 7-point data leakage protocol.
-4. **Phase 1 Controlled Loss-Function Experimentation Harness:** Evaluates **Standard Cross Entropy**, **Class-Weighted Cross Entropy**, and **Focal Loss** ($\gamma=2.0$) across 3 benchmark datasets under strictly frozen model architectures.
-5. **Zero-Laptop-Spec Google Colab Workflow:** Ready-to-run Colab notebooks with automatic Google Drive persistence.
+This repository provides an enterprise-grade research framework incorporating:
+1. **Multi-Source Dataset Ingestion & Preprocessing Engine:** Resilient, chunked ingestion supporting NetFlow v9 (`NF-CSE-CIC-IDS2018-v2`, `NF-UNSW-NB15-v2`) and deep bidirectional flow statistics (`CSE-CIC-IDS2018`).
+2. **Forensic Audit & Data Leakage Verification Protocol:** Multi-stage audit suites resolving cross-file flow leakage, exact duplicate row reconciliation, fallback-string collapse, and rare-class stratification guarantees.
+3. **Gradient-Based Adaptive Hybrid Loss ($L_{\text{hybrid}}$):** A dynamic loss function balancing Cross-Entropy, Focal Loss ($\gamma=2.0$), and Class-Weighted Cross-Entropy via autograd reference parameter gradient norm balancing, weight clipping, and EMA smoothing.
+4. **Multimodal Fusion Architecture Suite (18 Experiments):** 6 controlled fusion mechanisms (`Concatenation`, `Gated`, `Bilinear`, `Cross-Attention`, `Decision Ensemble`, `Quantum PQC`) evaluated across 3 benchmark datasets.
+5. **Phase 1 Baseline Controlled Experimentation Harness:** 9 baseline loss experiments comparing unweighted, weighted, and focal losses under fixed architectures.
+
+---
+
+## 🔬 Forensic Audits & Dataset Integrity Verification
+
+Before model training, a multi-stage forensic audit cycle was conducted to ensure strict empirical data integrity, leak-free splits, and reproducible metrics.
+
+### 1. Cross-File Flow Leakage & Fallback Key Audit
+- **Finding:** Initial key matching indicated $99.90\%$ cross-file key overlap in `CSE-CIC-IDS2018`. Forensic inspection revealed that $99.90\%$ of overlap was driven by **artificial fallback-string collapse** (due to missing 5-tuple flow identifiers across 9 of 10 raw CSV files), rather than genuine host-to-host flow leakage.
+- **Audit Decision:** Marked validation status as:  
+  `VALIDATION INCOMPLETE — GENUINE CROSS-FILE FLOW LEAKAGE NOT ESTABLISHED`
+- **Resolution:** Fallback keys were separated completely from genuine 5-tuple flow keys (`02-20-2018.csv`). Temporal sequence ordering and flow key integrity are strictly preserved.
+
+### 2. Exact Duplicate & Conflicting-Label Reconciliation
+Across the total population of **16,232,943** records in `CSE-CIC-IDS2018`:
+- **Total Rows:** $16,232,943$
+- **Unique 28-Feature Vectors:** $11,464,646$
+- **Exact Duplicate Rows:** $4,768,297$
+- **Duplicate Feature Groups:** $688,600$
+- **Conflicting-Label Feature Groups:** $68,182$
+- **Definition A (Disambiguated Conflicting Rows):** $177,674$ rows (rows with conflicting label assignments within duplicate groups).
+- **Definition B (Conflicting Group Total Population):** $1,570,760$ rows (total count of all rows belonging to conflicting feature groups).
+
+### 3. Rare-Class Stratification & Sampling Quota Guarantees
+- **Total Class Count:** **15 Total Classes** ($1 \text{ Benign} + 14 \text{ Attack Classes}$).
+- **Attack Classes (14):** `Bot`, `DDoS attacks-LOIC-HTTP`, `DoS attacks-DDOS`, `DoS attacks-GoldenEye`, `DoS attacks-Hulk`, `DoS attacks-SlowHTTPTest`, `DoS attacks-Slowloris`, `FTP-BruteForce`, `Infiltration`, `SSH-Bruteforce`, `Brute Force -Web`, `Brute Force -XSS`, `SQL Injection`, `DDoS attack-HOIC`.
+- **Sampling Quota Standard:** $100,000$ samples targeted per dataset prior to retaining rare classes, ensuring all 15 classes exist across Train ($70\%$), Validation ($15\%$), and Test ($15\%$) splits without rare-class dropouts.
+
+---
+
+## ⚡ Gradient-Based Adaptive Hybrid Loss Function
+
+The **Gradient-Based Adaptive Hybrid Loss** dynamically adjusts loss component weights during training based on the relative magnitude of gradients backpropagated through a common trainable reference parameter set $\Theta_{\text{ref}}$.
+
+### 1. Mathematical Formulation
+$$L_{\text{hybrid}} = \alpha \cdot L_{\text{CE}} + \beta \cdot L_{\text{Focal}} + \gamma \cdot L_{\text{WeightedCE}}$$
+
+Where:
+- $L_{\text{CE}}$: Standard Unweighted Cross-Entropy Loss
+- $L_{\text{Focal}}$: Multiclass Focal Loss ($\gamma=2.0$)
+- $L_{\text{WeightedCE}}$: Inverse Class Frequency Weighted Cross-Entropy Loss
+
+### 2. Reference Parameter Gradient Norm Calculation
+For each loss component $i \in \{\text{CE}, \text{Focal}, \text{WCE}\}$, the L2 gradient norm over reference parameters $\Theta_{\text{ref}}$ is computed via autograd:
+$$g_i = \left\| \nabla_{\Theta_{\text{ref}}} L_i \right\|_2 = \sqrt{ \sum_{\theta \in \Theta_{\text{ref}}} \left( \frac{\partial L_i}{\partial \theta} \right)^2 + \epsilon }$$
+
+- **Reference Parameter Selection ($\Theta_{\text{ref}}$):** Extracted via `get_reference_parameters()` in `MultimodalFusionClassifier`:
+  - For Non-Ensemble models (`concat`, `gated`, `bilinear`, `cross_attention`, `quantum_pqc`): $\Theta_{\text{ref}} = \text{classifier\_head.parameters()}$
+  - For Ensemble models (`decision_ensemble`): $\Theta_{\text{ref}} = \text{fusion\_module.parameters()}$
+
+### 3. Gradient Ratio Inversion & Prior Weighting
+$$g_{\text{mean}} = \frac{g_{\text{CE}} + g_{\text{Focal}} + g_{\text{WCE}}}{3}$$
+
+$$r_i = \left( \frac{g_{\text{mean}}}{g_i + \epsilon} \right)^\eta, \quad \eta = 0.5, \; \epsilon = 1e-8$$
+
+$$u_i = p_i \cdot r_i, \quad (p_{\text{CE}}=0.50, \; p_{\text{Focal}}=0.35, \; p_{\text{WCE}}=0.15)$$
+
+$$w_i^{\text{raw}} = \frac{u_i}{\sum_j u_j}$$
+
+### 4. Weight Safeguards (Clipping & EMA Smoothing)
+1. **Weight Clipping:** Weights are clamped to $[\text{min\_weight}=0.05, \, \text{max\_weight}=0.80]$ and re-normalized so $\sum w_i = 1.0$.
+2. **Exponential Moving Average (EMA):**
+   $$w_t^{\text{smoothed}} = 0.90 \cdot w_{t-1}^{\text{smoothed}} + 0.10 \cdot w_t^{\text{clipped}}$$
+3. **Autograd Graph Isolation:** Weights $\alpha, \beta, \gamma$ are detached before computing $L_{\text{hybrid}}$, preventing higher-order computational graph overhead.
+
+---
+
+## 🎛️ Multimodal Fusion Architecture Suite (18 Experiments)
+
+Evaluates 6 multimodal fusion mechanisms combining GRU temporal sequence representations and graph relational representations across 3 benchmark datasets:
+
+$$\mathbf{3 \text{ Datasets}} \times \mathbf{6 \text{ Fusion Methods}} = \mathbf{18 \text{ Controlled Experiments}}$$
+
+| Fusion Method | Identifier | Mathematical Mechanism | Reference Parameter Set ($\Theta_{\text{ref}}$) |
+| :--- | :--- | :--- | :--- |
+| **Concatenation** | `concat` | $\mathbf{f} = [\mathbf{h}_{\text{temp}} \,\|\, \mathbf{h}_{\text{rel}}]$ | `classifier_head` (64 $\to$ 32 $\to$ $C$) |
+| **Gated Fusion** | `gated` | $\mathbf{g} = \sigma(\mathbf{W}_g [\mathbf{h}_{\text{temp}} \,\|\, \mathbf{h}_{\text{rel}}])$, $\mathbf{f} = \mathbf{g} \odot \mathbf{h}_{\text{temp}} + (\mathbf{1}-\mathbf{g}) \odot \mathbf{h}_{\text{rel}}$ | `classifier_head` |
+| **Bilinear Fusion** | `bilinear` | $\mathbf{f} = \mathbf{h}_{\text{temp}} \mathbf{W}_b \mathbf{h}_{\text{rel}}^T$ | `classifier_head` |
+| **Cross-Attention** | `cross_attention` | $\mathbf{Q}=\mathbf{h}_{\text{temp}}\mathbf{W}_q, \mathbf{K}=\mathbf{h}_{\text{rel}}\mathbf{W}_k, \mathbf{V}=\mathbf{h}_{\text{rel}}\mathbf{W}_v$ | `classifier_head` |
+| **Decision Ensemble**| `decision_ensemble` | $\mathbf{p} = \text{Softmax}(\mathbf{p}_{\text{temp}}) + \text{Softmax}(\mathbf{p}_{\text{rel}})$ | `fusion_module` |
+| **Quantum PQC** | `quantum_pqc` | Parameterized Quantum Circuit feature rotation / inner product | `classifier_head` |
 
 ---
 
@@ -25,134 +107,73 @@ This repository provides the core data engineering, architecture modules, and ex
 
 ```text
 adaptive-temporal-relational-ids/
-├── .gitignore                          # Excludes raw CSVs, PCAPs, checkpoints, virtualenvs
-├── README.md                           # Documentation & execution guide
-├── requirements.txt                    # Lightweight dependencies
+├── README.md                           # Documentation, audit findings & execution guide
+├── requirements.txt                    # Python dependencies
 ├── configs/
-│   ├── datasets_config.yaml            # Dataset registry (URLs, mirrors, Kaggle slugs, tiers)
+│   ├── datasets_config.yaml            # Dataset registry (URLs, mirrors, Kaggle slugs)
 │   └── colab_config.yaml               # Google Colab & Google Drive paths
 ├── src/
-│   ├── __init__.py
 │   ├── data/
-│   │   ├── __init__.py
 │   │   └── loader.py                   # Data split (70/15/15), scaler fit on train ONLY, class weights
 │   ├── models/
-│   │   ├── __init__.py
 │   │   ├── encoders.py                 # FixedTemporalEncoder (GRU) & FixedRelationalEncoder
-│   │   ├── fusion.py                   # ConcatenationFusion (Concat 128 -> Linear 64 -> BatchNorm -> ReLU)
-│   │   ├── classifiers.py              # MultimodalFusionClassifier with fixed head (64->32->num_classes)
-│   │   └── losses.py                   # Standard CE, Class-Weighted CE, FocalLoss (gamma=2)
+│   │   ├── fusion.py                   # 6 Multimodal Fusion modules (Concat, Gated, Bilinear, Attention, Ensemble, Quantum)
+│   │   ├── classifiers.py              # MultimodalFusionClassifier & get_reference_parameters()
+│   │   └── losses.py                   # Standard CE, Class-Weighted CE, Focal Loss, GradientAdaptiveHybridLoss
 │   ├── evaluation/
-│   │   ├── __init__.py
 │   │   ├── leakage_checker.py          # Mandatory 7-point data leakage protocol
-│   │   └── trainer.py                  # PyTorch trainer, early stopping, loss curves, confusion matrices
-│   ├── download/
-│   │   ├── dataset_registry.py         # Registry loader & tier filter
-│   │   └── downloader.py               # Resumable HTTP, KaggleHub & Zenodo downloader
-│   └── metadata/
-│       ├── extractor.py                # Schema, null rate, and class distribution profiler
-│       ├── temporal_relational_eval.py # Relational/Temporal feature compatibility evaluator
-│       └── reporter.py                 # Generates Markdown and JSON metadata reports
+│   │   └── trainer.py                  # ExperimentTrainer with adaptive loss diagnostic logging & plot exports
+│   └── phase0/                         # Forensic audit, duplicate reconciliation & leakage verification tools
 ├── scripts/
-│   ├── download_datasets.py            # CLI script to download datasets
-│   ├── extract_metadata.py             # CLI script to profile datasets and create reports
-│   ├── run_all_pipeline.py             # Master pipeline orchestrator
-│   ├── run_phase1_experiments.py       # Controlled CLI harness for Phase 1 9-experiment suite
-│   └── generate_phase1_report.py       # Aggregates Phase 1 metrics into master table & report
-├── notebooks/
-│   ├── 01_download_and_metadata_colab.ipynb   # Metadata & dataset ingestion notebook
-│   └── 02_phase1_loss_experiments_colab.ipynb  # Interactive Phase 1 loss experiments notebook
-├── results/
-│   └── phase1_loss_experiments/        # Phase 1 experimental metrics, confusion matrices & reports
-└── metadata_reports/                   # Output folder for generated metadata JSON & MD reports
+│   ├── smoke_test_hybrid_fusion.py     # Smoke test verifying all 6 fusion methods with adaptive hybrid loss
+│   ├── run_hybrid_fusion_experiments.py# Master harness for 18 Gradient-Adaptive Hybrid Loss experiments
+│   ├── run_phase1_experiments.py       # Harness for 9 Phase 1 baseline loss experiments
+│   └── generate_phase1_report.py       # Aggregates Phase 1 baseline results
+├── experiments/
+│   └── gradient_adaptive_hybrid/       # Output directory for 18 fusion experiments & master reports
+│       ├── master_summary_report.csv   # Master metrics CSV across all 18 experiments
+│       └── master_summary_report.md    # Master Markdown summary table
+└── results/
+    └── phase1_corrected_v1/            # Preserved Phase 1 baseline experiment results
 ```
 
 ---
 
-## ⚡ Phase 1: Controlled Loss-Function Experimentation
+## 🚀 Quickstart & Execution Guide
 
-Phase 1 conducts a controlled comparative study of 3 classification loss functions across 3 benchmark datasets:
-
-**3 Datasets × 3 Loss Functions = 9 Controlled Experiments**
-
-### Experimental Controls
-- **Datasets:** `NF-CSE-CIC-IDS2018-v2`, `NF-UNSW-NB15-v2`, `CSE-CIC-IDS2018`
-- **Loss Functions:** Standard Cross Entropy (`standard_ce`), Class-Weighted Cross Entropy (`weighted_ce`), Focal Loss (`focal_loss`, $\gamma=2.0$)
-- **Fixed Model Architecture:** `FixedTemporalEncoder` (GRU-64d) + `FixedRelationalEncoder` (64d) + `ConcatenationFusion` (64d) + Classifier Head (`Linear 64->32 -> ReLU -> Dropout(0.2) -> Linear 32->num_classes`)
-- **Strict Invariants:** Preprocessing, feature selection, 70/15/15 splits, random seed (42), optimizer (Adam), learning rate (0.001), batch size, and evaluation criteria remain **strictly identical** across experiments.
-
----
-
-## 🚀 Quickstart: Running on Google Colab (Recommended)
-
-1. Open **[Google Colab](https://colab.research.google.com/)**.
-2. Open [`notebooks/02_phase1_loss_experiments_colab.ipynb`](notebooks/02_phase1_loss_experiments_colab.ipynb).
-3. Execute the cells to run Phase 1 loss experiments remotely on GPU/CPU:
-   ```bash
-   # Run all 9 controlled experiments
-   !python scripts/run_phase1_experiments.py --dataset all --loss all --epochs 15
-   
-   # Generate Master Summary Report & Master Table
-   !python scripts/generate_phase1_report.py results/phase1_loss_experiments
-   ```
-
----
-
-## 💻 Running Locally / CLI Usage
-
-### 1. Setup Virtual Environment
+### 1. Verification Smoke Test
+Verify that all 6 fusion architectures and `GradientAdaptiveHybridLoss` operate cleanly without device or shape mismatch errors:
 
 ```bash
-# Clone or navigate to the repository folder
-cd adaptive-temporal-relational-ids
-
-# Create and activate virtual environment
-python -m venv venv
-# On Windows:
-.\venv\Scripts\activate
-# On Linux/macOS:
-source venv/bin/activate
-
-# Install requirements
-pip install -r requirements.txt
+python scripts/smoke_test_hybrid_fusion.py
 ```
 
-### 2. Run Phase 1 Controlled Experiments
+*Output:* `[ALL SMOKE TESTS PASSED] GradientAdaptiveHybridLoss works with all 6 fusion methods!`
+
+### 2. Execute the 18 Multimodal Fusion Experiments
+Run the full suite across 3 datasets and 6 fusion methods with Gradient-Based Adaptive Hybrid Loss:
 
 ```bash
-# Execute specific dataset + loss experiment:
-python scripts/run_phase1_experiments.py --dataset nf_cse_cic_ids2018_v2 --loss standard_ce
-
-# Execute all 3 losses for a given dataset:
-python scripts/run_phase1_experiments.py --dataset nf_unsw_nb15_v2 --loss all --epochs 15
-
-# Execute all 9 controlled experiments:
-python scripts/run_phase1_experiments.py --dataset all --loss all --epochs 15
+python scripts/run_hybrid_fusion_experiments.py --dataset all --fusion all --epochs 15 --sample-limit 100000
 ```
 
-### 3. Generate Master Summary Report
-
+### 3. Run Specific Single Experiment
 ```bash
-python scripts/generate_phase1_report.py results/phase1_loss_experiments
-```
+# Run specific dataset and fusion method:
+python scripts/run_hybrid_fusion_experiments.py --dataset nf_cse_cic_ids2018_v2 --fusion concat
 
-Outputs:
-- `results/phase1_loss_experiments/phase1_summary/master_results_table.csv`
-- `results/phase1_loss_experiments/phase1_summary/PHASE_1_EXPERIMENTAL_REPORT.md`
+# Run all 6 fusion methods for UNSW-NB15:
+python scripts/run_hybrid_fusion_experiments.py --dataset nf_unsw_nb15_v2 --fusion all
+```
 
 ---
 
-## 📊 Candidate Dataset Roles & Stratification
+## 📊 Evaluation Outputs & Master Reports
 
-| Dataset Identifier | Tier | Role in Research Framework | Format / Schema | Est. Records | Temporal-Relational Readiness |
-| :--- | :---: | :--- | :--- | :---: | :---: |
-| **NF-CSE-CIC-IDS2018-v2** | **1** | Core Enterprise NetFlow Benchmark | NetFlow v9 (43 feats) | ~18.8M | **High (IP, Port, Proto, Epoch Time)** |
-| **NF-UNSW-NB15-v2** | **1** | Core Mixed Enterprise/Cyber-Range NetFlow | NetFlow v9 (43 feats) | ~2.3M | **High (IP, Port, Proto, Epoch Time)** |
-| **CSE-CIC-IDS2018** | **1** | Deep Bidirectional Flow Richness | CICFlowMeter v3 (80 feats) | ~16.2M | **High (Subflow stats, IAT, Windows)** |
-| **NF-ToN-IoT-v2** | **2** | Zero-Shot Cross-Domain IoT NetFlow | NetFlow v9 (43 feats) | ~16.9M | **High (Standardized NetFlow on IoT)** |
-| **LYCOS-IDS2017** | **2** | Quality-Corrected Sensitivity Twin of CIC2017 | LycoSTand (83 feats) | ~2.8M | **High (Corrected TCP teardown/IAT)** |
-| **CIC-IDS2017** | **2** | Extractor Baseline (CICFlowMeter v1) | CICFlowMeter v1 (79 feats) | ~2.8M | **Moderate (Known extraction artifacts)** |
-| **UNSW-NB15** | **2** | Cyber-Range Deep Flow Baseline | Argus/Bro (49 feats) | ~2.5M | **High (Attack categories & timestamps)** |
-| **CICIoT2023** | **2** | Contemporary IoT Multi-Device Benchmark | CICFlowMeter (47 feats) | ~46.0M | **High (33 devices, 105 attack classes)** |
-| **InSDN** | **3** | SDN Virtual Network Reference | SDN Flow (83 feats) | ~340K | **Moderate (SDN-specific control flows)** |
-| **NSL-KDD** | **3** | Legacy Reference Baseline | KDD Vector (41 feats) | ~148K | **Excluded from Dynamic Graph Fusion** |
+Each experiment in `experiments/gradient_adaptive_hybrid/{dataset}/{fusion}/` produces:
+- `metrics.json`: Accuracy, Macro Precision, Macro Recall, Macro F1, Weighted F1, Training Time, Best Epoch, and Adaptive Loss Summaries.
+- `adaptive_loss_diagnostics.csv`: Step-by-step logs of $L_{\text{CE}}, L_{\text{Focal}}, L_{\text{WCE}}, L_{\text{hybrid}}$, gradient norms $g_i$, adaptive weights $(\alpha, \beta, \gamma)$, clipping events, and fallbacks.
+- `{dataset}_{fusion}_cm.png`: Publication-ready Confusion Matrix heatmap.
+- `{dataset}_{fusion}_loss_curve.png`: Training & Validation loss curves with early stopping marker.
+- `best_model.pt`: Model weights checkpoint at best validation loss.
+- `master_summary_report.csv` & `master_summary_report.md`: Combined comparison table summarizing all 18 experiments.
