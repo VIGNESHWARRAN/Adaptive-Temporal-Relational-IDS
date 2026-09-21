@@ -1,0 +1,48 @@
+{
+  "accuracy": 0.988,
+  "macro_precision": 0.8656716417910448,
+  "macro_recall": 0.9937973811164714,
+  "macro_f1": 0.9192931273614233,
+  "weighted_precision": 0.9912238805970149,
+  "weighted_recall": 0.988,
+  "weighted_f1": 0.9888935864938543,
+  "training_time_seconds": 98.4241316318512,
+  "epochs_completed": 8,
+  "best_epoch": 3,
+  "best_val_loss": 0.02319095929559941,
+  "final_val_loss": 0.023378107513712408,
+  "per_class_metrics": {
+    "0": {
+      "precision": 1.0,
+      "recall": 0.9875947622329428,
+      "f1_score": 0.9937586685159501,
+      "support": 14510
+    },
+    "1": {
+      "precision": 0.7313432835820896,
+      "recall": 1.0,
+      "f1_score": 0.8448275862068966,
+      "support": 490
+    }
+  },
+  "confusion_matrix": [
+    [
+      14330,
+      180
+    ],
+    [
+      0,
+      490
+    ]
+  ],
+  "cm_plot_path": "experiments/gradient_adaptive_hybrid\\nf_unsw_nb15_v2\\gated\\nf_unsw_nb15_v2_gated_cm.png",
+  "loss_curve_path": "experiments/gradient_adaptive_hybrid\\nf_unsw_nb15_v2\\gated\\nf_unsw_nb15_v2_gated_loss_curve.png",
+  "adaptive_loss_summary": {
+    "total_steps": 8752,
+    "final_alpha": 0.46900275349617004,
+    "final_beta": 0.4629453420639038,
+    "final_gamma": 0.06805168837308884,
+    "clipping_events": 4904,
+    "fallback_events": 0
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "total_parameters": 15311,
+  "trainable_parameters": 15311,
+  "encoder_parameters": 12736,
+  "head_parameters": 2575
+}

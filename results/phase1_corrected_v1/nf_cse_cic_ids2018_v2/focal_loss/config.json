@@ -1,0 +1,25 @@
+{
+  "dataset": "nf_cse_cic_ids2018_v2",
+  "loss": "focal_loss",
+  "gamma": 2.0,
+  "class_weights": null,
+  "num_classes": 2,
+  "class_names": [
+    "0",
+    "1"
+  ],
+  "class_distribution": {
+    "0": 88044,
+    "1": 11956
+  },
+  "imbalance_ratio": 7.3640013382402145,
+  "seed": 42,
+  "fusion": "concat",
+  "temporal_encoder": "FixedTemporalEncoder (GRU, 2 layers, 64 hidden)",
+  "relational_encoder": "FixedRelationalEncoder (Projection + Aggregation)",
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "batch_size": 64,
+  "epochs": 15,
+  "early_stopping_patience": 5
+}

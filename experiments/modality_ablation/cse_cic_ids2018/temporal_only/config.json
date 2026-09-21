@@ -1,0 +1,35 @@
+{
+  "dataset_name": "cse_cic_ids2018",
+  "architecture_type": "temporal_only",
+  "input_dim": 28,
+  "num_classes": 15,
+  "class_names": [
+    "Benign",
+    "Bot",
+    "Brute Force -Web",
+    "Brute Force -XSS",
+    "DDOS attack-HOIC",
+    "DDOS attack-LOIC-UDP",
+    "DDoS attacks-LOIC-HTTP",
+    "DoS attacks-GoldenEye",
+    "DoS attacks-Hulk",
+    "DoS attacks-SlowHTTPTest",
+    "DoS attacks-Slowloris",
+    "FTP-BruteForce",
+    "Infilteration",
+    "SQL Injection",
+    "SSH-Bruteforce"
+  ],
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "epochs": 15,
+  "patience": 5,
+  "seed": 42,
+  "sample_limit": 100000,
+  "parameter_info": {
+    "total_parameters": 46223,
+    "trainable_parameters": 46223,
+    "encoder_parameters": 43648,
+    "head_parameters": 2575
+  }
+}

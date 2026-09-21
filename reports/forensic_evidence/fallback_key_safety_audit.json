@@ -1,0 +1,194 @@
+{
+  "audit_timestamp": "2026-09-19T12:59:52.207759",
+  "missing_values_per_component": {
+    "Src_IP": 99999,
+    "Dst_IP": 99999,
+    "Src_Port": 99999
+  },
+  "invalid_values_audit": {
+    "empty_strings": 0,
+    "nan_values": 0,
+    "none_values": 0,
+    "null_values": 0,
+    "question_marks": 0,
+    "whitespace_only": 0
+  },
+  "timestamp_normalization_rules": "Exact string parsing from raw CSV header (no rounding, no truncation)",
+  "dst_port_protocol_normalization": "Trimmed string conversion",
+  "total_fallback_keys": 35734,
+  "max_rows_single_fallback_key": 411,
+  "top_20_fallback_keys": [
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:27",
+      "count": 411
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:26",
+      "count": 411
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:20",
+      "count": 405
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:19",
+      "count": 402
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:28",
+      "count": 400
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:21",
+      "count": 399
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:23",
+      "count": 398
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:24",
+      "count": 398
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:29",
+      "count": 397
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:22",
+      "count": 397
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:18",
+      "count": 396
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:32",
+      "count": 396
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:25",
+      "count": 395
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:30",
+      "count": 393
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:17",
+      "count": 378
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:31",
+      "count": 374
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:15",
+      "count": 329
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:16",
+      "count": 317
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:14",
+      "count": 286
+    },
+    {
+      "key": "FALLBACK_BUCKET:80:6@21/02/2018 02:11:13",
+      "count": 234
+    }
+  ],
+  "raw_row_examples_for_top_key": [
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15440,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "test"
+    },
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15698,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "train"
+    },
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15782,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "train"
+    },
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15455,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "train"
+    },
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15304,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "train"
+    },
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15537,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "train"
+    },
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15645,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "val"
+    },
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15155,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "train"
+    },
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15484,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "train"
+    },
+    {
+      "source_file": "02-21-2018.csv",
+      "source_row_id": 15757,
+      "Dst Port": 80,
+      "Protocol": 6,
+      "Timestamp": "21/02/2018 02:11:27",
+      "Label": "DDOS attack-HOIC",
+      "split": "train"
+    }
+  ]
+}

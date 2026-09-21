@@ -1,0 +1,229 @@
+{
+  "accuracy": 0.9279333333333334,
+  "macro_precision": 0.8561786993697195,
+  "macro_recall": 0.7494188271039401,
+  "macro_f1": 0.7693019722116451,
+  "weighted_precision": 0.9526374512550887,
+  "weighted_recall": 0.9279333333333334,
+  "weighted_f1": 0.9187586459186858,
+  "training_time_seconds": 60.03422498703003,
+  "epochs_completed": 9,
+  "best_epoch": 4,
+  "best_val_loss": 0.03849160914719105,
+  "final_val_loss": 0.039050446742773054,
+  "per_class_metrics": {
+    "Benign": {
+      "precision": 0.9930047694753578,
+      "recall": 0.9980824544582934,
+      "f1_score": 0.9955371373924131,
+      "support": 6258
+    },
+    "Bot": {
+      "precision": 0.9977941176470588,
+      "recall": 0.997060984570169,
+      "f1_score": 0.9974274163910327,
+      "support": 1361
+    },
+    "Brute Force -Web": {
+      "precision": 0.8636363636363636,
+      "recall": 0.40425531914893614,
+      "f1_score": 0.5507246376811594,
+      "support": 47
+    },
+    "Brute Force -XSS": {
+      "precision": 1.0,
+      "recall": 0.5294117647058824,
+      "f1_score": 0.6923076923076923,
+      "support": 17
+    },
+    "DDOS attack-HOIC": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 1207
+    },
+    "DDOS attack-LOIC-UDP": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 130
+    },
+    "DDoS attacks-LOIC-HTTP": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 1494
+    },
+    "DoS attacks-GoldenEye": {
+      "precision": 0.9960026648900733,
+      "recall": 1.0,
+      "f1_score": 0.9979973297730307,
+      "support": 1495
+    },
+    "DoS attacks-SlowHTTPTest": {
+      "precision": 0.5937374548374147,
+      "recall": 0.9912868632707775,
+      "f1_score": 0.7426562892292242,
+      "support": 1492
+    },
+    "FTP-BruteForce": {
+      "precision": 0.9737903225806451,
+      "recall": 0.3235097119892833,
+      "f1_score": 0.4856711915535445,
+      "support": 1493
+    },
+    "SQL Injection": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0,
+      "support": 6
+    }
+  },
+  "confusion_matrix": [
+    [
+      6246,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0,
+      6,
+      2,
+      0,
+      0
+    ],
+    [
+      4,
+      1357,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      28,
+      0,
+      19,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      8,
+      0,
+      0,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1207,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      130,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1494,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1495,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1479,
+      13,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1010,
+      483,
+      0
+    ],
+    [
+      4,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "cm_plot_path": "results/phase1_loss_experiments\\cse_cic_ids2018\\focal_loss\\cse_cic_ids2018_focal_loss_cm.png",
+  "loss_curve_path": "results/phase1_loss_experiments\\cse_cic_ids2018\\focal_loss\\cse_cic_ids2018_focal_loss_loss_curve.png"
+}

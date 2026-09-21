@@ -109,3 +109,18 @@ class MultimodalFusionClassifier(nn.Module):
         else:
             return list(self.fusion_module.parameters())
 
+    def get_parameter_count(self) -> Dict[str, int]:
+        """Returns total and trainable parameter counts."""
+        total = sum(p.numel() for p in self.parameters())
+        trainable = sum(p.numel() for p in self.parameters() if p.requires_grad)
+        temp_p = sum(p.numel() for p in self.temp_encoder.parameters() if p.requires_grad)
+        rel_p = sum(p.numel() for p in self.rel_encoder.parameters() if p.requires_grad)
+        head_p = sum(p.numel() for p in self.classifier_head.parameters() if p.requires_grad) if self.classifier_head is not None else 0
+        return {
+            "total_parameters": total,
+            "trainable_parameters": trainable,
+            "temporal_encoder_parameters": temp_p,
+            "relational_encoder_parameters": rel_p,
+            "head_parameters": head_p,
+        }
+

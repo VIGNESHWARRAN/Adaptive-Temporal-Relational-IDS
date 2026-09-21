@@ -1,0 +1,63 @@
+{
+  "dataset_name": "nf_cse_cic_ids2018_v2",
+  "loaded_feature_config_path": "configs/feature_selection\\nf_cse_cic_ids2018_v2_features.json",
+  "exact_selected_feature_names": [
+    "LONGEST_FLOW_PKT",
+    "FLOW_DURATION_MILLISECONDS",
+    "MIN_TTL",
+    "MAX_TTL",
+    "TCP_WIN_MAX_IN",
+    "L7_PROTO",
+    "DURATION_IN",
+    "TCP_WIN_MAX_OUT",
+    "SRC_TO_DST_AVG_THROUGHPUT",
+    "L4_DST_PORT",
+    "DURATION_OUT",
+    "MAX_IP_PKT_LEN",
+    "IN_BYTES",
+    "TCP_FLAGS",
+    "SERVER_TCP_FLAGS",
+    "SRC_TO_DST_SECOND_BYTES",
+    "DST_TO_SRC_AVG_THROUGHPUT",
+    "NUM_PKTS_128_TO_256_BYTES",
+    "MIN_IP_PKT_LEN",
+    "SHORTEST_FLOW_PKT",
+    "RETRANSMITTED_IN_BYTES",
+    "OUT_BYTES",
+    "NUM_PKTS_256_TO_512_BYTES",
+    "NUM_PKTS_512_TO_1024_BYTES",
+    "DNS_TTL_ANSWER"
+  ],
+  "num_selected_features": 25,
+  "num_classes": 2,
+  "label_mapping": {
+    "0": "0",
+    "1": "1"
+  },
+  "class_distribution": {
+    "0": 88044,
+    "1": 11956
+  },
+  "temporal_feature_mapping": [
+    "FLOW_DURATION_MILLISECONDS",
+    "DURATION_IN",
+    "SRC_TO_DST_AVG_THROUGHPUT",
+    "DURATION_OUT",
+    "SRC_TO_DST_SECOND_BYTES",
+    "DST_TO_SRC_AVG_THROUGHPUT"
+  ],
+  "relational_feature_mapping": [
+    "MIN_TTL",
+    "MAX_TTL",
+    "L7_PROTO",
+    "L4_DST_PORT",
+    "MAX_IP_PKT_LEN",
+    "MIN_IP_PKT_LEN",
+    "DNS_TTL_ANSWER"
+  ],
+  "train_size": 70000,
+  "validation_size": 15000,
+  "test_size": 15000,
+  "model_input_dimensions": 25,
+  "selected_features_used_confirmation": true
+}

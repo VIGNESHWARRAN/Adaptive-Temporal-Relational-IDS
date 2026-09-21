@@ -1,0 +1,43 @@
+{
+  "dataset": "cse_cic_ids2018",
+  "loss": "standard_ce",
+  "gamma": null,
+  "class_weights": null,
+  "num_classes": 11,
+  "class_names": [
+    "Benign",
+    "Bot",
+    "Brute Force -Web",
+    "Brute Force -XSS",
+    "DDOS attack-HOIC",
+    "DDOS attack-LOIC-UDP",
+    "DDoS attacks-LOIC-HTTP",
+    "DoS attacks-GoldenEye",
+    "DoS attacks-SlowHTTPTest",
+    "FTP-BruteForce",
+    "SQL Injection"
+  ],
+  "class_distribution": {
+    "Benign": 41720,
+    "Bot": 9073,
+    "Brute Force -Web": 315,
+    "Brute Force -XSS": 116,
+    "DDOS attack-HOIC": 8045,
+    "DDOS attack-LOIC-UDP": 866,
+    "DDoS attacks-LOIC-HTTP": 9963,
+    "DoS attacks-GoldenEye": 9964,
+    "DoS attacks-SlowHTTPTest": 9944,
+    "FTP-BruteForce": 9950,
+    "SQL Injection": 43
+  },
+  "imbalance_ratio": 970.2325581395348,
+  "seed": 42,
+  "fusion": "concat",
+  "temporal_encoder": "FixedTemporalEncoder (GRU, 2 layers, 64 hidden)",
+  "relational_encoder": "FixedRelationalEncoder (Projection + Aggregation)",
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "batch_size": 64,
+  "epochs": 20,
+  "early_stopping_patience": 5
+}

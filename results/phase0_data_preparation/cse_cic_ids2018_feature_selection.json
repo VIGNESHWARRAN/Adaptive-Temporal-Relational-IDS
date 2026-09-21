@@ -1,0 +1,1596 @@
+{
+  "dataset_name": "cse_cic_ids2018",
+  "total_initial_candidates": 83,
+  "excluded_identifiers_timestamps": [
+    "Timestamp",
+    "Flow ID",
+    "Src IP",
+    "Dst IP"
+  ],
+  "constant_features_removed": [
+    "Bwd PSH Flags",
+    "Bwd URG Flags",
+    "Fwd Byts/b Avg",
+    "Fwd Pkts/b Avg",
+    "Fwd Blk Rate Avg",
+    "Bwd Byts/b Avg",
+    "Bwd Pkts/b Avg",
+    "Bwd Blk Rate Avg"
+  ],
+  "near_constant_features_removed": [],
+  "high_correlation_pairs": [
+    {
+      "feature_a": "Flow Duration",
+      "feature_b": "Fwd IAT Tot",
+      "correlation": 0.9968
+    },
+    {
+      "feature_a": "Tot Fwd Pkts",
+      "feature_b": "TotLen Fwd Pkts",
+      "correlation": 0.9836
+    },
+    {
+      "feature_a": "Tot Fwd Pkts",
+      "feature_b": "Fwd Header Len",
+      "correlation": 0.9999
+    },
+    {
+      "feature_a": "Tot Fwd Pkts",
+      "feature_b": "Subflow Fwd Pkts",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Tot Fwd Pkts",
+      "feature_b": "Subflow Fwd Byts",
+      "correlation": 0.9836
+    },
+    {
+      "feature_a": "Tot Fwd Pkts",
+      "feature_b": "Fwd Act Data Pkts",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Tot Bwd Pkts",
+      "feature_b": "TotLen Bwd Pkts",
+      "correlation": 0.9942
+    },
+    {
+      "feature_a": "Tot Bwd Pkts",
+      "feature_b": "Bwd Header Len",
+      "correlation": 0.9989
+    },
+    {
+      "feature_a": "Tot Bwd Pkts",
+      "feature_b": "Subflow Bwd Pkts",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Tot Bwd Pkts",
+      "feature_b": "Subflow Bwd Byts",
+      "correlation": 0.9942
+    },
+    {
+      "feature_a": "TotLen Fwd Pkts",
+      "feature_b": "Fwd Header Len",
+      "correlation": 0.9836
+    },
+    {
+      "feature_a": "TotLen Fwd Pkts",
+      "feature_b": "Subflow Fwd Pkts",
+      "correlation": 0.9836
+    },
+    {
+      "feature_a": "TotLen Fwd Pkts",
+      "feature_b": "Subflow Fwd Byts",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "TotLen Fwd Pkts",
+      "feature_b": "Fwd Act Data Pkts",
+      "correlation": 0.9837
+    },
+    {
+      "feature_a": "TotLen Bwd Pkts",
+      "feature_b": "Bwd Header Len",
+      "correlation": 0.9932
+    },
+    {
+      "feature_a": "TotLen Bwd Pkts",
+      "feature_b": "Subflow Bwd Pkts",
+      "correlation": 0.9942
+    },
+    {
+      "feature_a": "TotLen Bwd Pkts",
+      "feature_b": "Subflow Bwd Byts",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Fwd Pkt Len Max",
+      "feature_b": "Fwd Pkt Len Std",
+      "correlation": 0.9218
+    },
+    {
+      "feature_a": "Fwd Pkt Len Min",
+      "feature_b": "Pkt Len Min",
+      "correlation": 0.9718
+    },
+    {
+      "feature_a": "Fwd Pkt Len Mean",
+      "feature_b": "Fwd Seg Size Avg",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Bwd Pkt Len Max",
+      "feature_b": "Bwd Pkt Len Std",
+      "correlation": 0.9723
+    },
+    {
+      "feature_a": "Bwd Pkt Len Max",
+      "feature_b": "Pkt Len Max",
+      "correlation": 0.9545
+    },
+    {
+      "feature_a": "Bwd Pkt Len Max",
+      "feature_b": "Pkt Len Std",
+      "correlation": 0.961
+    },
+    {
+      "feature_a": "Bwd Pkt Len Mean",
+      "feature_b": "Pkt Len Mean",
+      "correlation": 0.913
+    },
+    {
+      "feature_a": "Bwd Pkt Len Mean",
+      "feature_b": "Pkt Size Avg",
+      "correlation": 0.9015
+    },
+    {
+      "feature_a": "Bwd Pkt Len Mean",
+      "feature_b": "Bwd Seg Size Avg",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Bwd Pkt Len Std",
+      "feature_b": "Pkt Len Max",
+      "correlation": 0.9247
+    },
+    {
+      "feature_a": "Bwd Pkt Len Std",
+      "feature_b": "Pkt Len Std",
+      "correlation": 0.9607
+    },
+    {
+      "feature_a": "Flow Pkts/s",
+      "feature_b": "Fwd Pkts/s",
+      "correlation": 0.9632
+    },
+    {
+      "feature_a": "Flow Pkts/s",
+      "feature_b": "Bwd Pkts/s",
+      "correlation": 0.9491
+    },
+    {
+      "feature_a": "Flow IAT Mean",
+      "feature_b": "Flow IAT Min",
+      "correlation": 0.9743
+    },
+    {
+      "feature_a": "Flow IAT Mean",
+      "feature_b": "Fwd IAT Mean",
+      "correlation": 0.9566
+    },
+    {
+      "feature_a": "Flow IAT Mean",
+      "feature_b": "Fwd IAT Min",
+      "correlation": 0.9519
+    },
+    {
+      "feature_a": "Flow IAT Max",
+      "feature_b": "Fwd IAT Max",
+      "correlation": 0.9932
+    },
+    {
+      "feature_a": "Flow IAT Max",
+      "feature_b": "Idle Mean",
+      "correlation": 0.9293
+    },
+    {
+      "feature_a": "Flow IAT Max",
+      "feature_b": "Idle Max",
+      "correlation": 0.9423
+    },
+    {
+      "feature_a": "Flow IAT Max",
+      "feature_b": "Idle Min",
+      "correlation": 0.9052
+    },
+    {
+      "feature_a": "Fwd IAT Mean",
+      "feature_b": "Fwd IAT Min",
+      "correlation": 0.99
+    },
+    {
+      "feature_a": "Fwd IAT Max",
+      "feature_b": "Idle Mean",
+      "correlation": 0.9254
+    },
+    {
+      "feature_a": "Fwd IAT Max",
+      "feature_b": "Idle Max",
+      "correlation": 0.9386
+    },
+    {
+      "feature_a": "Fwd IAT Max",
+      "feature_b": "Idle Min",
+      "correlation": 0.9014
+    },
+    {
+      "feature_a": "Bwd IAT Mean",
+      "feature_b": "Bwd IAT Min",
+      "correlation": 0.9506
+    },
+    {
+      "feature_a": "Fwd PSH Flags",
+      "feature_b": "SYN Flag Cnt",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Fwd URG Flags",
+      "feature_b": "CWE Flag Count",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Fwd Header Len",
+      "feature_b": "Subflow Fwd Pkts",
+      "correlation": 0.9999
+    },
+    {
+      "feature_a": "Fwd Header Len",
+      "feature_b": "Subflow Fwd Byts",
+      "correlation": 0.9836
+    },
+    {
+      "feature_a": "Fwd Header Len",
+      "feature_b": "Fwd Act Data Pkts",
+      "correlation": 0.9997
+    },
+    {
+      "feature_a": "Bwd Header Len",
+      "feature_b": "Subflow Bwd Pkts",
+      "correlation": 0.9989
+    },
+    {
+      "feature_a": "Bwd Header Len",
+      "feature_b": "Subflow Bwd Byts",
+      "correlation": 0.9932
+    },
+    {
+      "feature_a": "Pkt Len Max",
+      "feature_b": "Pkt Len Std",
+      "correlation": 0.9648
+    },
+    {
+      "feature_a": "Pkt Len Mean",
+      "feature_b": "Pkt Size Avg",
+      "correlation": 0.9943
+    },
+    {
+      "feature_a": "Pkt Len Mean",
+      "feature_b": "Bwd Seg Size Avg",
+      "correlation": 0.913
+    },
+    {
+      "feature_a": "RST Flag Cnt",
+      "feature_b": "ECE Flag Cnt",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Pkt Size Avg",
+      "feature_b": "Bwd Seg Size Avg",
+      "correlation": 0.9015
+    },
+    {
+      "feature_a": "Subflow Fwd Pkts",
+      "feature_b": "Subflow Fwd Byts",
+      "correlation": 0.9836
+    },
+    {
+      "feature_a": "Subflow Fwd Pkts",
+      "feature_b": "Fwd Act Data Pkts",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "Subflow Fwd Byts",
+      "feature_b": "Fwd Act Data Pkts",
+      "correlation": 0.9837
+    },
+    {
+      "feature_a": "Subflow Bwd Pkts",
+      "feature_b": "Subflow Bwd Byts",
+      "correlation": 0.9942
+    },
+    {
+      "feature_a": "Active Mean",
+      "feature_b": "Active Max",
+      "correlation": 0.9466
+    },
+    {
+      "feature_a": "Active Mean",
+      "feature_b": "Active Min",
+      "correlation": 0.9179
+    },
+    {
+      "feature_a": "Idle Mean",
+      "feature_b": "Idle Max",
+      "correlation": 0.9859
+    },
+    {
+      "feature_a": "Idle Mean",
+      "feature_b": "Idle Min",
+      "correlation": 0.993
+    },
+    {
+      "feature_a": "Idle Max",
+      "feature_b": "Idle Min",
+      "correlation": 0.9601
+    }
+  ],
+  "redundancy_groups": [
+    [
+      "Flow Duration",
+      "Fwd IAT Tot"
+    ],
+    [
+      "Tot Fwd Pkts",
+      "TotLen Fwd Pkts",
+      "Fwd Header Len",
+      "Subflow Fwd Pkts",
+      "Subflow Fwd Byts",
+      "Fwd Act Data Pkts"
+    ],
+    [
+      "Tot Bwd Pkts",
+      "TotLen Bwd Pkts",
+      "Bwd Header Len",
+      "Subflow Bwd Pkts",
+      "Subflow Bwd Byts"
+    ],
+    [
+      "Fwd Pkt Len Max",
+      "Fwd Pkt Len Std"
+    ],
+    [
+      "Fwd Pkt Len Min",
+      "Pkt Len Min"
+    ],
+    [
+      "Fwd Pkt Len Mean",
+      "Fwd Seg Size Avg"
+    ],
+    [
+      "Bwd Pkt Len Max",
+      "Bwd Pkt Len Std",
+      "Pkt Len Max",
+      "Pkt Len Std"
+    ],
+    [
+      "Bwd Pkt Len Mean",
+      "Pkt Len Mean",
+      "Pkt Size Avg",
+      "Bwd Seg Size Avg"
+    ],
+    [
+      "Flow Pkts/s",
+      "Fwd Pkts/s",
+      "Bwd Pkts/s"
+    ],
+    [
+      "Flow IAT Mean",
+      "Flow IAT Min",
+      "Fwd IAT Mean",
+      "Fwd IAT Min"
+    ],
+    [
+      "Flow IAT Max",
+      "Fwd IAT Max",
+      "Idle Mean",
+      "Idle Max",
+      "Idle Min"
+    ],
+    [
+      "Bwd IAT Mean",
+      "Bwd IAT Min"
+    ],
+    [
+      "Fwd PSH Flags",
+      "SYN Flag Cnt"
+    ],
+    [
+      "Fwd URG Flags",
+      "CWE Flag Count"
+    ],
+    [
+      "RST Flag Cnt",
+      "ECE Flag Cnt"
+    ],
+    [
+      "Active Mean",
+      "Active Max",
+      "Active Min"
+    ]
+  ],
+  "evidence_table": [
+    {
+      "feature": "Init Fwd Win Byts",
+      "mi_score": 1.109337,
+      "mi_rank": 6,
+      "f_score": 41547.7443,
+      "f_rank": 10,
+      "rf_importance": 0.118495,
+      "rf_rank": 1,
+      "xgb_importance": 0.086249,
+      "xgb_rank": 4,
+      "average_rank": 5.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd Pkts/s",
+      "mi_score": 1.206389,
+      "mi_rank": 3,
+      "f_score": 26256.548,
+      "f_rank": 12,
+      "rf_importance": 0.035237,
+      "rf_rank": 6,
+      "xgb_importance": 0.00865,
+      "xgb_rank": 18,
+      "average_rank": 9.75,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Fwd Seg Size Min",
+      "mi_score": 0.777732,
+      "mi_rank": 31,
+      "f_score": 113093.8777,
+      "f_rank": 7,
+      "rf_importance": 0.053569,
+      "rf_rank": 3,
+      "xgb_importance": 0.117332,
+      "xgb_rank": 2,
+      "average_rank": 10.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Flow Duration",
+      "mi_score": 1.207332,
+      "mi_rank": 2,
+      "f_score": 5340.3497,
+      "f_rank": 30,
+      "rf_importance": 0.041671,
+      "rf_rank": 4,
+      "xgb_importance": 0.011501,
+      "xgb_rank": 12,
+      "average_rank": 12.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Flow Pkts/s",
+      "mi_score": 1.172096,
+      "mi_rank": 4,
+      "f_score": 48960.4105,
+      "f_rank": 9,
+      "rf_importance": 0.04013,
+      "rf_rank": 5,
+      "xgb_importance": 0.00234,
+      "xgb_rank": 30,
+      "average_rank": 12.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Pkt Len Std",
+      "mi_score": 0.91626,
+      "mi_rank": 15,
+      "f_score": 12239.4,
+      "f_rank": 18,
+      "rf_importance": 0.022,
+      "rf_rank": 16,
+      "xgb_importance": 0.238068,
+      "xgb_rank": 1,
+      "average_rank": 12.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Bwd Pkts/s",
+      "mi_score": 1.035164,
+      "mi_rank": 10,
+      "f_score": 67995.9898,
+      "f_rank": 8,
+      "rf_importance": 0.035134,
+      "rf_rank": 7,
+      "xgb_importance": 0.00319,
+      "xgb_rank": 27,
+      "average_rank": 13.0,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "TotLen Fwd Pkts",
+      "mi_score": 0.899945,
+      "mi_rank": 18,
+      "f_score": 284245.9559,
+      "f_rank": 5,
+      "rf_importance": 0.014027,
+      "rf_rank": 27,
+      "xgb_importance": 0.065394,
+      "xgb_rank": 7,
+      "average_rank": 14.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Dst Port",
+      "mi_score": 1.077338,
+      "mi_rank": 7,
+      "f_score": 3114.3887,
+      "f_rank": 42,
+      "rf_importance": 0.058564,
+      "rf_rank": 2,
+      "xgb_importance": 0.035669,
+      "xgb_rank": 9,
+      "average_rank": 15.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd IAT Tot",
+      "mi_score": 1.040461,
+      "mi_rank": 8,
+      "f_score": 5324.029,
+      "f_rank": 31,
+      "rf_importance": 0.027088,
+      "rf_rank": 12,
+      "xgb_importance": 0.008061,
+      "xgb_rank": 19,
+      "average_rank": 17.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Fwd Header Len",
+      "mi_score": 0.838867,
+      "mi_rank": 29,
+      "f_score": 452021.2342,
+      "f_rank": 4,
+      "rf_importance": 0.019755,
+      "rf_rank": 18,
+      "xgb_importance": 0.00652,
+      "xgb_rank": 22,
+      "average_rank": 18.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Flow IAT Mean",
+      "mi_score": 1.155777,
+      "mi_rank": 5,
+      "f_score": 1313.6158,
+      "f_rank": 54,
+      "rf_importance": 0.034687,
+      "rf_rank": 8,
+      "xgb_importance": 0.036523,
+      "xgb_rank": 8,
+      "average_rank": 18.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Bwd Pkt Len Std",
+      "mi_score": 0.740701,
+      "mi_rank": 34,
+      "f_score": 16739.733,
+      "f_rank": 16,
+      "rf_importance": 0.028914,
+      "rf_rank": 10,
+      "xgb_importance": 0.008747,
+      "xgb_rank": 17,
+      "average_rank": 19.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Fwd IAT Mean",
+      "mi_score": 1.009978,
+      "mi_rank": 11,
+      "f_score": 2358.804,
+      "f_rank": 47,
+      "rf_importance": 0.023081,
+      "rf_rank": 14,
+      "xgb_importance": 0.069943,
+      "xgb_rank": 6,
+      "average_rank": 19.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Bwd Pkt Len Max",
+      "mi_score": 0.852065,
+      "mi_rank": 27,
+      "f_score": 11408.2,
+      "f_rank": 19,
+      "rf_importance": 0.01507,
+      "rf_rank": 24,
+      "xgb_importance": 0.009428,
+      "xgb_rank": 14,
+      "average_rank": 21.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Bwd Pkt Len Mean",
+      "mi_score": 0.852577,
+      "mi_rank": 26,
+      "f_score": 6455.013,
+      "f_rank": 24,
+      "rf_importance": 0.016403,
+      "rf_rank": 21,
+      "xgb_importance": 0.00884,
+      "xgb_rank": 15,
+      "average_rank": 21.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Flow IAT Max",
+      "mi_score": 1.228372,
+      "mi_rank": 1,
+      "f_score": 4679.6199,
+      "f_rank": 33,
+      "rf_importance": 0.033152,
+      "rf_rank": 9,
+      "xgb_importance": 0.000822,
+      "xgb_rank": 44,
+      "average_rank": 21.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd IAT Max",
+      "mi_score": 1.037318,
+      "mi_rank": 9,
+      "f_score": 4677.6814,
+      "f_rank": 34,
+      "rf_importance": 0.028252,
+      "rf_rank": 11,
+      "xgb_importance": 0.001636,
+      "xgb_rank": 34,
+      "average_rank": 22.0,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Tot Fwd Pkts",
+      "mi_score": 0.635807,
+      "mi_rank": 39,
+      "f_score": 456820.9531,
+      "f_rank": 2,
+      "rf_importance": 0.013156,
+      "rf_rank": 29,
+      "xgb_importance": 0.005464,
+      "xgb_rank": 24,
+      "average_rank": 23.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd Act Data Pkts",
+      "mi_score": 0.367639,
+      "mi_rank": 47,
+      "f_score": 457547.5106,
+      "f_rank": 1,
+      "rf_importance": 0.007936,
+      "rf_rank": 36,
+      "xgb_importance": 0.015924,
+      "xgb_rank": 10,
+      "average_rank": 23.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Pkt Len Max",
+      "mi_score": 0.947495,
+      "mi_rank": 12,
+      "f_score": 9542.3937,
+      "f_rank": 21,
+      "rf_importance": 0.012407,
+      "rf_rank": 31,
+      "xgb_importance": 0.001806,
+      "xgb_rank": 33,
+      "average_rank": 24.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "RST Flag Cnt",
+      "mi_score": 0.246669,
+      "mi_rank": 50,
+      "f_score": 21326.1172,
+      "f_rank": 13,
+      "rf_importance": 0.008844,
+      "rf_rank": 34,
+      "xgb_importance": 0.073949,
+      "xgb_rank": 5,
+      "average_rank": 25.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Bwd IAT Max",
+      "mi_score": 0.657301,
+      "mi_rank": 37,
+      "f_score": 12952.074,
+      "f_rank": 17,
+      "rf_importance": 0.002706,
+      "rf_rank": 51,
+      "xgb_importance": 0.092471,
+      "xgb_rank": 3,
+      "average_rank": 27.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Subflow Fwd Byts",
+      "mi_score": 0.897551,
+      "mi_rank": 19,
+      "f_score": 284245.9559,
+      "f_rank": 6,
+      "rf_importance": 0.02262,
+      "rf_rank": 15,
+      "xgb_importance": 0.0,
+      "xgb_rank": 69,
+      "average_rank": 27.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Pkt Len Mean",
+      "mi_score": 0.919796,
+      "mi_rank": 13,
+      "f_score": 4635.0448,
+      "f_rank": 35,
+      "rf_importance": 0.00677,
+      "rf_rank": 39,
+      "xgb_importance": 0.003712,
+      "xgb_rank": 26,
+      "average_rank": 28.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Fwd Pkt Len Mean",
+      "mi_score": 0.892078,
+      "mi_rank": 20,
+      "f_score": 3808.9539,
+      "f_rank": 40,
+      "rf_importance": 0.016121,
+      "rf_rank": 22,
+      "xgb_importance": 0.002017,
+      "xgb_rank": 32,
+      "average_rank": 28.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Bwd IAT Mean",
+      "mi_score": 0.616405,
+      "mi_rank": 45,
+      "f_score": 28065.9097,
+      "f_rank": 11,
+      "rf_importance": 0.005379,
+      "rf_rank": 44,
+      "xgb_importance": 0.006979,
+      "xgb_rank": 21,
+      "average_rank": 30.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd Pkt Len Max",
+      "mi_score": 0.884825,
+      "mi_rank": 22,
+      "f_score": 2989.327,
+      "f_rank": 44,
+      "rf_importance": 0.020984,
+      "rf_rank": 17,
+      "xgb_importance": 0.001128,
+      "xgb_rank": 39,
+      "average_rank": 30.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd Pkt Len Std",
+      "mi_score": 0.763168,
+      "mi_rank": 32,
+      "f_score": 4787.762,
+      "f_rank": 32,
+      "rf_importance": 0.016797,
+      "rf_rank": 20,
+      "xgb_importance": 0.001435,
+      "xgb_rank": 38,
+      "average_rank": 30.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Pkt Size Avg",
+      "mi_score": 0.911645,
+      "mi_rank": 16,
+      "f_score": 5429.4602,
+      "f_rank": 29,
+      "rf_importance": 0.010585,
+      "rf_rank": 32,
+      "xgb_importance": 0.000673,
+      "xgb_rank": 47,
+      "average_rank": 31.0,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Fwd IAT Min",
+      "mi_score": 0.832094,
+      "mi_rank": 30,
+      "f_score": 1737.5743,
+      "f_rank": 53,
+      "rf_importance": 0.015003,
+      "rf_rank": 25,
+      "xgb_importance": 0.006246,
+      "xgb_rank": 23,
+      "average_rank": 32.75,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Flow IAT Std",
+      "mi_score": 0.71448,
+      "mi_rank": 35,
+      "f_score": 8085.2945,
+      "f_rank": 22,
+      "rf_importance": 0.010319,
+      "rf_rank": 33,
+      "xgb_importance": 0.000908,
+      "xgb_rank": 42,
+      "average_rank": 33.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Bwd IAT Tot",
+      "mi_score": 0.641294,
+      "mi_rank": 38,
+      "f_score": 4240.0712,
+      "f_rank": 38,
+      "rf_importance": 0.003866,
+      "rf_rank": 48,
+      "xgb_importance": 0.014221,
+      "xgb_rank": 11,
+      "average_rank": 33.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Bwd Seg Size Avg",
+      "mi_score": 0.854066,
+      "mi_rank": 24,
+      "f_score": 6455.013,
+      "f_rank": 25,
+      "rf_importance": 0.016092,
+      "rf_rank": 23,
+      "xgb_importance": 0.0,
+      "xgb_rank": 67,
+      "average_rank": 34.75,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Subflow Fwd Pkts",
+      "mi_score": 0.634509,
+      "mi_rank": 40,
+      "f_score": 456820.9531,
+      "f_rank": 3,
+      "rf_importance": 0.012974,
+      "rf_rank": 30,
+      "xgb_importance": 0.0,
+      "xgb_rank": 68,
+      "average_rank": 35.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Flow IAT Min",
+      "mi_score": 0.748048,
+      "mi_rank": 33,
+      "f_score": 900.8532,
+      "f_rank": 55,
+      "rf_importance": 0.026132,
+      "rf_rank": 13,
+      "xgb_importance": 0.000912,
+      "xgb_rank": 41,
+      "average_rank": 35.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Init Bwd Win Byts",
+      "mi_score": 0.901258,
+      "mi_rank": 17,
+      "f_score": 2735.4037,
+      "f_rank": 45,
+      "rf_importance": 0.003823,
+      "rf_rank": 49,
+      "xgb_importance": 0.002043,
+      "xgb_rank": 31,
+      "average_rank": 35.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Flow Byts/s",
+      "mi_score": 0.693842,
+      "mi_rank": 36,
+      "f_score": 82.3747,
+      "f_rank": 61,
+      "rf_importance": 0.006489,
+      "rf_rank": 40,
+      "xgb_importance": 0.011105,
+      "xgb_rank": 13,
+      "average_rank": 37.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd Seg Size Avg",
+      "mi_score": 0.890255,
+      "mi_rank": 21,
+      "f_score": 3808.9539,
+      "f_rank": 41,
+      "rf_importance": 0.014577,
+      "rf_rank": 26,
+      "xgb_importance": 0.0,
+      "xgb_rank": 66,
+      "average_rank": 38.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "ECE Flag Cnt",
+      "mi_score": 0.250209,
+      "mi_rank": 49,
+      "f_score": 21325.5963,
+      "f_rank": 14,
+      "rf_importance": 0.013178,
+      "rf_rank": 28,
+      "xgb_importance": 0.0,
+      "xgb_rank": 65,
+      "average_rank": 39.0,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Bwd IAT Min",
+      "mi_score": 0.509622,
+      "mi_rank": 46,
+      "f_score": 19388.1214,
+      "f_rank": 15,
+      "rf_importance": 0.002668,
+      "rf_rank": 52,
+      "xgb_importance": 0.000707,
+      "xgb_rank": 46,
+      "average_rank": 39.75,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Bwd IAT Std",
+      "mi_score": 0.619784,
+      "mi_rank": 44,
+      "f_score": 6753.4653,
+      "f_rank": 23,
+      "rf_importance": 0.005598,
+      "rf_rank": 42,
+      "xgb_importance": 0.000527,
+      "xgb_rank": 51,
+      "average_rank": 40.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Pkt Len Var",
+      "mi_score": 0.916625,
+      "mi_rank": 14,
+      "f_score": 35.1717,
+      "f_rank": 65,
+      "rf_importance": 0.017843,
+      "rf_rank": 19,
+      "xgb_importance": 0.0,
+      "xgb_rank": 62,
+      "average_rank": 40.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd IAT Std",
+      "mi_score": 0.630096,
+      "mi_rank": 41,
+      "f_score": 2369.6772,
+      "f_rank": 46,
+      "rf_importance": 0.006923,
+      "rf_rank": 38,
+      "xgb_importance": 0.001463,
+      "xgb_rank": 37,
+      "average_rank": 40.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "ACK Flag Cnt",
+      "mi_score": 0.112493,
+      "mi_rank": 63,
+      "f_score": 5440.9289,
+      "f_rank": 28,
+      "rf_importance": 0.003963,
+      "rf_rank": 47,
+      "xgb_importance": 0.00479,
+      "xgb_rank": 25,
+      "average_rank": 40.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Tot Bwd Pkts",
+      "mi_score": 0.626763,
+      "mi_rank": 42,
+      "f_score": 20.5171,
+      "f_rank": 66,
+      "rf_importance": 0.005605,
+      "rf_rank": 41,
+      "xgb_importance": 0.008782,
+      "xgb_rank": 16,
+      "average_rank": 41.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "TotLen Bwd Pkts",
+      "mi_score": 0.853842,
+      "mi_rank": 25,
+      "f_score": 11.018,
+      "f_rank": 69,
+      "rf_importance": 0.00851,
+      "rf_rank": 35,
+      "xgb_importance": 0.001482,
+      "xgb_rank": 36,
+      "average_rank": 41.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "PSH Flag Cnt",
+      "mi_score": 0.191012,
+      "mi_rank": 51,
+      "f_score": 10387.7024,
+      "f_rank": 20,
+      "rf_importance": 0.003297,
+      "rf_rank": 50,
+      "xgb_importance": 0.000579,
+      "xgb_rank": 49,
+      "average_rank": 42.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Src Port",
+      "mi_score": 0.330014,
+      "mi_rank": 48,
+      "f_score": 0.4432,
+      "f_rank": 71,
+      "rf_importance": 0.004679,
+      "rf_rank": 46,
+      "xgb_importance": 0.00767,
+      "xgb_rank": 20,
+      "average_rank": 46.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Bwd Header Len",
+      "mi_score": 0.848028,
+      "mi_rank": 28,
+      "f_score": 20.3049,
+      "f_rank": 68,
+      "rf_importance": 0.007534,
+      "rf_rank": 37,
+      "xgb_importance": 0.000383,
+      "xgb_rank": 55,
+      "average_rank": 47.0,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Fwd Pkt Len Min",
+      "mi_score": 0.147185,
+      "mi_rank": 56,
+      "f_score": 1786.783,
+      "f_rank": 52,
+      "rf_importance": 0.001594,
+      "rf_rank": 53,
+      "xgb_importance": 0.002715,
+      "xgb_rank": 28,
+      "average_rank": 47.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Idle Max",
+      "mi_score": 0.165792,
+      "mi_rank": 53,
+      "f_score": 4367.3266,
+      "f_rank": 37,
+      "rf_importance": 0.001052,
+      "rf_rank": 55,
+      "xgb_importance": 0.000643,
+      "xgb_rank": 48,
+      "average_rank": 48.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Protocol",
+      "mi_score": 0.140364,
+      "mi_rank": 57,
+      "f_score": 5865.7948,
+      "f_rank": 27,
+      "rf_importance": 0.0014,
+      "rf_rank": 54,
+      "xgb_importance": 0.000365,
+      "xgb_rank": 58,
+      "average_rank": 49.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Bwd Pkt Len Min",
+      "mi_score": 0.120631,
+      "mi_rank": 60,
+      "f_score": 4506.7495,
+      "f_rank": 36,
+      "rf_importance": 0.000343,
+      "rf_rank": 64,
+      "xgb_importance": 0.000941,
+      "xgb_rank": 40,
+      "average_rank": 50.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd PSH Flags",
+      "mi_score": 0.028458,
+      "mi_rank": 66,
+      "f_score": 1807.2349,
+      "f_rank": 50,
+      "rf_importance": 0.000574,
+      "rf_rank": 61,
+      "xgb_importance": 0.002388,
+      "xgb_rank": 29,
+      "average_rank": 51.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Down/Up Ratio",
+      "mi_score": 0.173708,
+      "mi_rank": 52,
+      "f_score": 3887.7215,
+      "f_rank": 39,
+      "rf_importance": 0.000951,
+      "rf_rank": 58,
+      "xgb_importance": 0.00037,
+      "xgb_rank": 57,
+      "average_rank": 51.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Subflow Bwd Byts",
+      "mi_score": 0.85698,
+      "mi_rank": 23,
+      "f_score": 11.018,
+      "f_rank": 70,
+      "rf_importance": 0.005441,
+      "rf_rank": 43,
+      "xgb_importance": 0.0,
+      "xgb_rank": 71,
+      "average_rank": 51.75,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Idle Mean",
+      "mi_score": 0.163344,
+      "mi_rank": 54,
+      "f_score": 3008.8053,
+      "f_rank": 43,
+      "rf_importance": 0.000991,
+      "rf_rank": 57,
+      "xgb_importance": 0.000382,
+      "xgb_rank": 56,
+      "average_rank": 52.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Idle Min",
+      "mi_score": 0.160502,
+      "mi_rank": 55,
+      "f_score": 2293.2065,
+      "f_rank": 48,
+      "rf_importance": 0.001011,
+      "rf_rank": 56,
+      "xgb_importance": 0.000509,
+      "xgb_rank": 52,
+      "average_rank": 52.75,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Idle Std",
+      "mi_score": 0.063998,
+      "mi_rank": 64,
+      "f_score": 6311.5963,
+      "f_rank": 26,
+      "rf_importance": 0.000442,
+      "rf_rank": 63,
+      "xgb_importance": 0.000308,
+      "xgb_rank": 59,
+      "average_rank": 53.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Pkt Len Min",
+      "mi_score": 0.133837,
+      "mi_rank": 58,
+      "f_score": 1870.7887,
+      "f_rank": 49,
+      "rf_importance": 0.000235,
+      "rf_rank": 66,
+      "xgb_importance": 0.000752,
+      "xgb_rank": 45,
+      "average_rank": 54.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Subflow Bwd Pkts",
+      "mi_score": 0.625191,
+      "mi_rank": 43,
+      "f_score": 20.5171,
+      "f_rank": 67,
+      "rf_importance": 0.004768,
+      "rf_rank": 45,
+      "xgb_importance": 0.0,
+      "xgb_rank": 70,
+      "average_rank": 56.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Active Min",
+      "mi_score": 0.120098,
+      "mi_rank": 61,
+      "f_score": 428.3318,
+      "f_rank": 59,
+      "rf_importance": 0.000805,
+      "rf_rank": 59,
+      "xgb_importance": 0.00042,
+      "xgb_rank": 53,
+      "average_rank": 58.0,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "FIN Flag Cnt",
+      "mi_score": 0.0,
+      "mi_rank": 71,
+      "f_score": 81.8957,
+      "f_rank": 62,
+      "rf_importance": 5.5e-05,
+      "rf_rank": 68,
+      "xgb_importance": 0.001617,
+      "xgb_rank": 35,
+      "average_rank": 59.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Active Mean",
+      "mi_score": 0.123738,
+      "mi_rank": 59,
+      "f_score": 555.2437,
+      "f_rank": 57,
+      "rf_importance": 0.000212,
+      "rf_rank": 67,
+      "xgb_importance": 0.000391,
+      "xgb_rank": 54,
+      "average_rank": 59.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "SYN Flag Cnt",
+      "mi_score": 0.025586,
+      "mi_rank": 67,
+      "f_score": 1807.2349,
+      "f_rank": 51,
+      "rf_importance": 0.000746,
+      "rf_rank": 60,
+      "xgb_importance": 0.0,
+      "xgb_rank": 63,
+      "average_rank": 60.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "Active Std",
+      "mi_score": 0.053073,
+      "mi_rank": 65,
+      "f_score": 220.5716,
+      "f_rank": 60,
+      "rf_importance": 5e-05,
+      "rf_rank": 69,
+      "xgb_importance": 0.000528,
+      "xgb_rank": 50,
+      "average_rank": 61.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Fwd URG Flags",
+      "mi_score": 0.001729,
+      "mi_rank": 69,
+      "f_score": 52.6962,
+      "f_rank": 63,
+      "rf_importance": 2.2e-05,
+      "rf_rank": 70,
+      "xgb_importance": 0.00088,
+      "xgb_rank": 43,
+      "average_rank": 61.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "Active Max",
+      "mi_score": 0.117344,
+      "mi_rank": 62,
+      "f_score": 528.8487,
+      "f_rank": 58,
+      "rf_importance": 0.000238,
+      "rf_rank": 65,
+      "xgb_importance": 0.000283,
+      "xgb_rank": 60,
+      "average_rank": 61.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "URG Flag Cnt",
+      "mi_score": 0.015845,
+      "mi_rank": 68,
+      "f_score": 667.1842,
+      "f_rank": 56,
+      "rf_importance": 0.00045,
+      "rf_rank": 62,
+      "xgb_importance": 0.000216,
+      "xgb_rank": 61,
+      "average_rank": 61.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "CWE Flag Count",
+      "mi_score": 0.000547,
+      "mi_rank": 70,
+      "f_score": 52.6962,
+      "f_rank": 64,
+      "rf_importance": 1.5e-05,
+      "rf_rank": 71,
+      "xgb_importance": 0.0,
+      "xgb_rank": 64,
+      "average_rank": 67.25,
+      "correlation_risk": "HIGH"
+    }
+  ],
+  "selected_features": [
+    "Init Fwd Win Byts",
+    "Fwd Pkts/s",
+    "Fwd Seg Size Min",
+    "Flow Duration",
+    "Flow Pkts/s",
+    "Pkt Len Std",
+    "Bwd Pkts/s",
+    "TotLen Fwd Pkts",
+    "Dst Port",
+    "Flow IAT Mean",
+    "Bwd Pkt Len Max",
+    "Bwd Pkt Len Mean",
+    "Flow IAT Max",
+    "Tot Fwd Pkts",
+    "RST Flag Cnt",
+    "Bwd IAT Max",
+    "Fwd Pkt Len Mean",
+    "Bwd IAT Mean",
+    "Fwd Pkt Len Max",
+    "Flow IAT Std",
+    "Bwd IAT Tot",
+    "Init Bwd Win Byts",
+    "Flow Byts/s",
+    "Bwd IAT Std",
+    "Pkt Len Var",
+    "Fwd IAT Std",
+    "ACK Flag Cnt",
+    "Tot Bwd Pkts"
+  ],
+  "dropped_features": [
+    {
+      "feature": "Fwd IAT Tot",
+      "reason": "High correlation redundancy and average rank (17.5) > 15"
+    },
+    {
+      "feature": "Fwd Header Len",
+      "reason": "High correlation redundancy and average rank (18.25) > 15"
+    },
+    {
+      "feature": "Bwd Pkt Len Std",
+      "reason": "High correlation redundancy and average rank (19.25) > 15"
+    },
+    {
+      "feature": "Fwd IAT Mean",
+      "reason": "High correlation redundancy and average rank (19.5) > 15"
+    },
+    {
+      "feature": "Fwd IAT Max",
+      "reason": "High correlation redundancy and average rank (22.0) > 15"
+    },
+    {
+      "feature": "Fwd Act Data Pkts",
+      "reason": "High correlation redundancy and average rank (23.5) > 15"
+    },
+    {
+      "feature": "Pkt Len Max",
+      "reason": "High correlation redundancy and average rank (24.25) > 15"
+    },
+    {
+      "feature": "Subflow Fwd Byts",
+      "reason": "High correlation redundancy and average rank (27.25) > 15"
+    },
+    {
+      "feature": "Pkt Len Mean",
+      "reason": "High correlation redundancy and average rank (28.25) > 15"
+    },
+    {
+      "feature": "Fwd Pkt Len Std",
+      "reason": "High correlation redundancy and average rank (30.5) > 15"
+    },
+    {
+      "feature": "Pkt Size Avg",
+      "reason": "High correlation redundancy and average rank (31.0) > 15"
+    },
+    {
+      "feature": "Fwd IAT Min",
+      "reason": "High correlation redundancy and average rank (32.75) > 15"
+    },
+    {
+      "feature": "Bwd Seg Size Avg",
+      "reason": "High correlation redundancy and average rank (34.75) > 15"
+    },
+    {
+      "feature": "Subflow Fwd Pkts",
+      "reason": "High correlation redundancy and average rank (35.25) > 15"
+    },
+    {
+      "feature": "Flow IAT Min",
+      "reason": "High correlation redundancy and average rank (35.5) > 15"
+    },
+    {
+      "feature": "Fwd Seg Size Avg",
+      "reason": "High correlation redundancy and average rank (38.5) > 15"
+    },
+    {
+      "feature": "ECE Flag Cnt",
+      "reason": "High correlation redundancy and average rank (39.0) > 15"
+    },
+    {
+      "feature": "Bwd IAT Min",
+      "reason": "High correlation redundancy and average rank (39.75) > 15"
+    },
+    {
+      "feature": "TotLen Bwd Pkts",
+      "reason": "Ranked below top 28 cutoff (Average rank 41.25)"
+    },
+    {
+      "feature": "PSH Flag Cnt",
+      "reason": "Ranked below top 28 cutoff (Average rank 42.5)"
+    },
+    {
+      "feature": "Src Port",
+      "reason": "Ranked below top 28 cutoff (Average rank 46.25)"
+    },
+    {
+      "feature": "Bwd Header Len",
+      "reason": "Ranked below top 28 cutoff (Average rank 47.0)"
+    },
+    {
+      "feature": "Fwd Pkt Len Min",
+      "reason": "Ranked below top 28 cutoff (Average rank 47.25)"
+    },
+    {
+      "feature": "Idle Max",
+      "reason": "Ranked below top 28 cutoff (Average rank 48.25)"
+    },
+    {
+      "feature": "Protocol",
+      "reason": "Ranked below top 28 cutoff (Average rank 49.0)"
+    },
+    {
+      "feature": "Bwd Pkt Len Min",
+      "reason": "Ranked below top 28 cutoff (Average rank 50.0)"
+    },
+    {
+      "feature": "Fwd PSH Flags",
+      "reason": "Ranked below top 28 cutoff (Average rank 51.5)"
+    },
+    {
+      "feature": "Down/Up Ratio",
+      "reason": "Ranked below top 28 cutoff (Average rank 51.5)"
+    },
+    {
+      "feature": "Subflow Bwd Byts",
+      "reason": "Ranked below top 28 cutoff (Average rank 51.75)"
+    },
+    {
+      "feature": "Idle Mean",
+      "reason": "Ranked below top 28 cutoff (Average rank 52.5)"
+    },
+    {
+      "feature": "Idle Min",
+      "reason": "Ranked below top 28 cutoff (Average rank 52.75)"
+    },
+    {
+      "feature": "Idle Std",
+      "reason": "Ranked below top 28 cutoff (Average rank 53.0)"
+    },
+    {
+      "feature": "Pkt Len Min",
+      "reason": "Ranked below top 28 cutoff (Average rank 54.5)"
+    },
+    {
+      "feature": "Subflow Bwd Pkts",
+      "reason": "Ranked below top 28 cutoff (Average rank 56.25)"
+    },
+    {
+      "feature": "Active Min",
+      "reason": "Ranked below top 28 cutoff (Average rank 58.0)"
+    },
+    {
+      "feature": "FIN Flag Cnt",
+      "reason": "Ranked below top 28 cutoff (Average rank 59.0)"
+    },
+    {
+      "feature": "Active Mean",
+      "reason": "Ranked below top 28 cutoff (Average rank 59.25)"
+    },
+    {
+      "feature": "SYN Flag Cnt",
+      "reason": "Ranked below top 28 cutoff (Average rank 60.25)"
+    },
+    {
+      "feature": "Active Std",
+      "reason": "Ranked below top 28 cutoff (Average rank 61.0)"
+    },
+    {
+      "feature": "Fwd URG Flags",
+      "reason": "Ranked below top 28 cutoff (Average rank 61.25)"
+    },
+    {
+      "feature": "Active Max",
+      "reason": "Ranked below top 28 cutoff (Average rank 61.25)"
+    },
+    {
+      "feature": "URG Flag Cnt",
+      "reason": "Ranked below top 28 cutoff (Average rank 61.75)"
+    },
+    {
+      "feature": "CWE Flag Count",
+      "reason": "Ranked below top 28 cutoff (Average rank 67.25)"
+    }
+  ],
+  "role_mapping": {
+    "temporal_features": [
+      "Flow Duration",
+      "Flow IAT Mean",
+      "Flow IAT Max",
+      "Bwd IAT Max",
+      "Bwd IAT Mean",
+      "Flow IAT Std",
+      "Bwd IAT Tot",
+      "Bwd IAT Std",
+      "Fwd IAT Std"
+    ],
+    "relational_edge_features": [
+      "Dst Port"
+    ],
+    "behavioral_features": [
+      "Init Fwd Win Byts",
+      "Fwd Pkts/s",
+      "Fwd Seg Size Min",
+      "Flow Pkts/s",
+      "Pkt Len Std",
+      "Bwd Pkts/s",
+      "TotLen Fwd Pkts",
+      "Bwd Pkt Len Max",
+      "Bwd Pkt Len Mean",
+      "Tot Fwd Pkts",
+      "RST Flag Cnt",
+      "Fwd Pkt Len Mean",
+      "Fwd Pkt Len Max",
+      "Init Bwd Win Byts",
+      "Flow Byts/s",
+      "Pkt Len Var",
+      "ACK Flag Cnt",
+      "Tot Bwd Pkts"
+    ],
+    "relational_node_identity_features": [
+      "Src IP",
+      "Dst IP"
+    ]
+  },
+  "splits_info": {
+    "train_samples": 350000,
+    "val_samples": 75000,
+    "test_samples": 75000
+  }
+}

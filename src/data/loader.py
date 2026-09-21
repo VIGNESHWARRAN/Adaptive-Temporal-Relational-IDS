@@ -12,10 +12,14 @@ fits StandardScaler strictly on training set, and computes class weights.
 import os
 import glob
 import json
+import gc
+import warnings
 import numpy as np
 import pandas as pd
 from typing import Dict, Any, Tuple, List
 from collections import defaultdict
+
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 import torch
 from torch.utils.data import TensorDataset, DataLoader
@@ -140,29 +144,22 @@ def load_dataset_split(
                 file_row_offset += c_len
                 total_scanned_rows += len(valid_indices)
 
-        # Pass 2: Class-aware index selection
-        rare_threshold = 15000
-        benign_cnt = len(class_records.get("Benign", []))
-        benign_quota = int(round(sample_limit * (benign_cnt / total_scanned_rows))) # 83,070
-
+        # Pass 2: Class-aware index selection preserving EXACT class ratio
+        is_full_dataset = (sample_limit is None or sample_limit <= 0)
         selected_file_row_map = defaultdict(set) # file_path -> set of row_indices to load
+        rng = np.random.RandomState(seed)
 
         for cls_name in sorted(class_records.keys()):
             recs = class_records[cls_name]
             total_cls = len(recs)
-            if total_cls <= rare_threshold:
-                # 100% Retained for Rare Attack Classes
+            if is_full_dataset:
                 chosen = recs
-            elif cls_name == "Benign":
-                # Proportional Benign Quota
-                rng = np.random.RandomState(seed)
-                chosen_idx = rng.choice(total_cls, size=min(benign_quota, total_cls), replace=False)
-                chosen = [recs[i] for i in chosen_idx]
             else:
-                # Capped 5,000 Quota for Majority Attack Classes
-                rng = np.random.RandomState(seed)
-                sample_n = min(5000, total_cls)
-                chosen_idx = rng.choice(total_cls, size=sample_n, replace=False)
+                # Proportional Stratified Quota for EVERY class (Benign + all attack categories)
+                class_ratio = total_cls / max(1, total_scanned_rows)
+                cls_quota = max(1, int(round(sample_limit * class_ratio)))
+                cls_quota = min(cls_quota, total_cls)
+                chosen_idx = rng.choice(total_cls, size=cls_quota, replace=False)
                 chosen = [recs[i] for i in chosen_idx]
 
             for p, r_id in chosen:
@@ -206,54 +203,94 @@ def load_dataset_split(
         df = pd.concat(extracted_dfs, ignore_index=True)
         print(f"Successfully extracted {len(df):,} total rows across all 15 CSE classes (Full scanned rows: {total_scanned_rows:,})")
 
+        feature_cols = [c for c in selected_features if c in df.columns]
+        label_col = 'Label' if 'Label' in df.columns else 'label'
+        for col in feature_cols:
+            s = pd.to_numeric(df[col], errors="coerce")
+            s = s.replace([np.inf, -np.inf], np.nan)
+            df[col] = s.clip(-1e12, 1e12)
+
+        X_raw = np.ascontiguousarray(df[feature_cols].values, dtype=np.float32)
+        raw_labels = df[label_col].values
+        source_files = df['source_file'].values if 'source_file' in df.columns else None
+        source_row_ids = df['source_row_id'].values if 'source_row_id' in df.columns else None
+        del df, extracted_dfs
+        gc.collect()
+
     else:
         # Standard ingestion for single CSV file datasets (NF-CSE / NF-UNSW)
-        dfs = []
-        rows_needed = sample_limit
-        for p in csv_paths:
-            if rows_needed <= 0:
+        p_first = csv_paths[0]
+        head = pd.read_csv(p_first, nrows=2)
+        head.columns = [c.strip() for c in head.columns]
+
+        # Determine Target Label Column
+        label_col = None
+        for cand in ["Label", "Attack", "attack_cat", "label"]:
+            if cand in head.columns:
+                label_col = cand
                 break
-            for chunk in pd.read_csv(p, nrows=rows_needed, chunksize=chunksize, low_memory=False):
+        if label_col is None:
+            raise KeyError(f"Could not identify target label column in CSV head columns: {head.columns.tolist()}")
+
+        # Determine Feature Columns
+        if selected_features:
+            feature_cols = [c for c in selected_features if c in head.columns]
+        else:
+            exact_ids = {'IPV4_SRC_ADDR', 'IPV4_DST_ADDR', 'SRC IP', 'DST IP', 'SRC_IP', 'DST_IP', 'TIMESTAMP', 'TIME', 'FLOW ID', 'ROW_ID', 'DNS_QUERY_ID', label_col, 'source_file', 'source_row_id'}
+            feature_cols = [c for c in head.columns if c.upper().strip() not in exact_ids]
+
+        if not feature_cols:
+            raise ValueError(f"No feature columns identified for dataset {norm_name}!")
+
+        load_cols = list(feature_cols)
+        if label_col and label_col not in load_cols:
+            load_cols.append(label_col)
+
+        x_chunks = []
+        y_chunks = []
+        src_files_chunks = []
+        src_row_ids_chunks = []
+
+        rows_needed = None if (sample_limit is None or sample_limit <= 0) else sample_limit
+        for p in csv_paths:
+            if rows_needed is not None and rows_needed <= 0:
+                break
+            fname = os.path.basename(p)
+            for chunk in pd.read_csv(p, usecols=load_cols, nrows=rows_needed, chunksize=chunksize, low_memory=False):
                 chunk.columns = [c.strip() for c in chunk.columns]
-                chunk['source_file'] = os.path.basename(p)
-                chunk['source_row_id'] = np.arange(len(chunk), dtype=np.int32)
-                dfs.append(chunk)
-                rows_needed -= len(chunk)
-                if rows_needed <= 0:
-                    break
-        df = pd.concat(dfs, ignore_index=True)
-        df.columns = [c.strip() for c in df.columns]
+                if label_col in chunk.columns:
+                    chunk = chunk[chunk[label_col] != label_col]
 
-    # Determine Target Label Column
-    label_col = None
-    for cand in ["Label", "Attack", "attack_cat", "label"]:
-        if cand in df.columns:
-            label_col = cand
-            break
-    if label_col is None:
-        raise KeyError(f"Could not identify target label column in df columns: {df.columns.tolist()}")
+                if len(chunk) == 0:
+                    continue
 
-    # Filter out header string rows inside data if present
-    df = df[df[label_col] != label_col]
+                # Clean numeric features in chunk
+                for col in feature_cols:
+                    s = pd.to_numeric(chunk[col], errors="coerce")
+                    s = s.replace([np.inf, -np.inf], np.nan)
+                    chunk[col] = s.clip(-1e12, 1e12)
 
-    # Determine Feature Columns
-    if selected_features:
-        feature_cols = [c for c in selected_features if c in df.columns]
-    else:
-        exact_ids = {'IPV4_SRC_ADDR', 'IPV4_DST_ADDR', 'SRC IP', 'DST IP', 'SRC_IP', 'DST_IP', 'TIMESTAMP', 'TIME', 'FLOW ID', 'ROW_ID', 'DNS_QUERY_ID', label_col, 'source_file', 'source_row_id'}
-        feature_cols = [c for c in df.columns if c.upper().strip() not in exact_ids]
+                chunk_x = chunk[feature_cols].values.astype(np.float32)
+                chunk_y = chunk[label_col].values
+                chunk_row_ids = np.arange(len(chunk), dtype=np.int32)
 
-    if not feature_cols:
-        raise ValueError(f"No feature columns identified for dataset {norm_name}!")
+                x_chunks.append(chunk_x)
+                y_chunks.append(chunk_y)
+                src_row_ids_chunks.append(chunk_row_ids)
+                src_files_chunks.append(np.array([fname] * len(chunk), dtype=object))
 
-    # 3. Clean numeric columns & safe clip to float32 range
-    F_LIMIT = 1e12
-    for c in feature_cols:
-        s = pd.to_numeric(df[c], errors="coerce")
-        s = s.replace([np.inf, -np.inf], np.nan)
-        df[c] = s.clip(-F_LIMIT, F_LIMIT)
+                if rows_needed is not None:
+                    rows_needed -= len(chunk)
+                    if rows_needed <= 0:
+                        break
 
-    raw_labels = df[label_col].values
+        X_raw = np.concatenate(x_chunks, axis=0)
+        raw_labels = np.concatenate(y_chunks, axis=0)
+        source_row_ids = np.concatenate(src_row_ids_chunks, axis=0)
+        source_files = np.concatenate(src_files_chunks, axis=0)
+
+        del x_chunks, y_chunks, src_row_ids_chunks, src_files_chunks
+        gc.collect()
 
     # Encode Target Labels
     label_encoder = LabelEncoder()
@@ -267,12 +304,8 @@ def load_dataset_split(
     class_distribution = {str(class_names[c]): int(cnt) for c, cnt in zip(unique_classes, counts)}
     imbalance_ratio = float(max(counts) / max(1, min(counts)))
 
-    # Preserve Source Metadata
-    source_files = df['source_file'].values if 'source_file' in df.columns else np.array(["unknown"] * len(df))
-    source_row_ids = df['source_row_id'].values if 'source_row_id' in df.columns else np.arange(len(df))
-
     # 4. 70% Train, 15% Val, 15% Test Split (Fixed Random Seed)
-    indices = np.arange(len(df))
+    indices = np.arange(len(y_encoded))
     can_stratify_step1 = (min(counts) > 1)
 
     idx_train, idx_temp, y_train, y_temp = train_test_split(
@@ -286,33 +319,36 @@ def load_dataset_split(
         idx_temp, y_temp, test_size=0.50, random_state=seed, stratify=y_temp if can_stratify_step2 else None
     )
 
-    # Build Split Assignment Array & Split Manifest
-    split_assignment = np.array(['unassigned'] * len(df), dtype=object)
-    split_assignment[idx_train] = 'train'
-    split_assignment[idx_val] = 'val'
-    split_assignment[idx_test] = 'test'
-
-    manifest_df = pd.DataFrame({
-        "source_file": source_files,
-        "source_row_id": source_row_ids,
-        "label": raw_labels.astype(str),
-        "encoded_label": y_encoded,
-        "split": split_assignment,
-        "sampling_seed": seed
-    })
-
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
         manifest_path = os.path.join(output_dir, "split_manifest.csv")
+        split_assignment = np.array(['unassigned'] * len(y_encoded), dtype=object)
+        split_assignment[idx_train] = 'train'
+        split_assignment[idx_val] = 'val'
+        split_assignment[idx_test] = 'test'
+        
+        manifest_df = pd.DataFrame({
+            "source_file": source_files if source_files is not None else ["unknown"] * len(y_encoded),
+            "source_row_id": source_row_ids if source_row_ids is not None else np.arange(len(y_encoded)),
+            "label": raw_labels.astype(str),
+            "encoded_label": y_encoded,
+            "split": split_assignment,
+            "sampling_seed": seed
+        })
         manifest_df.to_csv(manifest_path, index=False)
         print(f"Saved Split Manifest to {manifest_path} ({len(manifest_df):,} rows)")
+        del manifest_df, split_assignment
+        gc.collect()
+
+    del source_files, source_row_ids, raw_labels
+    gc.collect()
 
     # Extract Raw Feature Arrays for Train / Val / Test
-    X_raw = df[feature_cols].values.astype(np.float32)
-
     X_train_raw = X_raw[idx_train]
     X_val_raw = X_raw[idx_val]
     X_test_raw = X_raw[idx_test]
+    del X_raw
+    gc.collect()
 
     # 5. Fit Median Imputation and StandardScaler STRICTLY on Training Set
     for j in range(X_train_raw.shape[1]):
@@ -398,5 +434,5 @@ def load_dataset_split(
         "test_loader": test_loader,
         "scaler_fitted_on_train_only": True,
         "integration_report": integration_report,
-        "manifest_df": manifest_df
+        "manifest_df": None
     }

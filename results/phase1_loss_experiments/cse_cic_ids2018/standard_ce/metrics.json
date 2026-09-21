@@ -1,0 +1,229 @@
+{
+  "accuracy": 0.9285333333333333,
+  "macro_precision": 0.8332027740152346,
+  "macro_recall": 0.7534939998444266,
+  "macro_f1": 0.7756691915865006,
+  "weighted_precision": 0.9359787103412847,
+  "weighted_recall": 0.9285333333333333,
+  "weighted_f1": 0.9243367335274372,
+  "training_time_seconds": 121.21412920951843,
+  "epochs_completed": 20,
+  "best_epoch": 18,
+  "best_val_loss": 0.12552371222575506,
+  "final_val_loss": 0.1267866427063942,
+  "per_class_metrics": {
+    "Benign": {
+      "precision": 0.9937986961361107,
+      "recall": 0.9987216363055289,
+      "f1_score": 0.996254084641747,
+      "support": 6258
+    },
+    "Bot": {
+      "precision": 1.0,
+      "recall": 0.997060984570169,
+      "f1_score": 0.9985283296541575,
+      "support": 1361
+    },
+    "Brute Force -Web": {
+      "precision": 0.7777777777777778,
+      "recall": 0.44680851063829785,
+      "f1_score": 0.5675675675675675,
+      "support": 47
+    },
+    "Brute Force -XSS": {
+      "precision": 1.0,
+      "recall": 0.5294117647058824,
+      "f1_score": 0.6923076923076923,
+      "support": 17
+    },
+    "DDOS attack-HOIC": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 1207
+    },
+    "DDOS attack-LOIC-UDP": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 130
+    },
+    "DDoS attacks-LOIC-HTTP": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "support": 1494
+    },
+    "DoS attacks-GoldenEye": {
+      "precision": 0.9973315543695798,
+      "recall": 1.0,
+      "f1_score": 0.9986639946559787,
+      "support": 1495
+    },
+    "DoS attacks-SlowHTTPTest": {
+      "precision": 0.7872860635696821,
+      "recall": 0.4316353887399464,
+      "f1_score": 0.5575757575757576,
+      "support": 1492
+    },
+    "FTP-BruteForce": {
+      "precision": 0.6090364223144306,
+      "recall": 0.8847957133288681,
+      "f1_score": 0.7214636810486074,
+      "support": 1493
+    },
+    "SQL Injection": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1_score": 0.0,
+      "support": 6
+    }
+  },
+  "confusion_matrix": [
+    [
+      6250,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      4,
+      2,
+      0,
+      1
+    ],
+    [
+      4,
+      1357,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      26,
+      0,
+      21,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      8,
+      0,
+      0,
+      9,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1207,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      130,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1494,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1495,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      644,
+      848,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      172,
+      1321,
+      0
+    ],
+    [
+      1,
+      0,
+      5,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "cm_plot_path": "results/phase1_loss_experiments\\cse_cic_ids2018\\standard_ce\\cse_cic_ids2018_standard_ce_cm.png",
+  "loss_curve_path": "results/phase1_loss_experiments\\cse_cic_ids2018\\standard_ce\\cse_cic_ids2018_standard_ce_loss_curve.png"
+}

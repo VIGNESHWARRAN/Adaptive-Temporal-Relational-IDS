@@ -1,0 +1,40 @@
+{
+  "accuracy": 0.9887333333333334,
+  "macro_precision": 0.8763248254870545,
+  "macro_recall": 0.9813590908451596,
+  "macro_f1": 0.9218289159681199,
+  "weighted_precision": 0.9910741541607715,
+  "weighted_recall": 0.9887333333333334,
+  "weighted_f1": 0.9894227713734879,
+  "training_time_seconds": 89.3778944015503,
+  "epochs_completed": 15,
+  "best_epoch": 14,
+  "best_val_loss": 0.022347667250184652,
+  "final_val_loss": 0.022678117317830523,
+  "per_class_metrics": {
+    "0": {
+      "precision": 0.9990951486044407,
+      "recall": 0.9892487939352171,
+      "f1_score": 0.9941475915088133,
+      "support": 14510
+    },
+    "1": {
+      "precision": 0.7535545023696683,
+      "recall": 0.9734693877551021,
+      "f1_score": 0.8495102404274265,
+      "support": 490
+    }
+  },
+  "confusion_matrix": [
+    [
+      14354,
+      156
+    ],
+    [
+      13,
+      477
+    ]
+  ],
+  "cm_plot_path": "results/phase1_corrected_v1\\nf_unsw_nb15_v2\\standard_ce\\nf_unsw_nb15_v2_standard_ce_cm.png",
+  "loss_curve_path": "results/phase1_corrected_v1\\nf_unsw_nb15_v2\\standard_ce\\nf_unsw_nb15_v2_standard_ce_loss_curve.png"
+}

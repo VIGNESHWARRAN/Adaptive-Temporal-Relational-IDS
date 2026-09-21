@@ -1,0 +1,22 @@
+{
+  "dataset_name": "nf_cse_cic_ids2018_v2",
+  "architecture_type": "temporal_only",
+  "input_dim": 25,
+  "num_classes": 2,
+  "class_names": [
+    "0",
+    "1"
+  ],
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "epochs": 15,
+  "patience": 5,
+  "seed": 42,
+  "sample_limit": null,
+  "parameter_info": {
+    "total_parameters": 45218,
+    "trainable_parameters": 45218,
+    "encoder_parameters": 43072,
+    "head_parameters": 2146
+  }
+}

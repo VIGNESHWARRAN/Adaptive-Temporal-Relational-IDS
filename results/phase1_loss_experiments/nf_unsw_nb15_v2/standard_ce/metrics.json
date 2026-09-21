@@ -1,0 +1,40 @@
+{
+  "accuracy": 0.9888,
+  "macro_precision": 0.8787952655427929,
+  "macro_recall": 0.9764638039916174,
+  "macro_f1": 0.9215526498767754,
+  "weighted_precision": 0.9909111696639069,
+  "weighted_recall": 0.9888,
+  "weighted_f1": 0.9894391597217933,
+  "training_time_seconds": 123.06667113304138,
+  "epochs_completed": 20,
+  "best_epoch": 17,
+  "best_val_loss": 0.02221381023203333,
+  "final_val_loss": 0.022580283963788923,
+  "per_class_metrics": {
+    "0": {
+      "precision": 0.9987480873556823,
+      "recall": 0.9896623018607856,
+      "f1_score": 0.9941844364441983,
+      "support": 14510
+    },
+    "1": {
+      "precision": 0.7588424437299035,
+      "recall": 0.963265306122449,
+      "f1_score": 0.8489208633093526,
+      "support": 490
+    }
+  },
+  "confusion_matrix": [
+    [
+      14360,
+      150
+    ],
+    [
+      18,
+      472
+    ]
+  ],
+  "cm_plot_path": "results/phase1_loss_experiments\\nf_unsw_nb15_v2\\standard_ce\\nf_unsw_nb15_v2_standard_ce_cm.png",
+  "loss_curve_path": "results/phase1_loss_experiments\\nf_unsw_nb15_v2\\standard_ce\\nf_unsw_nb15_v2_standard_ce_loss_curve.png"
+}

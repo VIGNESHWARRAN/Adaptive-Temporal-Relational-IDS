@@ -1,0 +1,22 @@
+{
+  "dataset_name": "nf_cse_cic_ids2018_v2",
+  "full_candidate_features_count": 40,
+  "selected_features_count": 25,
+  "full_feature_metrics": {
+    "accuracy": 0.99518,
+    "macro_f1": 0.988432,
+    "weighted_f1": 0.995138,
+    "precision": 0.995204,
+    "recall": 0.99518
+  },
+  "selected_feature_metrics": {
+    "accuracy": 0.99516,
+    "macro_f1": 0.988384,
+    "weighted_f1": 0.995118,
+    "precision": 0.995183,
+    "recall": 0.99516
+  },
+  "macro_f1_difference": -4.8e-05,
+  "performance_retention_pct": 99.9951,
+  "validation_pass": true
+}

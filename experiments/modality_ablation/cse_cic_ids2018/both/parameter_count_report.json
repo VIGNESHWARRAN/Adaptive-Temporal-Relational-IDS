@@ -1,0 +1,7 @@
+{
+  "total_parameters": 67343,
+  "trainable_parameters": 67343,
+  "temporal_encoder_parameters": 43648,
+  "relational_encoder_parameters": 12736,
+  "head_parameters": 2575
+}

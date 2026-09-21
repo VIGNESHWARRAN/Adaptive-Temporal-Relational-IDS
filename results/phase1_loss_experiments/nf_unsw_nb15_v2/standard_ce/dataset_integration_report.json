@@ -1,0 +1,59 @@
+{
+  "dataset_name": "nf_unsw_nb15_v2",
+  "loaded_feature_config_path": "configs/feature_selection\\nf_unsw_nb15_v2_features.json",
+  "exact_selected_feature_names": [
+    "MIN_TTL",
+    "MIN_IP_PKT_LEN",
+    "SHORTEST_FLOW_PKT",
+    "MAX_TTL",
+    "LONGEST_FLOW_PKT",
+    "TCP_WIN_MAX_IN",
+    "OUT_BYTES",
+    "L4_DST_PORT",
+    "DST_TO_SRC_AVG_THROUGHPUT",
+    "TCP_FLAGS",
+    "SERVER_TCP_FLAGS",
+    "TCP_WIN_MAX_OUT",
+    "SRC_TO_DST_SECOND_BYTES",
+    "DST_TO_SRC_SECOND_BYTES",
+    "NUM_PKTS_UP_TO_128_BYTES",
+    "PROTOCOL",
+    "IN_BYTES",
+    "IN_PKTS",
+    "L4_SRC_PORT",
+    "SRC_TO_DST_AVG_THROUGHPUT",
+    "ICMP_TYPE",
+    "L7_PROTO",
+    "NUM_PKTS_128_TO_256_BYTES",
+    "DNS_QUERY_TYPE",
+    "NUM_PKTS_256_TO_512_BYTES"
+  ],
+  "num_selected_features": 25,
+  "num_classes": 2,
+  "label_mapping": {
+    "0": "0",
+    "1": "1"
+  },
+  "temporal_feature_mapping": [
+    "DST_TO_SRC_AVG_THROUGHPUT",
+    "SRC_TO_DST_SECOND_BYTES",
+    "DST_TO_SRC_SECOND_BYTES",
+    "SRC_TO_DST_AVG_THROUGHPUT"
+  ],
+  "relational_feature_mapping": [
+    "MIN_TTL",
+    "MIN_IP_PKT_LEN",
+    "MAX_TTL",
+    "L4_DST_PORT",
+    "PROTOCOL",
+    "L4_SRC_PORT",
+    "ICMP_TYPE",
+    "L7_PROTO",
+    "DNS_QUERY_TYPE"
+  ],
+  "train_size": 70000,
+  "validation_size": 15000,
+  "test_size": 15000,
+  "model_input_dimensions": 25,
+  "selected_features_used_confirmation": true
+}

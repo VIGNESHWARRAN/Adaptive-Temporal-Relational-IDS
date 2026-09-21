@@ -1,0 +1,28 @@
+{
+  "audit_timestamp": "2026-09-19T15:55:17.856945",
+  "pass1_sha256": "bdd832ab8ccbc6c4926497ef0e09853187923039b5def875e7e68649f03f9dcb",
+  "pass2_sha256": "bdd832ab8ccbc6c4926497ef0e09853187923039b5def875e7e68649f03f9dcb",
+  "reproducibility_status": "100% IDENTICAL",
+  "benign_quota_calculated": 83070,
+  "total_extracted_rows": 141718,
+  "train_rows": 99202,
+  "val_rows": 21258,
+  "test_rows": 21258,
+  "class_counts": {
+    "Benign": 83070,
+    "DoS attacks-Slowloris": 10990,
+    "Bot": 5000,
+    "DDOS attack-HOIC": 5000,
+    "DDoS attacks-LOIC-HTTP": 5000,
+    "DoS attacks-GoldenEye": 5000,
+    "DoS attacks-Hulk": 5000,
+    "DoS attacks-SlowHTTPTest": 5000,
+    "FTP-BruteForce": 5000,
+    "Infilteration": 5000,
+    "SSH-Bruteforce": 5000,
+    "DDOS attack-LOIC-UDP": 1730,
+    "Brute Force -Web": 611,
+    "Brute Force -XSS": 230,
+    "SQL Injection": 87
+  }
+}

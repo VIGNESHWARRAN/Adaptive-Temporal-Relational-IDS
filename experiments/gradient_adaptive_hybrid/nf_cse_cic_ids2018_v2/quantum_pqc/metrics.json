@@ -1,0 +1,48 @@
+{
+  "accuracy": 0.9918,
+  "macro_precision": 0.9831168248843793,
+  "macro_recall": 0.9777501207656996,
+  "macro_f1": 0.9804129795339205,
+  "weighted_precision": 0.9917651460684713,
+  "weighted_recall": 0.9918,
+  "weighted_f1": 0.9917771005096861,
+  "training_time_seconds": 173.41016602516174,
+  "epochs_completed": 11,
+  "best_epoch": 6,
+  "best_val_loss": 0.034636735481023785,
+  "final_val_loss": 0.03995340867042541,
+  "per_class_metrics": {
+    "0": {
+      "precision": 0.9944822373393802,
+      "recall": 0.9962141288710532,
+      "f1_score": 0.9953474297386239,
+      "support": 13207
+    },
+    "1": {
+      "precision": 0.9717514124293786,
+      "recall": 0.9592861126603458,
+      "f1_score": 0.965478529329217,
+      "support": 1793
+    }
+  },
+  "confusion_matrix": [
+    [
+      13157,
+      50
+    ],
+    [
+      73,
+      1720
+    ]
+  ],
+  "cm_plot_path": "experiments/gradient_adaptive_hybrid\\nf_cse_cic_ids2018_v2\\quantum_pqc\\nf_cse_cic_ids2018_v2_quantum_pqc_cm.png",
+  "loss_curve_path": "experiments/gradient_adaptive_hybrid\\nf_cse_cic_ids2018_v2\\quantum_pqc\\nf_cse_cic_ids2018_v2_quantum_pqc_loss_curve.png",
+  "adaptive_loss_summary": {
+    "total_steps": 12034,
+    "final_alpha": 0.4212871193885803,
+    "final_beta": 0.503849446773529,
+    "final_gamma": 0.07486321032047272,
+    "clipping_events": 3662,
+    "fallback_events": 0
+  }
+}

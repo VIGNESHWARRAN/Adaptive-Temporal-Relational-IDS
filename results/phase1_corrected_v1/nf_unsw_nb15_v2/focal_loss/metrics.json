@@ -1,0 +1,40 @@
+{
+  "accuracy": 0.9880666666666666,
+  "macro_precision": 0.8674853311520193,
+  "macro_recall": 0.9898880434323971,
+  "macro_f1": 0.9191391685380352,
+  "weighted_precision": 0.9910816408402309,
+  "weighted_recall": 0.9880666666666666,
+  "weighted_f1": 0.9889177463244033,
+  "training_time_seconds": 115.89198064804077,
+  "epochs_completed": 15,
+  "best_epoch": 14,
+  "best_val_loss": 0.0061716233347620195,
+  "final_val_loss": 0.0062082984187252195,
+  "per_class_metrics": {
+    "0": {
+      "precision": 0.9997210405188647,
+      "recall": 0.9879393521709167,
+      "f1_score": 0.9937952788658185,
+      "support": 14510
+    },
+    "1": {
+      "precision": 0.735249621785174,
+      "recall": 0.9918367346938776,
+      "f1_score": 0.8444830582102519,
+      "support": 490
+    }
+  },
+  "confusion_matrix": [
+    [
+      14335,
+      175
+    ],
+    [
+      4,
+      486
+    ]
+  ],
+  "cm_plot_path": "results/phase1_corrected_v1\\nf_unsw_nb15_v2\\focal_loss\\nf_unsw_nb15_v2_focal_loss_cm.png",
+  "loss_curve_path": "results/phase1_corrected_v1\\nf_unsw_nb15_v2\\focal_loss\\nf_unsw_nb15_v2_focal_loss_loss_curve.png"
+}

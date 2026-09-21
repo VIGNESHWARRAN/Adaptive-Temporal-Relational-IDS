@@ -92,7 +92,14 @@
     "Fwd IAT Std"
   ],
   "relational_features": [
-    "Dst Port"
+    "Dst Port",
+    "Init Fwd Win Byts",
+    "Init Bwd Win Byts",
+    "Fwd Seg Size Min",
+    "RST Flag Cnt",
+    "ACK Flag Cnt",
+    "Tot Fwd Pkts",
+    "Tot Bwd Pkts"
   ],
   "graph_node_features": [
     "Src IP",

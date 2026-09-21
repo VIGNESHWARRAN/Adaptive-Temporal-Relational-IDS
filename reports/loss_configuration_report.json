@@ -1,0 +1,32 @@
+{
+  "audit_timestamp": "2026-09-19T16:19:48.241872",
+  "loss_functions": {
+    "standard_ce": {
+      "name": "Standard Unweighted Cross-Entropy Loss",
+      "formula": "L_CE = -log(p_y)",
+      "class_weights_used": false,
+      "gamma": null
+    },
+    "weighted_ce": {
+      "name": "Class-Weighted Cross-Entropy Loss",
+      "formula": "L_WCE = -w_y * log(p_y)",
+      "weight_formula": "w_c = N_train / (K * N_c)",
+      "class_weights_used": true,
+      "fitted_scope": "Train split only"
+    },
+    "focal_loss": {
+      "name": "Multiclass Focal Loss",
+      "formula": "FL(p_t) = - (1 - p_t)^gamma * log(p_t)",
+      "gamma": 2.0,
+      "alpha": "None (unweighted focal)"
+    }
+  },
+  "fixed_hyperparameters": {
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "batch_size": 64,
+    "epochs": 15,
+    "early_stopping_patience": 5,
+    "random_seed": 42
+  }
+}

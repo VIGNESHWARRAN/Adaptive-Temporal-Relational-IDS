@@ -1,0 +1,36 @@
+{
+  "all_passed": false,
+  "checks": {
+    "check_A_train_test_separation": {
+      "passed": false,
+      "overlap_count_sample_5k": 71,
+      "detail": "WARNING: Found 71 overlapping vectors."
+    },
+    "check_B_val_test_separation": {
+      "passed": false,
+      "overlap_count_sample_5k": 58,
+      "detail": "WARNING: Found 58 overlapping vectors."
+    },
+    "check_C_duplicate_leakage": {
+      "passed": false,
+      "overlap_count_sample_5k": 69,
+      "detail": "WARNING: 69 duplicates across Train/Val."
+    },
+    "check_D_label_leakage": {
+      "passed": true,
+      "detail": "Target label 'Label' is strictly excluded from input feature matrix X."
+    },
+    "check_E_preprocessing_leakage": {
+      "passed": true,
+      "detail": "Scalers and normalizers are fitted exclusively on 70% Train partition, and applied to Val/Test."
+    },
+    "check_F_split_leakage": {
+      "passed": true,
+      "detail": "Fixed chronological/stratified random seed split preserved across all loss function experiments."
+    },
+    "check_G_evaluation_leakage": {
+      "passed": true,
+      "detail": "Model selection driven strictly by Validation loss; Test set remains unseen until final evaluation."
+    }
+  }
+}

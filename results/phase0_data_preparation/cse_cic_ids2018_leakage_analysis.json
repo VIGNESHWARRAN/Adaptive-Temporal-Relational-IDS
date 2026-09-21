@@ -1,0 +1,907 @@
+{
+  "dataset_name": "cse_cic_ids2018",
+  "target_verification": {
+    "target_column": "Label",
+    "attack_column": null,
+    "target_present": true,
+    "target_not_in_X": true,
+    "unique_classes_count": 14,
+    "class_counts": {
+      "Benign": 220967,
+      "DDoS attacks-LOIC-HTTP": 49968,
+      "FTP-BruteForce": 49958,
+      "DDOS attack-HOIC": 48037,
+      "DoS attacks-SlowHTTPTest": 45752,
+      "Bot": 39905,
+      "DoS attacks-GoldenEye": 20659,
+      "Infilteration": 13619,
+      "DoS attacks-Slowloris": 5651,
+      "DoS attacks-Hulk": 4144,
+      "DDOS attack-LOIC-UDP": 851,
+      "Brute Force -Web": 320,
+      "Brute Force -XSS": 125,
+      "SQL Injection": 44
+    },
+    "class_percentages": {
+      "Benign": 44.1934,
+      "DDoS attacks-LOIC-HTTP": 9.9936,
+      "FTP-BruteForce": 9.9916,
+      "DDOS attack-HOIC": 9.6074,
+      "DoS attacks-SlowHTTPTest": 9.1504,
+      "Bot": 7.981,
+      "DoS attacks-GoldenEye": 4.1318,
+      "Infilteration": 2.7238,
+      "DoS attacks-Slowloris": 1.1302,
+      "DoS attacks-Hulk": 0.8288,
+      "DDOS attack-LOIC-UDP": 0.1702,
+      "Brute Force -Web": 0.064,
+      "Brute Force -XSS": 0.025,
+      "SQL Injection": 0.0088
+    }
+  },
+  "feature_taxonomy": [
+    {
+      "feature": "Dst Port",
+      "type": "Numerical",
+      "semantic_category": "Service / Port",
+      "category_code": "4. Network endpoint information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "Protocol",
+      "type": "Categorical",
+      "semantic_category": "Protocol",
+      "category_code": "5. Protocol information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "Timestamp",
+      "type": "Categorical",
+      "semantic_category": "Timestamp",
+      "category_code": "3. Timestamp",
+      "candidate_role": "Temporal / Ordering"
+    },
+    {
+      "feature": "Flow Duration",
+      "type": "Numerical",
+      "semantic_category": "Flow timing",
+      "category_code": "8. Flow duration / timing",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Tot Fwd Pkts",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Tot Bwd Pkts",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "TotLen Fwd Pkts",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "TotLen Bwd Pkts",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Fwd Pkt Len Max",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Fwd Pkt Len Min",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Fwd Pkt Len Mean",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Fwd Pkt Len Std",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Bwd Pkt Len Max",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Bwd Pkt Len Min",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Bwd Pkt Len Mean",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Bwd Pkt Len Std",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Flow Byts/s",
+      "type": "Numerical",
+      "semantic_category": "Flow rates",
+      "category_code": "11. Rate features",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Flow Pkts/s",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Flow IAT Mean",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Flow IAT Std",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Flow IAT Max",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Flow IAT Min",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Fwd IAT Tot",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Fwd IAT Mean",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Fwd IAT Std",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Fwd IAT Max",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Fwd IAT Min",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Bwd IAT Tot",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Bwd IAT Mean",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Bwd IAT Std",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Bwd IAT Max",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Bwd IAT Min",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "Fwd PSH Flags",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Bwd PSH Flags",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Fwd URG Flags",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Bwd URG Flags",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Fwd Header Len",
+      "type": "Numerical",
+      "semantic_category": "Byte statistics",
+      "category_code": "7. Byte statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Bwd Header Len",
+      "type": "Numerical",
+      "semantic_category": "Byte statistics",
+      "category_code": "7. Byte statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Fwd Pkts/s",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Bwd Pkts/s",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Pkt Len Min",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Pkt Len Max",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Pkt Len Mean",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Pkt Len Std",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Pkt Len Var",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "FIN Flag Cnt",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "SYN Flag Cnt",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "RST Flag Cnt",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "PSH Flag Cnt",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "ACK Flag Cnt",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "URG Flag Cnt",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "CWE Flag Count",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "ECE Flag Cnt",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Down/Up Ratio",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Pkt Size Avg",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Fwd Seg Size Avg",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Bwd Seg Size Avg",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Fwd Byts/b Avg",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Fwd Pkts/b Avg",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Fwd Blk Rate Avg",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Bwd Byts/b Avg",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Bwd Pkts/b Avg",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Bwd Blk Rate Avg",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Subflow Fwd Pkts",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Subflow Fwd Byts",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Subflow Bwd Pkts",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Subflow Bwd Byts",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Init Fwd Win Byts",
+      "type": "Numerical",
+      "semantic_category": "Header / Window",
+      "category_code": "12. Window/header features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Init Bwd Win Byts",
+      "type": "Numerical",
+      "semantic_category": "Header / Window",
+      "category_code": "12. Window/header features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Fwd Act Data Pkts",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "Fwd Seg Size Min",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Active Mean",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Active Std",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Active Max",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Active Min",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Idle Mean",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Idle Std",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Idle Max",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Idle Min",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Label",
+      "type": "Categorical",
+      "semantic_category": "Target",
+      "category_code": "Target / Label",
+      "candidate_role": "Target"
+    },
+    {
+      "feature": "Flow ID",
+      "type": "Categorical",
+      "semantic_category": "Endpoint identity / Flow ID",
+      "category_code": "2. Identifier",
+      "candidate_role": "Relational / Node Identity"
+    },
+    {
+      "feature": "Src IP",
+      "type": "Categorical",
+      "semantic_category": "Endpoint identity / Flow ID",
+      "category_code": "2. Identifier",
+      "candidate_role": "Relational / Node Identity"
+    },
+    {
+      "feature": "Src Port",
+      "type": "Numerical",
+      "semantic_category": "Service / Port",
+      "category_code": "4. Network endpoint information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "Dst IP",
+      "type": "Categorical",
+      "semantic_category": "Endpoint identity / Flow ID",
+      "category_code": "2. Identifier",
+      "candidate_role": "Relational / Node Identity"
+    }
+  ],
+  "identifier_report": [
+    {
+      "feature": "Dst Port",
+      "reason_identified": "Candidate identifier matching keyword, unique count=17415",
+      "unique_value_ratio": 0.03483,
+      "classification": "B. Network identity information",
+      "leakage_risk": "Low to Moderate",
+      "decision": "RETAIN as categorical/numerical edge attribute or service feature",
+      "reasoning": "Port numbers represent standard transport services (e.g. 80, 443, 22, 53)."
+    },
+    {
+      "feature": "Idle Mean",
+      "reason_identified": "Candidate identifier matching keyword, unique count=46300",
+      "unique_value_ratio": 0.0926,
+      "classification": "B. Behavioral network feature",
+      "leakage_risk": "Low",
+      "decision": "RETAIN for feature selection",
+      "reasoning": "Statistically informative protocol/service indicator."
+    },
+    {
+      "feature": "Idle Std",
+      "reason_identified": "Candidate identifier matching keyword, unique count=25952",
+      "unique_value_ratio": 0.051904,
+      "classification": "B. Behavioral network feature",
+      "leakage_risk": "Low",
+      "decision": "RETAIN for feature selection",
+      "reasoning": "Statistically informative protocol/service indicator."
+    },
+    {
+      "feature": "Idle Max",
+      "reason_identified": "Candidate identifier matching keyword, unique count=41456",
+      "unique_value_ratio": 0.082912,
+      "classification": "B. Behavioral network feature",
+      "leakage_risk": "Low",
+      "decision": "RETAIN for feature selection",
+      "reasoning": "Statistically informative protocol/service indicator."
+    },
+    {
+      "feature": "Idle Min",
+      "reason_identified": "Candidate identifier matching keyword, unique count=44267",
+      "unique_value_ratio": 0.088534,
+      "classification": "B. Behavioral network feature",
+      "leakage_risk": "Low",
+      "decision": "RETAIN for feature selection",
+      "reasoning": "Statistically informative protocol/service indicator."
+    },
+    {
+      "feature": "Flow ID",
+      "reason_identified": "Candidate identifier matching keyword, unique count=49978",
+      "unique_value_ratio": 0.099956,
+      "classification": "A. Pure record identifier",
+      "leakage_risk": "High (if used directly in tabular classifier)",
+      "decision": "EXCLUDE from tabular feature vector",
+      "reasoning": "Pure unique identifier causing over-fitting and label memorization."
+    },
+    {
+      "feature": "Src IP",
+      "reason_identified": "Candidate identifier matching keyword, unique count=17",
+      "unique_value_ratio": 3.4e-05,
+      "classification": "B. Network identity information",
+      "leakage_risk": "Moderate to High (IP memorization risk in static tabular models)",
+      "decision": "USE FOR GRAPH NODE CONSTRUCTION; EXCLUDE from raw tabular classifier",
+      "reasoning": "Defines topology in dynamic relational graph branch. Raw IP numbers leak subnet/host specific identities."
+    },
+    {
+      "feature": "Src Port",
+      "reason_identified": "Candidate identifier matching keyword, unique count=10664",
+      "unique_value_ratio": 0.021328,
+      "classification": "B. Network identity information",
+      "leakage_risk": "Low to Moderate",
+      "decision": "RETAIN as categorical/numerical edge attribute or service feature",
+      "reasoning": "Port numbers represent standard transport services (e.g. 80, 443, 22, 53)."
+    },
+    {
+      "feature": "Dst IP",
+      "reason_identified": "Candidate identifier matching keyword, unique count=5",
+      "unique_value_ratio": 1e-05,
+      "classification": "B. Network identity information",
+      "leakage_risk": "Moderate to High (IP memorization risk in static tabular models)",
+      "decision": "USE FOR GRAPH NODE CONSTRUCTION; EXCLUDE from raw tabular classifier",
+      "reasoning": "Defines topology in dynamic relational graph branch. Raw IP numbers leak subnet/host specific identities."
+    }
+  ],
+  "timestamp_report": {
+    "timestamp_available": true,
+    "timestamp_column": "Timestamp",
+    "data_type": "object",
+    "is_monotonically_ordered": false,
+    "leakage_risk_evaluation": "HIGH if raw timestamp integer/string is fed directly to classifier (models memorize attack collection windows). LOW if used exclusively for chronological sliding window ordering and inter-flow delta calculations.",
+    "recommended_role": "Sequence Ordering / Inter-Flow Velocity Engine; EXCLUDED from static feature matrix X.",
+    "class_timestamp_distributions": {
+      "FTP-BruteForce": {
+        "min_timestamp": "2018-02-14 10:33:26",
+        "max_timestamp": "2018-02-14 11:23:35",
+        "active_hours": [
+          11,
+          10
+        ],
+        "active_dates": [
+          "2018-02-14"
+        ]
+      },
+      "Benign": {
+        "min_timestamp": "2018-02-14 08:39:28",
+        "max_timestamp": "2018-03-02 12:59:59",
+        "active_hours": [
+          10,
+          9,
+          8,
+          11,
+          12,
+          1,
+          4,
+          3,
+          5,
+          2
+        ],
+        "active_dates": [
+          "2018-02-14",
+          "2018-02-15",
+          "2018-02-16",
+          "2018-02-20",
+          "2018-02-21",
+          "2018-02-22",
+          "2018-02-23",
+          "2018-02-28",
+          "2018-03-01",
+          "2018-03-02"
+        ]
+      },
+      "DoS attacks-GoldenEye": {
+        "min_timestamp": "2018-02-15 09:27:42",
+        "max_timestamp": "2018-02-15 09:57:10",
+        "active_hours": [
+          9
+        ],
+        "active_dates": [
+          "2018-02-15"
+        ]
+      },
+      "DoS attacks-Slowloris": {
+        "min_timestamp": "2018-02-15 11:00:12",
+        "max_timestamp": "2018-02-15 11:42:01",
+        "active_hours": [
+          11
+        ],
+        "active_dates": [
+          "2018-02-15"
+        ]
+      },
+      "DoS attacks-SlowHTTPTest": {
+        "min_timestamp": "2018-02-16 10:12:14",
+        "max_timestamp": "2018-02-16 10:58:08",
+        "active_hours": [
+          10
+        ],
+        "active_dates": [
+          "2018-02-16"
+        ]
+      },
+      "DoS attacks-Hulk": {
+        "min_timestamp": "2018-02-16 01:45:27",
+        "max_timestamp": "2018-02-16 01:45:29",
+        "active_hours": [
+          1
+        ],
+        "active_dates": [
+          "2018-02-16"
+        ]
+      },
+      "DDoS attacks-LOIC-HTTP": {
+        "min_timestamp": "2018-02-20 10:13:54",
+        "max_timestamp": "2018-02-20 10:35:41",
+        "active_hours": [
+          10
+        ],
+        "active_dates": [
+          "2018-02-20"
+        ]
+      },
+      "DDOS attack-HOIC": {
+        "min_timestamp": "2018-02-21 02:11:08",
+        "max_timestamp": "2018-02-21 02:13:13",
+        "active_hours": [
+          2
+        ],
+        "active_dates": [
+          "2018-02-21"
+        ]
+      },
+      "DDOS attack-LOIC-UDP": {
+        "min_timestamp": "2018-02-21 10:08:51",
+        "max_timestamp": "2018-02-21 10:43:16",
+        "active_hours": [
+          10
+        ],
+        "active_dates": [
+          "2018-02-21"
+        ]
+      },
+      "Brute Force -Web": {
+        "min_timestamp": "2018-02-22 10:13:44",
+        "max_timestamp": "2018-02-23 11:02:53",
+        "active_hours": [
+          10,
+          11,
+          9
+        ],
+        "active_dates": [
+          "2018-02-22",
+          "2018-02-23"
+        ]
+      },
+      "Brute Force -XSS": {
+        "min_timestamp": "2018-02-22 01:51:39",
+        "max_timestamp": "2018-02-23 02:10:04",
+        "active_hours": [
+          2,
+          1
+        ],
+        "active_dates": [
+          "2018-02-22",
+          "2018-02-23"
+        ]
+      },
+      "SQL Injection": {
+        "min_timestamp": "2018-02-22 04:14:30",
+        "max_timestamp": "2018-02-23 10:53:21",
+        "active_hours": [
+          4,
+          11,
+          3,
+          10
+        ],
+        "active_dates": [
+          "2018-02-22",
+          "2018-02-23"
+        ]
+      },
+      "Infilteration": {
+        "min_timestamp": "2018-03-01 02:00:01",
+        "max_timestamp": "2018-03-01 03:36:59",
+        "active_hours": [
+          2,
+          3
+        ],
+        "active_dates": [
+          "2018-03-01"
+        ]
+      },
+      "Bot": {
+        "min_timestamp": "2018-03-02 01:00:00",
+        "max_timestamp": "2018-03-02 12:59:58",
+        "active_hours": [
+          2,
+          1,
+          10,
+          3,
+          11,
+          12
+        ],
+        "active_dates": [
+          "2018-03-02"
+        ]
+      }
+    }
+  },
+  "duplicate_report": {
+    "total_rows_analyzed": 500000,
+    "exact_duplicate_rows": 68832,
+    "exact_duplicate_percentage": 13.7664,
+    "feature_vector_duplicates": 68833,
+    "feature_vector_duplicate_percentage": 13.7666,
+    "leakage_risk_note": "Cross-split duplicates between Train and Test splits can inflate test accuracy. Train/Val/Test splits must be strictly deduplicated or chronologically block-split."
+  }
+}

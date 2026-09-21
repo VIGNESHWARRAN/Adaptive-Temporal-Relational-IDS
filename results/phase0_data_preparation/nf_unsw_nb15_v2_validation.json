@@ -1,0 +1,22 @@
+{
+  "dataset_name": "nf_unsw_nb15_v2",
+  "full_candidate_features_count": 40,
+  "selected_features_count": 25,
+  "full_feature_metrics": {
+    "accuracy": 0.997393,
+    "macro_f1": 0.980321,
+    "weighted_f1": 0.997412,
+    "precision": 0.997444,
+    "recall": 0.997393
+  },
+  "selected_feature_metrics": {
+    "accuracy": 0.997427,
+    "macro_f1": 0.980563,
+    "weighted_f1": 0.997444,
+    "precision": 0.997475,
+    "recall": 0.997427
+  },
+  "macro_f1_difference": 0.000242,
+  "performance_retention_pct": 100.0247,
+  "validation_pass": true
+}

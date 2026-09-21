@@ -149,7 +149,11 @@ class ExperimentTrainer:
             val_losses.append(val_loss)
             val_macro_f1s.append(float(val_f1))
 
-            if val_loss < best_val_loss:
+            is_best = val_loss < best_val_loss
+            star = " *" if is_best else ""
+            print(f"   Epoch {epoch:2d}/{epochs:2d} | Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f} | Val Macro F1: {val_f1:.4f}{star}")
+
+            if is_best:
                 best_val_loss = val_loss
                 best_epoch = epoch
                 patience_counter = 0
@@ -159,6 +163,7 @@ class ExperimentTrainer:
             else:
                 patience_counter += 1
                 if patience_counter >= patience:
+                    print(f"   [Early Stopping] Triggered after {patience} epochs without validation improvement.")
                     break
 
         training_time = time.time() - start_time

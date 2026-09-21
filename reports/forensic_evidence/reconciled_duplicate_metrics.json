@@ -1,0 +1,245 @@
+{
+  "audit_timestamp": "2026-09-19T15:36:43.525902",
+  "dataset": "CSE-CIC-IDS2018",
+  "total_scanned_rows": 16232943,
+  "unique_28_feature_vectors": 11442399,
+  "exact_duplicate_rows": 4790544,
+  "exact_duplicate_percentage": 29.511247590778826,
+  "duplicate_groups_count": 700590,
+  "conflicting_label_groups_count": 68679,
+  "definition_a_non_majority_conflicting_rows": 178180,
+  "definition_b_conflicting_group_total_population": 1573181,
+  "earlier_cited_conflicting_rows_value": 228449,
+  "reconciliation_note": "Definition A counts non-majority rows contradicting majority label. Definition B counts total population in ambiguous groups. Earlier value 228,449 was calculated on a 10M record subset under Definition A.",
+  "manually_inspectable_group_examples": [
+    {
+      "group_feature_hash": "af8a491dc930218c",
+      "total_rows_in_group": 6531,
+      "distinct_labels_count": 2,
+      "label_distribution": {
+        "FTP-BruteForce": 6058,
+        "DoS attacks-SlowHTTPTest": 473
+      },
+      "majority_label": "FTP-BruteForce",
+      "non_majority_rows_def_a": 473,
+      "sample_records": [
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 94,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 104,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 185,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 195,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 225,
+          "Label": "FTP-BruteForce"
+        }
+      ],
+      "first_5_feature_values": [
+        26883.0,
+        52631.578125,
+        40.0,
+        19.0,
+        105263.15625
+      ]
+    },
+    {
+      "group_feature_hash": "66484baa9221a649",
+      "total_rows_in_group": 59909,
+      "distinct_labels_count": 3,
+      "label_distribution": {
+        "FTP-BruteForce": 12733,
+        "SSH-Bruteforce": 4,
+        "DoS attacks-SlowHTTPTest": 47172
+      },
+      "majority_label": "DoS attacks-SlowHTTPTest",
+      "non_majority_rows_def_a": 12737,
+      "sample_records": [
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 95,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 96,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 125,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 206,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 209,
+          "Label": "FTP-BruteForce"
+        }
+      ],
+      "first_5_feature_values": [
+        26883.0,
+        333333.34375,
+        40.0,
+        3.0,
+        666666.6875
+      ]
+    },
+    {
+      "group_feature_hash": "8eaa1a3ba3df8f8a",
+      "total_rows_in_group": 149331,
+      "distinct_labels_count": 3,
+      "label_distribution": {
+        "FTP-BruteForce": 87297,
+        "SSH-Bruteforce": 10,
+        "DoS attacks-SlowHTTPTest": 62024
+      },
+      "majority_label": "FTP-BruteForce",
+      "non_majority_rows_def_a": 62034,
+      "sample_records": [
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 97,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 98,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 99,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 100,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 101,
+          "Label": "FTP-BruteForce"
+        }
+      ],
+      "first_5_feature_values": [
+        26883.0,
+        500000.0,
+        40.0,
+        2.0,
+        1000000.0
+      ]
+    },
+    {
+      "group_feature_hash": "d35648216d772ffe",
+      "total_rows_in_group": 65374,
+      "distinct_labels_count": 3,
+      "label_distribution": {
+        "FTP-BruteForce": 64336,
+        "SSH-Bruteforce": 10,
+        "DoS attacks-SlowHTTPTest": 1028
+      },
+      "majority_label": "FTP-BruteForce",
+      "non_majority_rows_def_a": 1038,
+      "sample_records": [
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 102,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 106,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 107,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 110,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 111,
+          "Label": "FTP-BruteForce"
+        }
+      ],
+      "first_5_feature_values": [
+        26883.0,
+        1000000.0,
+        40.0,
+        1.0,
+        2000000.0
+      ]
+    },
+    {
+      "group_feature_hash": "27d99d72fcf25ebb",
+      "total_rows_in_group": 9671,
+      "distinct_labels_count": 3,
+      "label_distribution": {
+        "FTP-BruteForce": 4340,
+        "SSH-Bruteforce": 3,
+        "DoS attacks-SlowHTTPTest": 5328
+      },
+      "majority_label": "DoS attacks-SlowHTTPTest",
+      "non_majority_rows_def_a": 4343,
+      "sample_records": [
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 105,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 115,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 207,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 526,
+          "Label": "FTP-BruteForce"
+        },
+        {
+          "source_file": "02-14-2018.csv",
+          "source_row_id": 527,
+          "Label": "FTP-BruteForce"
+        }
+      ],
+      "first_5_feature_values": [
+        26883.0,
+        250000.0,
+        40.0,
+        4.0,
+        500000.0
+      ]
+    }
+  ]
+}

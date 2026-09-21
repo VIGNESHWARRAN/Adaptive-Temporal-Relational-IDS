@@ -1,0 +1,421 @@
+{
+  "dataset_name": "nf_unsw_nb15_v2",
+  "target_verification": {
+    "target_column": "Label",
+    "attack_column": "Attack",
+    "target_present": true,
+    "target_not_in_X": true,
+    "unique_classes_count": 2,
+    "class_counts": {
+      "0": 483104,
+      "1": 16896
+    },
+    "class_percentages": {
+      "0": 96.6208,
+      "1": 3.3792
+    }
+  },
+  "feature_taxonomy": [
+    {
+      "feature": "IPV4_SRC_ADDR",
+      "type": "Categorical",
+      "semantic_category": "Endpoint identity / Flow ID",
+      "category_code": "2. Identifier",
+      "candidate_role": "Relational / Node Identity"
+    },
+    {
+      "feature": "L4_SRC_PORT",
+      "type": "Numerical",
+      "semantic_category": "Service / Port",
+      "category_code": "4. Network endpoint information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "IPV4_DST_ADDR",
+      "type": "Categorical",
+      "semantic_category": "Endpoint identity / Flow ID",
+      "category_code": "2. Identifier",
+      "candidate_role": "Relational / Node Identity"
+    },
+    {
+      "feature": "L4_DST_PORT",
+      "type": "Numerical",
+      "semantic_category": "Service / Port",
+      "category_code": "4. Network endpoint information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "PROTOCOL",
+      "type": "Categorical",
+      "semantic_category": "Protocol",
+      "category_code": "5. Protocol information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "L7_PROTO",
+      "type": "Categorical",
+      "semantic_category": "Protocol",
+      "category_code": "5. Protocol information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "IN_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Byte statistics",
+      "category_code": "7. Byte statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "IN_PKTS",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "OUT_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Byte statistics",
+      "category_code": "7. Byte statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "OUT_PKTS",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "TCP_FLAGS",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "CLIENT_TCP_FLAGS",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "SERVER_TCP_FLAGS",
+      "type": "Numerical",
+      "semantic_category": "TCP Flags",
+      "category_code": "10. TCP/transport flags",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "FLOW_DURATION_MILLISECONDS",
+      "type": "Numerical",
+      "semantic_category": "Flow timing",
+      "category_code": "8. Flow duration / timing",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "DURATION_IN",
+      "type": "Numerical",
+      "semantic_category": "Flow timing",
+      "category_code": "8. Flow duration / timing",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "DURATION_OUT",
+      "type": "Numerical",
+      "semantic_category": "Flow timing",
+      "category_code": "8. Flow duration / timing",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "MIN_TTL",
+      "type": "Numerical",
+      "semantic_category": "Header / Window",
+      "category_code": "12. Window/header features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "MAX_TTL",
+      "type": "Numerical",
+      "semantic_category": "Header / Window",
+      "category_code": "12. Window/header features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "LONGEST_FLOW_PKT",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "SHORTEST_FLOW_PKT",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "MIN_IP_PKT_LEN",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "MAX_IP_PKT_LEN",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "SRC_TO_DST_SECOND_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Byte statistics",
+      "category_code": "7. Byte statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "DST_TO_SRC_SECOND_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Byte statistics",
+      "category_code": "7. Byte statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "RETRANSMITTED_IN_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Byte statistics",
+      "category_code": "7. Byte statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "RETRANSMITTED_IN_PKTS",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "RETRANSMITTED_OUT_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Byte statistics",
+      "category_code": "7. Byte statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "RETRANSMITTED_OUT_PKTS",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "SRC_TO_DST_AVG_THROUGHPUT",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "DST_TO_SRC_AVG_THROUGHPUT",
+      "type": "Numerical",
+      "semantic_category": "IAT / Rate statistics",
+      "category_code": "9. Inter-arrival-time statistics",
+      "candidate_role": "Temporal"
+    },
+    {
+      "feature": "NUM_PKTS_UP_TO_128_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "NUM_PKTS_128_TO_256_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "NUM_PKTS_256_TO_512_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "NUM_PKTS_512_TO_1024_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "NUM_PKTS_1024_TO_1514_BYTES",
+      "type": "Numerical",
+      "semantic_category": "Packet statistics",
+      "category_code": "6. Packet statistics",
+      "candidate_role": "Temporal / Behavioral"
+    },
+    {
+      "feature": "TCP_WIN_MAX_IN",
+      "type": "Numerical",
+      "semantic_category": "Header / Window",
+      "category_code": "12. Window/header features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "TCP_WIN_MAX_OUT",
+      "type": "Numerical",
+      "semantic_category": "Header / Window",
+      "category_code": "12. Window/header features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "ICMP_TYPE",
+      "type": "Categorical",
+      "semantic_category": "Protocol",
+      "category_code": "5. Protocol information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "ICMP_IPV4_TYPE",
+      "type": "Numerical",
+      "semantic_category": "Protocol",
+      "category_code": "5. Protocol information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "DNS_QUERY_ID",
+      "type": "Numerical",
+      "semantic_category": "Service / Port",
+      "category_code": "4. Network endpoint information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "DNS_QUERY_TYPE",
+      "type": "Numerical",
+      "semantic_category": "Protocol",
+      "category_code": "5. Protocol information",
+      "candidate_role": "Relational / Edge Attribute"
+    },
+    {
+      "feature": "DNS_TTL_ANSWER",
+      "type": "Numerical",
+      "semantic_category": "Header / Window",
+      "category_code": "12. Window/header features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "FTP_COMMAND_RET_CODE",
+      "type": "Numerical",
+      "semantic_category": "Other behavior",
+      "category_code": "13. Other behavioral features",
+      "candidate_role": "Behavioral"
+    },
+    {
+      "feature": "Label",
+      "type": "Numerical",
+      "semantic_category": "Target",
+      "category_code": "Target / Label",
+      "candidate_role": "Target"
+    },
+    {
+      "feature": "Attack",
+      "type": "Categorical",
+      "semantic_category": "Target",
+      "category_code": "Target / Label",
+      "candidate_role": "Target"
+    }
+  ],
+  "identifier_report": [
+    {
+      "feature": "IPV4_SRC_ADDR",
+      "reason_identified": "Candidate identifier matching keyword, unique count=39",
+      "unique_value_ratio": 7.8e-05,
+      "classification": "B. Network identity information",
+      "leakage_risk": "Moderate to High (IP memorization risk in static tabular models)",
+      "decision": "USE FOR GRAPH NODE CONSTRUCTION; EXCLUDE from raw tabular classifier",
+      "reasoning": "Defines topology in dynamic relational graph branch. Raw IP numbers leak subnet/host specific identities."
+    },
+    {
+      "feature": "L4_SRC_PORT",
+      "reason_identified": "Candidate identifier matching keyword, unique count=64455",
+      "unique_value_ratio": 0.12891,
+      "classification": "B. Network identity information",
+      "leakage_risk": "Low to Moderate",
+      "decision": "RETAIN as categorical/numerical edge attribute or service feature",
+      "reasoning": "Port numbers represent standard transport services (e.g. 80, 443, 22, 53)."
+    },
+    {
+      "feature": "IPV4_DST_ADDR",
+      "reason_identified": "Candidate identifier matching keyword, unique count=39",
+      "unique_value_ratio": 7.8e-05,
+      "classification": "B. Network identity information",
+      "leakage_risk": "Moderate to High (IP memorization risk in static tabular models)",
+      "decision": "USE FOR GRAPH NODE CONSTRUCTION; EXCLUDE from raw tabular classifier",
+      "reasoning": "Defines topology in dynamic relational graph branch. Raw IP numbers leak subnet/host specific identities."
+    },
+    {
+      "feature": "L4_DST_PORT",
+      "reason_identified": "Candidate identifier matching keyword, unique count=56926",
+      "unique_value_ratio": 0.113852,
+      "classification": "B. Network identity information",
+      "leakage_risk": "Low to Moderate",
+      "decision": "RETAIN as categorical/numerical edge attribute or service feature",
+      "reasoning": "Port numbers represent standard transport services (e.g. 80, 443, 22, 53)."
+    },
+    {
+      "feature": "MIN_IP_PKT_LEN",
+      "reason_identified": "Candidate identifier matching keyword, unique count=53",
+      "unique_value_ratio": 0.000106,
+      "classification": "B. Behavioral network feature",
+      "leakage_risk": "Low",
+      "decision": "RETAIN for feature selection",
+      "reasoning": "Statistically informative protocol/service indicator."
+    },
+    {
+      "feature": "MAX_IP_PKT_LEN",
+      "reason_identified": "Candidate identifier matching keyword, unique count=1250",
+      "unique_value_ratio": 0.0025,
+      "classification": "B. Behavioral network feature",
+      "leakage_risk": "Low",
+      "decision": "RETAIN for feature selection",
+      "reasoning": "Statistically informative protocol/service indicator."
+    },
+    {
+      "feature": "ICMP_IPV4_TYPE",
+      "reason_identified": "Candidate identifier matching keyword, unique count=256",
+      "unique_value_ratio": 0.000512,
+      "classification": "B. Behavioral network feature",
+      "leakage_risk": "Low",
+      "decision": "RETAIN for feature selection",
+      "reasoning": "Statistically informative protocol/service indicator."
+    },
+    {
+      "feature": "DNS_QUERY_ID",
+      "reason_identified": "Candidate identifier matching keyword, unique count=44385",
+      "unique_value_ratio": 0.08877,
+      "classification": "C. Potential leakage identifier",
+      "leakage_risk": "High",
+      "decision": "EXCLUDE",
+      "reasoning": "Transaction IDs are transient sequence tokens that offer zero generalization."
+    }
+  ],
+  "timestamp_report": {
+    "timestamp_available": false,
+    "details": "No explicit Timestamp column found in raw schema."
+  },
+  "duplicate_report": {
+    "total_rows_analyzed": 500000,
+    "exact_duplicate_rows": 0,
+    "exact_duplicate_percentage": 0.0,
+    "feature_vector_duplicates": 1210,
+    "feature_vector_duplicate_percentage": 0.242,
+    "leakage_risk_note": "Cross-split duplicates between Train and Test splits can inflate test accuracy. Train/Val/Test splits must be strictly deduplicated or chronologically block-split."
+  }
+}

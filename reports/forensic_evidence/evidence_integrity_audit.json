@@ -1,0 +1,98 @@
+[
+  {
+    "filename": "cse_flow_overlap_results.json",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\cse_flow_overlap_results.json",
+    "size_bytes": 1182,
+    "sha256": "e907422c4f31d473e2bfe6f08e9efe91842115a46c2c500a7484f68b80a9b912",
+    "modification_time": "2026-09-19T12:43:45.475560",
+    "file_exists": true
+  },
+  {
+    "filename": "cse_flow_overlap_details.csv",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\cse_flow_overlap_details.csv",
+    "size_bytes": 396,
+    "sha256": "c94ac149f1dc1560307a0ffd8bc21f583e8e253a764ad54b6e7234c8c2a1ef9f",
+    "modification_time": "2026-09-19T11:53:21.143512",
+    "file_exists": true
+  },
+  {
+    "filename": "dataset_metadata.json",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\dataset_metadata.json",
+    "size_bytes": 22070,
+    "sha256": "e84e2be38bfd143c57dfdb33ac31925e14b286a10f8adbf84a8acbfba04105b1",
+    "modification_time": "2026-09-18T19:58:36.526750",
+    "file_exists": true
+  },
+  {
+    "filename": "split_configuration.json",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\split_configuration.json",
+    "size_bytes": 988,
+    "sha256": "a5fe37b2d920e0c405b8002f90e05e6ad95c3e7edcfcfa8f460769f011e36b75",
+    "modification_time": "2026-09-18T19:58:36.526750",
+    "file_exists": true
+  },
+  {
+    "filename": "fallback_collapse_analysis.json",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\fallback_collapse_analysis.json",
+    "size_bytes": 413,
+    "sha256": "4b7018b1e67c63e76ad086b718fc868300211c78141aa9253581aee1653866f3",
+    "modification_time": "2026-09-19T11:53:13.026249",
+    "file_exists": true
+  },
+  {
+    "filename": "per_file_compatibility.csv",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\per_file_compatibility.csv",
+    "size_bytes": 1436,
+    "sha256": "e00417096ba91c3299d42442f6d6b561c6fa8e46e4c31e2152ff140771162164",
+    "modification_time": "2026-09-19T12:59:31.505307",
+    "file_exists": true
+  },
+  {
+    "filename": "verification_execution_log.txt",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\verification_execution_log.txt",
+    "size_bytes": 3247,
+    "sha256": "22f4744b25b233133a4fc04bbdfcf43819d4808c072fecaae9553be92dafba90",
+    "modification_time": "2026-09-19T12:43:45.475560",
+    "file_exists": true
+  },
+  {
+    "filename": "split_manifest.csv",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\split_manifest.csv",
+    "size_bytes": 12316779,
+    "sha256": "89a5208e5e2c5bf45ef50a718b1396e2409095a90e95d00de7e97c81dd2e701c",
+    "modification_time": "2026-09-19T12:59:52.194923",
+    "file_exists": true
+  },
+  {
+    "filename": "fallback_key_safety_audit.json",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\fallback_key_safety_audit.json",
+    "size_bytes": 4867,
+    "sha256": "5b21d82248aabd4647537b55045ed8ac2daf35e290bd389329cef2530059912f",
+    "modification_time": "2026-09-19T12:59:52.218920",
+    "file_exists": true
+  },
+  {
+    "filename": "reconciled_duplicate_metrics.json",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\reconciled_duplicate_metrics.json",
+    "size_bytes": 6869,
+    "sha256": "a1f02142266b404b661c17353d028fbd98debe92676179893b2840d48d4784fb",
+    "modification_time": "2026-09-19T15:36:43.534804",
+    "file_exists": true
+  },
+  {
+    "filename": "rare_class_simulation_results.json",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\rare_class_simulation_results.json",
+    "size_bytes": 4250,
+    "sha256": "e451fd8abc813bfc2911fff53a8faa5730d3cdc0ce8031cd44690ba15246126c",
+    "modification_time": "2026-09-19T15:47:35.438255",
+    "file_exists": true
+  },
+  {
+    "filename": "sampling_reproducibility_audit.json",
+    "absolute_path": "d:\\Final Year Implementation\\reports\\forensic_evidence\\sampling_reproducibility_audit.json",
+    "size_bytes": 901,
+    "sha256": "e1f1db6b2ed36be30a36b631da821e7210a0797a7fc252ee35c27e44e562e88e",
+    "modification_time": "2026-09-19T15:55:17.856945",
+    "file_exists": true
+  }
+]

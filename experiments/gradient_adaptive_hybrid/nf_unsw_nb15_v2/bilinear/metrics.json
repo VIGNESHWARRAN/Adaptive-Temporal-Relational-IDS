@@ -1,0 +1,48 @@
+{
+  "accuracy": 0.9882,
+  "macro_precision": 0.8676342932671757,
+  "macro_recall": 0.9929148089283957,
+  "macro_f1": 0.9203085006517144,
+  "weighted_precision": 0.991286905439392,
+  "weighted_recall": 0.9882,
+  "weighted_f1": 0.9890581446288155,
+  "training_time_seconds": 451.1309278011322,
+  "epochs_completed": 15,
+  "best_epoch": 15,
+  "best_val_loss": 0.021641096871179374,
+  "final_val_loss": 0.021641096871179374,
+  "per_class_metrics": {
+    "0": {
+      "precision": 0.9999302406696896,
+      "recall": 0.9878704341833219,
+      "f1_score": 0.993863754550182,
+      "support": 14510
+    },
+    "1": {
+      "precision": 0.7353383458646616,
+      "recall": 0.9979591836734694,
+      "f1_score": 0.8467532467532467,
+      "support": 490
+    }
+  },
+  "confusion_matrix": [
+    [
+      14334,
+      176
+    ],
+    [
+      1,
+      489
+    ]
+  ],
+  "cm_plot_path": "experiments/gradient_adaptive_hybrid\\nf_unsw_nb15_v2\\bilinear\\nf_unsw_nb15_v2_bilinear_cm.png",
+  "loss_curve_path": "experiments/gradient_adaptive_hybrid\\nf_unsw_nb15_v2\\bilinear\\nf_unsw_nb15_v2_bilinear_loss_curve.png",
+  "adaptive_loss_summary": {
+    "total_steps": 16410,
+    "final_alpha": 0.4106824994087219,
+    "final_beta": 0.5310028195381165,
+    "final_gamma": 0.058314502239227295,
+    "clipping_events": 9246,
+    "fallback_events": 0
+  }
+}

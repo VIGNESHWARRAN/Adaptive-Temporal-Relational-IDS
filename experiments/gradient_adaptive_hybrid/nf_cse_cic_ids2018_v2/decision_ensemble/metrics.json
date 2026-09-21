@@ -1,0 +1,48 @@
+{
+  "accuracy": 0.9946666666666667,
+  "macro_precision": 0.9959762236809362,
+  "macro_recall": 0.9786550347588577,
+  "macro_f1": 0.98710672890793,
+  "weighted_precision": 0.9946829823103813,
+  "weighted_recall": 0.9946666666666667,
+  "weighted_f1": 0.9946192771909024,
+  "training_time_seconds": 119.08686375617981,
+  "epochs_completed": 10,
+  "best_epoch": 5,
+  "best_val_loss": 0.02339943988819917,
+  "final_val_loss": 0.028985725448528926,
+  "per_class_metrics": {
+    "0": {
+      "precision": 0.9942766774606522,
+      "recall": 0.9996971303096842,
+      "f1_score": 0.9969795363588311,
+      "support": 13207
+    },
+    "1": {
+      "precision": 0.9976757699012202,
+      "recall": 0.9576129392080313,
+      "f1_score": 0.977233921457029,
+      "support": 1793
+    }
+  },
+  "confusion_matrix": [
+    [
+      13203,
+      4
+    ],
+    [
+      76,
+      1717
+    ]
+  ],
+  "cm_plot_path": "experiments/gradient_adaptive_hybrid\\nf_cse_cic_ids2018_v2\\decision_ensemble\\nf_cse_cic_ids2018_v2_decision_ensemble_cm.png",
+  "loss_curve_path": "experiments/gradient_adaptive_hybrid\\nf_cse_cic_ids2018_v2\\decision_ensemble\\nf_cse_cic_ids2018_v2_decision_ensemble_loss_curve.png",
+  "adaptive_loss_summary": {
+    "total_steps": 10940,
+    "final_alpha": 0.4233850836753845,
+    "final_beta": 0.5146501660346985,
+    "final_gamma": 0.06196459382772446,
+    "clipping_events": 4926,
+    "fallback_events": 0
+  }
+}

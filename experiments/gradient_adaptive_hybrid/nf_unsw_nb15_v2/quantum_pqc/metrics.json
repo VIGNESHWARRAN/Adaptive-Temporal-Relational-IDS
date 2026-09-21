@@ -1,0 +1,48 @@
+{
+  "accuracy": 0.9875333333333334,
+  "macro_precision": 0.8624859223708268,
+  "macro_recall": 0.9915842698209538,
+  "macro_f1": 0.9163621089522331,
+  "weighted_precision": 0.9908852706712766,
+  "weighted_recall": 0.9875333333333334,
+  "weighted_f1": 0.9884746019653882,
+  "training_time_seconds": 120.30000615119934,
+  "epochs_completed": 8,
+  "best_epoch": 3,
+  "best_val_loss": 0.024713801433045107,
+  "final_val_loss": 0.03226762095292409,
+  "per_class_metrics": {
+    "0": {
+      "precision": 0.9998604034340756,
+      "recall": 0.987250172294969,
+      "f1_score": 0.9935152755140965,
+      "support": 14510
+    },
+    "1": {
+      "precision": 0.725111441307578,
+      "recall": 0.9959183673469387,
+      "f1_score": 0.8392089423903697,
+      "support": 490
+    }
+  },
+  "confusion_matrix": [
+    [
+      14325,
+      185
+    ],
+    [
+      2,
+      488
+    ]
+  ],
+  "cm_plot_path": "experiments/gradient_adaptive_hybrid\\nf_unsw_nb15_v2\\quantum_pqc\\nf_unsw_nb15_v2_quantum_pqc_cm.png",
+  "loss_curve_path": "experiments/gradient_adaptive_hybrid\\nf_unsw_nb15_v2\\quantum_pqc\\nf_unsw_nb15_v2_quantum_pqc_loss_curve.png",
+  "adaptive_loss_summary": {
+    "total_steps": 8752,
+    "final_alpha": 0.445504754781723,
+    "final_beta": 0.47366493940353394,
+    "final_gamma": 0.08083009719848633,
+    "clipping_events": 4883,
+    "fallback_events": 0
+  }
+}

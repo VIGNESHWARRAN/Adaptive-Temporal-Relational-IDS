@@ -1,0 +1,11 @@
+{
+  "total_rows_evaluated": 100000,
+  "rows_from_02_20_2018": 0,
+  "rows_from_fallback_files": 100000,
+  "genuine_5tuple_rows": 0,
+  "genuine_5tuple_unique_keys": 0,
+  "fallback_rows": 100000,
+  "fallback_unique_keys": 3110,
+  "artificial_collapse_ratio": 32.15,
+  "technical_finding": "Key_1_Hybrid_5Tuple suffers from artificial key collapse due to missing IP fields in 9 out of 10 daily CSV files."
+}

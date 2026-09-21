@@ -11,10 +11,12 @@ from .fusion import (
     get_fusion_module,
 )
 from .classifiers import MultimodalFusionClassifier
+from .single_modality import TemporalOnlyClassifier, SpatialRelationalOnlyClassifier
 from .losses import (
     StandardCrossEntropyLoss,
     ClassWeightedCrossEntropyLoss,
     FocalLoss,
+    GradientAdaptiveHybridLoss,
 )
 
 __all__ = [
@@ -28,7 +30,10 @@ __all__ = [
     "QuantumCircuitFusion",
     "get_fusion_module",
     "MultimodalFusionClassifier",
+    "TemporalOnlyClassifier",
+    "SpatialRelationalOnlyClassifier",
     "StandardCrossEntropyLoss",
     "ClassWeightedCrossEntropyLoss",
     "FocalLoss",
+    "GradientAdaptiveHybridLoss",
 ]

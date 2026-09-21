@@ -1,0 +1,48 @@
+{
+  "accuracy": 0.9878,
+  "macro_precision": 0.8643466258488642,
+  "macro_recall": 0.9927080549656113,
+  "macro_f1": 0.9180158436398169,
+  "weighted_precision": 0.9910720838660646,
+  "weighted_recall": 0.9878,
+  "weighted_f1": 0.9887127055640721,
+  "training_time_seconds": 238.93668293952942,
+  "epochs_completed": 15,
+  "best_epoch": 15,
+  "best_val_loss": 0.021166451729728336,
+  "final_val_loss": 0.021166451729728336,
+  "per_class_metrics": {
+    "0": {
+      "precision": 0.9999302114592784,
+      "recall": 0.9874569262577533,
+      "f1_score": 0.9936544262977218,
+      "support": 14510
+    },
+    "1": {
+      "precision": 0.7287630402384501,
+      "recall": 0.9979591836734694,
+      "f1_score": 0.8423772609819121,
+      "support": 490
+    }
+  },
+  "confusion_matrix": [
+    [
+      14328,
+      182
+    ],
+    [
+      1,
+      489
+    ]
+  ],
+  "cm_plot_path": "experiments/gradient_adaptive_hybrid\\nf_unsw_nb15_v2\\cross_attention\\nf_unsw_nb15_v2_cross_attention_cm.png",
+  "loss_curve_path": "experiments/gradient_adaptive_hybrid\\nf_unsw_nb15_v2\\cross_attention\\nf_unsw_nb15_v2_cross_attention_loss_curve.png",
+  "adaptive_loss_summary": {
+    "total_steps": 16410,
+    "final_alpha": 0.41533806920051575,
+    "final_beta": 0.5279584527015686,
+    "final_gamma": 0.05670321732759476,
+    "clipping_events": 9412,
+    "fallback_events": 0
+  }
+}

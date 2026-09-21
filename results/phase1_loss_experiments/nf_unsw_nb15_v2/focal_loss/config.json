@@ -1,0 +1,25 @@
+{
+  "dataset": "nf_unsw_nb15_v2",
+  "loss": "focal_loss",
+  "gamma": 2.0,
+  "class_weights": null,
+  "num_classes": 2,
+  "class_names": [
+    "0",
+    "1"
+  ],
+  "class_distribution": {
+    "0": 96731,
+    "1": 3269
+  },
+  "imbalance_ratio": 29.59039461609055,
+  "seed": 42,
+  "fusion": "concat",
+  "temporal_encoder": "FixedTemporalEncoder (GRU, 2 layers, 64 hidden)",
+  "relational_encoder": "FixedRelationalEncoder (Projection + Aggregation)",
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "batch_size": 64,
+  "epochs": 20,
+  "early_stopping_patience": 5
+}

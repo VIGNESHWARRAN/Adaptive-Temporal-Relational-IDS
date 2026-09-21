@@ -1,0 +1,754 @@
+{
+  "dataset_name": "nf_cse_cic_ids2018_v2",
+  "total_initial_candidates": 43,
+  "excluded_identifiers_timestamps": [
+    "IPV4_SRC_ADDR",
+    "IPV4_DST_ADDR",
+    "DNS_QUERY_ID"
+  ],
+  "constant_features_removed": [
+    "FTP_COMMAND_RET_CODE"
+  ],
+  "near_constant_features_removed": [],
+  "high_correlation_pairs": [
+    {
+      "feature_a": "IN_BYTES",
+      "feature_b": "IN_PKTS",
+      "correlation": 0.9993
+    },
+    {
+      "feature_a": "IN_BYTES",
+      "feature_b": "DURATION_IN",
+      "correlation": 0.9376
+    },
+    {
+      "feature_a": "IN_BYTES",
+      "feature_b": "NUM_PKTS_UP_TO_128_BYTES",
+      "correlation": 0.9987
+    },
+    {
+      "feature_a": "IN_PKTS",
+      "feature_b": "DURATION_IN",
+      "correlation": 0.9364
+    },
+    {
+      "feature_a": "IN_PKTS",
+      "feature_b": "NUM_PKTS_UP_TO_128_BYTES",
+      "correlation": 0.9995
+    },
+    {
+      "feature_a": "OUT_BYTES",
+      "feature_b": "OUT_PKTS",
+      "correlation": 0.9929
+    },
+    {
+      "feature_a": "OUT_BYTES",
+      "feature_b": "NUM_PKTS_1024_TO_1514_BYTES",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "OUT_PKTS",
+      "feature_b": "NUM_PKTS_1024_TO_1514_BYTES",
+      "correlation": 0.9921
+    },
+    {
+      "feature_a": "TCP_FLAGS",
+      "feature_b": "CLIENT_TCP_FLAGS",
+      "correlation": 0.9997
+    },
+    {
+      "feature_a": "DURATION_IN",
+      "feature_b": "NUM_PKTS_UP_TO_128_BYTES",
+      "correlation": 0.9353
+    },
+    {
+      "feature_a": "MIN_TTL",
+      "feature_b": "MAX_TTL",
+      "correlation": 0.9977
+    },
+    {
+      "feature_a": "LONGEST_FLOW_PKT",
+      "feature_b": "MAX_IP_PKT_LEN",
+      "correlation": 1.0
+    },
+    {
+      "feature_a": "SRC_TO_DST_SECOND_BYTES",
+      "feature_b": "DST_TO_SRC_SECOND_BYTES",
+      "correlation": 0.9726
+    },
+    {
+      "feature_a": "ICMP_TYPE",
+      "feature_b": "ICMP_IPV4_TYPE",
+      "correlation": 1.0
+    }
+  ],
+  "redundancy_groups": [
+    [
+      "IN_BYTES",
+      "IN_PKTS",
+      "DURATION_IN",
+      "NUM_PKTS_UP_TO_128_BYTES"
+    ],
+    [
+      "OUT_BYTES",
+      "OUT_PKTS",
+      "NUM_PKTS_1024_TO_1514_BYTES"
+    ],
+    [
+      "TCP_FLAGS",
+      "CLIENT_TCP_FLAGS"
+    ],
+    [
+      "MIN_TTL",
+      "MAX_TTL"
+    ],
+    [
+      "LONGEST_FLOW_PKT",
+      "MAX_IP_PKT_LEN"
+    ],
+    [
+      "SRC_TO_DST_SECOND_BYTES",
+      "DST_TO_SRC_SECOND_BYTES"
+    ],
+    [
+      "ICMP_TYPE",
+      "ICMP_IPV4_TYPE"
+    ]
+  ],
+  "evidence_table": [
+    {
+      "feature": "LONGEST_FLOW_PKT",
+      "mi_score": 0.327375,
+      "mi_rank": 2,
+      "f_score": 17093.8356,
+      "f_rank": 8,
+      "rf_importance": 0.042463,
+      "rf_rank": 7,
+      "xgb_importance": 0.011772,
+      "xgb_rank": 5,
+      "average_rank": 5.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "FLOW_DURATION_MILLISECONDS",
+      "mi_score": 0.236513,
+      "mi_rank": 13,
+      "f_score": 452249.2334,
+      "f_rank": 1,
+      "rf_importance": 0.155346,
+      "rf_rank": 1,
+      "xgb_importance": 0.001508,
+      "xgb_rank": 15,
+      "average_rank": 7.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "MIN_TTL",
+      "mi_score": 0.299054,
+      "mi_rank": 5,
+      "f_score": 17091.9101,
+      "f_rank": 10,
+      "rf_importance": 0.020738,
+      "rf_rank": 15,
+      "xgb_importance": 0.043619,
+      "xgb_rank": 2,
+      "average_rank": 8.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "MAX_TTL",
+      "mi_score": 0.299347,
+      "mi_rank": 4,
+      "f_score": 16938.646,
+      "f_rank": 11,
+      "rf_importance": 0.034703,
+      "rf_rank": 10,
+      "xgb_importance": 0.003906,
+      "xgb_rank": 11,
+      "average_rank": 9.0,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "TCP_WIN_MAX_IN",
+      "mi_score": 0.224429,
+      "mi_rank": 16,
+      "f_score": 160101.3875,
+      "f_rank": 2,
+      "rf_importance": 0.053063,
+      "rf_rank": 6,
+      "xgb_importance": 0.002348,
+      "xgb_rank": 13,
+      "average_rank": 9.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "L7_PROTO",
+      "mi_score": 0.233087,
+      "mi_rank": 14,
+      "f_score": 2170.287,
+      "f_rank": 19,
+      "rf_importance": 0.055935,
+      "rf_rank": 5,
+      "xgb_importance": 0.038737,
+      "xgb_rank": 3,
+      "average_rank": 10.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "DURATION_IN",
+      "mi_score": 0.237893,
+      "mi_rank": 12,
+      "f_score": 1083.9051,
+      "f_rank": 26,
+      "rf_importance": 0.122185,
+      "rf_rank": 2,
+      "xgb_importance": 0.830132,
+      "xgb_rank": 1,
+      "average_rank": 10.25,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "TCP_WIN_MAX_OUT",
+      "mi_score": 0.286381,
+      "mi_rank": 7,
+      "f_score": 1255.5382,
+      "f_rank": 20,
+      "rf_importance": 0.036481,
+      "rf_rank": 9,
+      "xgb_importance": 0.005099,
+      "xgb_rank": 9,
+      "average_rank": 11.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "SRC_TO_DST_AVG_THROUGHPUT",
+      "mi_score": 0.247097,
+      "mi_rank": 11,
+      "f_score": 4865.2547,
+      "f_rank": 13,
+      "rf_importance": 0.112641,
+      "rf_rank": 3,
+      "xgb_importance": 0.000788,
+      "xgb_rank": 24,
+      "average_rank": 12.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "L4_DST_PORT",
+      "mi_score": 0.227475,
+      "mi_rank": 15,
+      "f_score": 1155.4899,
+      "f_rank": 23,
+      "rf_importance": 0.039277,
+      "rf_rank": 8,
+      "xgb_importance": 0.010732,
+      "xgb_rank": 6,
+      "average_rank": 13.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "DURATION_OUT",
+      "mi_score": 0.202188,
+      "mi_rank": 18,
+      "f_score": 61773.9724,
+      "f_rank": 3,
+      "rf_importance": 0.07812,
+      "rf_rank": 4,
+      "xgb_importance": 0.000505,
+      "xgb_rank": 31,
+      "average_rank": 14.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "MAX_IP_PKT_LEN",
+      "mi_score": 0.327674,
+      "mi_rank": 1,
+      "f_score": 17093.8356,
+      "f_rank": 9,
+      "rf_importance": 0.030133,
+      "rf_rank": 12,
+      "xgb_importance": 0.0,
+      "xgb_rank": 37,
+      "average_rank": 14.75,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "IN_BYTES",
+      "mi_score": 0.282538,
+      "mi_rank": 8,
+      "f_score": 608.9761,
+      "f_rank": 29,
+      "rf_importance": 0.013614,
+      "rf_rank": 18,
+      "xgb_importance": 0.006807,
+      "xgb_rank": 7,
+      "average_rank": 15.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "TCP_FLAGS",
+      "mi_score": 0.149436,
+      "mi_rank": 22,
+      "f_score": 33248.9262,
+      "f_rank": 5,
+      "rf_importance": 0.008687,
+      "rf_rank": 23,
+      "xgb_importance": 0.003523,
+      "xgb_rank": 12,
+      "average_rank": 15.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "SERVER_TCP_FLAGS",
+      "mi_score": 0.167339,
+      "mi_rank": 21,
+      "f_score": 1190.6236,
+      "f_rank": 22,
+      "rf_importance": 0.016966,
+      "rf_rank": 16,
+      "xgb_importance": 0.014968,
+      "xgb_rank": 4,
+      "average_rank": 15.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "CLIENT_TCP_FLAGS",
+      "mi_score": 0.106955,
+      "mi_rank": 24,
+      "f_score": 33386.1372,
+      "f_rank": 4,
+      "rf_importance": 0.007025,
+      "rf_rank": 25,
+      "xgb_importance": 0.001305,
+      "xgb_rank": 17,
+      "average_rank": 17.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "SRC_TO_DST_SECOND_BYTES",
+      "mi_score": 0.269734,
+      "mi_rank": 10,
+      "f_score": 1146.2863,
+      "f_rank": 24,
+      "rf_importance": 0.012472,
+      "rf_rank": 20,
+      "xgb_importance": 0.001039,
+      "xgb_rank": 19,
+      "average_rank": 18.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "DST_TO_SRC_AVG_THROUGHPUT",
+      "mi_score": 0.281267,
+      "mi_rank": 9,
+      "f_score": 573.3512,
+      "f_rank": 32,
+      "rf_importance": 0.030313,
+      "rf_rank": 11,
+      "xgb_importance": 0.000807,
+      "xgb_rank": 23,
+      "average_rank": 18.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "NUM_PKTS_UP_TO_128_BYTES",
+      "mi_score": 0.219295,
+      "mi_rank": 17,
+      "f_score": 598.6688,
+      "f_rank": 30,
+      "rf_importance": 0.02284,
+      "rf_rank": 14,
+      "xgb_importance": 0.001586,
+      "xgb_rank": 14,
+      "average_rank": 18.75,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "NUM_PKTS_128_TO_256_BYTES",
+      "mi_score": 0.071676,
+      "mi_rank": 27,
+      "f_score": 823.4616,
+      "f_rank": 27,
+      "rf_importance": 0.026866,
+      "rf_rank": 13,
+      "xgb_importance": 0.004955,
+      "xgb_rank": 10,
+      "average_rank": 19.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "DST_TO_SRC_SECOND_BYTES",
+      "mi_score": 0.297312,
+      "mi_rank": 6,
+      "f_score": 1102.6612,
+      "f_rank": 25,
+      "rf_importance": 0.009114,
+      "rf_rank": 22,
+      "xgb_importance": 0.000722,
+      "xgb_rank": 25,
+      "average_rank": 19.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "MIN_IP_PKT_LEN",
+      "mi_score": 0.110662,
+      "mi_rank": 23,
+      "f_score": 4963.0135,
+      "f_rank": 12,
+      "rf_importance": 0.007463,
+      "rf_rank": 24,
+      "xgb_importance": 0.001035,
+      "xgb_rank": 20,
+      "average_rank": 19.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "SHORTEST_FLOW_PKT",
+      "mi_score": 0.1048,
+      "mi_rank": 25,
+      "f_score": 3408.0694,
+      "f_rank": 15,
+      "rf_importance": 0.005691,
+      "rf_rank": 27,
+      "xgb_importance": 0.001319,
+      "xgb_rank": 16,
+      "average_rank": 20.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "IN_PKTS",
+      "mi_score": 0.180305,
+      "mi_rank": 19,
+      "f_score": 575.6973,
+      "f_rank": 31,
+      "rf_importance": 0.013711,
+      "rf_rank": 17,
+      "xgb_importance": 0.00102,
+      "xgb_rank": 21,
+      "average_rank": 22.0,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "RETRANSMITTED_IN_BYTES",
+      "mi_score": 0.022349,
+      "mi_rank": 34,
+      "f_score": 3067.1152,
+      "f_rank": 16,
+      "rf_importance": 0.000851,
+      "rf_rank": 31,
+      "xgb_importance": 0.00535,
+      "xgb_rank": 8,
+      "average_rank": 22.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "OUT_BYTES",
+      "mi_score": 0.322228,
+      "mi_rank": 3,
+      "f_score": 6.2169,
+      "f_rank": 38,
+      "rf_importance": 0.010318,
+      "rf_rank": 21,
+      "xgb_importance": 0.000536,
+      "xgb_rank": 30,
+      "average_rank": 23.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "NUM_PKTS_256_TO_512_BYTES",
+      "mi_score": 0.06864,
+      "mi_rank": 28,
+      "f_score": 2236.7157,
+      "f_rank": 18,
+      "rf_importance": 0.001941,
+      "rf_rank": 30,
+      "xgb_importance": 0.001234,
+      "xgb_rank": 18,
+      "average_rank": 23.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "NUM_PKTS_512_TO_1024_BYTES",
+      "mi_score": 0.083814,
+      "mi_rank": 26,
+      "f_score": 3558.0274,
+      "f_rank": 14,
+      "rf_importance": 0.00575,
+      "rf_rank": 26,
+      "xgb_importance": 0.000456,
+      "xgb_rank": 32,
+      "average_rank": 24.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "OUT_PKTS",
+      "mi_score": 0.178582,
+      "mi_rank": 20,
+      "f_score": 0.0536,
+      "f_rank": 39,
+      "rf_importance": 0.012798,
+      "rf_rank": 19,
+      "xgb_importance": 0.000861,
+      "xgb_rank": 22,
+      "average_rank": 25.0,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "DNS_TTL_ANSWER",
+      "mi_score": 0.055621,
+      "mi_rank": 30,
+      "f_score": 23164.8466,
+      "f_rank": 7,
+      "rf_importance": 4.5e-05,
+      "rf_rank": 38,
+      "xgb_importance": 0.000637,
+      "xgb_rank": 27,
+      "average_rank": 25.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "PROTOCOL",
+      "mi_score": 0.060212,
+      "mi_rank": 29,
+      "f_score": 29923.8505,
+      "f_rank": 6,
+      "rf_importance": 0.00043,
+      "rf_rank": 34,
+      "xgb_importance": 0.0,
+      "xgb_rank": 36,
+      "average_rank": 26.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "L4_SRC_PORT",
+      "mi_score": 0.023703,
+      "mi_rank": 33,
+      "f_score": 1224.3817,
+      "f_rank": 21,
+      "rf_importance": 0.004979,
+      "rf_rank": 28,
+      "xgb_importance": 0.00064,
+      "xgb_rank": 26,
+      "average_rank": 27.0,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "DNS_QUERY_TYPE",
+      "mi_score": 0.054826,
+      "mi_rank": 31,
+      "f_score": 2693.332,
+      "f_rank": 17,
+      "rf_importance": 0.000194,
+      "rf_rank": 36,
+      "xgb_importance": 0.0006,
+      "xgb_rank": 29,
+      "average_rank": 28.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "NUM_PKTS_1024_TO_1514_BYTES",
+      "mi_score": 0.024869,
+      "mi_rank": 32,
+      "f_score": 10.0326,
+      "f_rank": 37,
+      "rf_importance": 0.004971,
+      "rf_rank": 29,
+      "xgb_importance": 0.000615,
+      "xgb_rank": 28,
+      "average_rank": 31.5,
+      "correlation_risk": "HIGH"
+    },
+    {
+      "feature": "RETRANSMITTED_IN_PKTS",
+      "mi_score": 0.009678,
+      "mi_rank": 38,
+      "f_score": 43.1162,
+      "f_rank": 34,
+      "rf_importance": 0.000755,
+      "rf_rank": 33,
+      "xgb_importance": 0.000233,
+      "xgb_rank": 34,
+      "average_rank": 34.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "ICMP_TYPE",
+      "mi_score": 0.017498,
+      "mi_rank": 37,
+      "f_score": 29.2442,
+      "f_rank": 35,
+      "rf_importance": 0.000833,
+      "rf_rank": 32,
+      "xgb_importance": 0.000231,
+      "xgb_rank": 35,
+      "average_rank": 34.75,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "RETRANSMITTED_OUT_BYTES",
+      "mi_score": 0.017975,
+      "mi_rank": 36,
+      "f_score": 127.1935,
+      "f_rank": 33,
+      "rf_importance": 1.7e-05,
+      "rf_rank": 39,
+      "xgb_importance": 0.000375,
+      "xgb_rank": 33,
+      "average_rank": 35.25,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "RETRANSMITTED_OUT_PKTS",
+      "mi_score": 0.002198,
+      "mi_rank": 39,
+      "f_score": 704.8019,
+      "f_rank": 28,
+      "rf_importance": 4.5e-05,
+      "rf_rank": 37,
+      "xgb_importance": 0.0,
+      "xgb_rank": 38,
+      "average_rank": 35.5,
+      "correlation_risk": "LOW"
+    },
+    {
+      "feature": "ICMP_IPV4_TYPE",
+      "mi_score": 0.02019,
+      "mi_rank": 35,
+      "f_score": 29.2441,
+      "f_rank": 36,
+      "rf_importance": 0.000226,
+      "rf_rank": 35,
+      "xgb_importance": 0.0,
+      "xgb_rank": 39,
+      "average_rank": 36.25,
+      "correlation_risk": "HIGH"
+    }
+  ],
+  "selected_features": [
+    "LONGEST_FLOW_PKT",
+    "FLOW_DURATION_MILLISECONDS",
+    "MIN_TTL",
+    "MAX_TTL",
+    "TCP_WIN_MAX_IN",
+    "L7_PROTO",
+    "DURATION_IN",
+    "TCP_WIN_MAX_OUT",
+    "SRC_TO_DST_AVG_THROUGHPUT",
+    "L4_DST_PORT",
+    "DURATION_OUT",
+    "MAX_IP_PKT_LEN",
+    "IN_BYTES",
+    "TCP_FLAGS",
+    "SERVER_TCP_FLAGS",
+    "SRC_TO_DST_SECOND_BYTES",
+    "DST_TO_SRC_AVG_THROUGHPUT",
+    "NUM_PKTS_128_TO_256_BYTES",
+    "MIN_IP_PKT_LEN",
+    "SHORTEST_FLOW_PKT",
+    "RETRANSMITTED_IN_BYTES",
+    "OUT_BYTES",
+    "NUM_PKTS_256_TO_512_BYTES",
+    "NUM_PKTS_512_TO_1024_BYTES",
+    "DNS_TTL_ANSWER"
+  ],
+  "dropped_features": [
+    {
+      "feature": "CLIENT_TCP_FLAGS",
+      "reason": "High correlation redundancy and average rank (17.5) > 15"
+    },
+    {
+      "feature": "NUM_PKTS_UP_TO_128_BYTES",
+      "reason": "High correlation redundancy and average rank (18.75) > 15"
+    },
+    {
+      "feature": "DST_TO_SRC_SECOND_BYTES",
+      "reason": "High correlation redundancy and average rank (19.5) > 15"
+    },
+    {
+      "feature": "IN_PKTS",
+      "reason": "High correlation redundancy and average rank (22.0) > 15"
+    },
+    {
+      "feature": "OUT_PKTS",
+      "reason": "High correlation redundancy and average rank (25.0) > 15"
+    },
+    {
+      "feature": "PROTOCOL",
+      "reason": "Ranked below top 25 cutoff (Average rank 26.25)"
+    },
+    {
+      "feature": "L4_SRC_PORT",
+      "reason": "Ranked below top 25 cutoff (Average rank 27.0)"
+    },
+    {
+      "feature": "DNS_QUERY_TYPE",
+      "reason": "Ranked below top 25 cutoff (Average rank 28.25)"
+    },
+    {
+      "feature": "NUM_PKTS_1024_TO_1514_BYTES",
+      "reason": "Ranked below top 25 cutoff (Average rank 31.5)"
+    },
+    {
+      "feature": "RETRANSMITTED_IN_PKTS",
+      "reason": "Ranked below top 25 cutoff (Average rank 34.75)"
+    },
+    {
+      "feature": "ICMP_TYPE",
+      "reason": "Ranked below top 25 cutoff (Average rank 34.75)"
+    },
+    {
+      "feature": "RETRANSMITTED_OUT_BYTES",
+      "reason": "Ranked below top 25 cutoff (Average rank 35.25)"
+    },
+    {
+      "feature": "RETRANSMITTED_OUT_PKTS",
+      "reason": "Ranked below top 25 cutoff (Average rank 35.5)"
+    },
+    {
+      "feature": "ICMP_IPV4_TYPE",
+      "reason": "Ranked below top 25 cutoff (Average rank 36.25)"
+    }
+  ],
+  "role_mapping": {
+    "temporal_features": [
+      "FLOW_DURATION_MILLISECONDS",
+      "DURATION_IN",
+      "SRC_TO_DST_AVG_THROUGHPUT",
+      "DURATION_OUT",
+      "SRC_TO_DST_SECOND_BYTES",
+      "DST_TO_SRC_AVG_THROUGHPUT"
+    ],
+    "relational_edge_features": [
+      "MIN_TTL",
+      "MAX_TTL",
+      "L7_PROTO",
+      "L4_DST_PORT",
+      "MAX_IP_PKT_LEN",
+      "MIN_IP_PKT_LEN",
+      "DNS_TTL_ANSWER"
+    ],
+    "behavioral_features": [
+      "LONGEST_FLOW_PKT",
+      "TCP_WIN_MAX_IN",
+      "TCP_WIN_MAX_OUT",
+      "IN_BYTES",
+      "TCP_FLAGS",
+      "SERVER_TCP_FLAGS",
+      "NUM_PKTS_128_TO_256_BYTES",
+      "SHORTEST_FLOW_PKT",
+      "RETRANSMITTED_IN_BYTES",
+      "OUT_BYTES",
+      "NUM_PKTS_256_TO_512_BYTES",
+      "NUM_PKTS_512_TO_1024_BYTES"
+    ],
+    "relational_node_identity_features": [
+      "IPV4_SRC_ADDR",
+      "IPV4_DST_ADDR"
+    ]
+  },
+  "splits_info": {
+    "train_samples": 350000,
+    "val_samples": 75000,
+    "test_samples": 75000
+  }
+}

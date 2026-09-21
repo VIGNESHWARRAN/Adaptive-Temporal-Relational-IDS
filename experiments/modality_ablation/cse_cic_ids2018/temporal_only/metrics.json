@@ -1,0 +1,23 @@
+{
+  "dataset_name": "cse_cic_ids2018",
+  "architecture_type": "temporal_only",
+  "accuracy": 0.8585427638157456,
+  "macro_precision": 0.1920845408462935,
+  "macro_recall": 0.24499814507732878,
+  "macro_f1": 0.18772887125216256,
+  "weighted_f1": 0.797440683506615,
+  "minority_class_f1": 0.12048611111111111,
+  "benign_recall": 0.9941982272361,
+  "attack_macro_recall": 0.1914838534945594,
+  "false_positive_rate": 0.0058017727639000805,
+  "false_negative_rate": 0.7869548436896951,
+  "training_time_seconds": 385.24173069000244,
+  "inference_time_ms_per_sample": 0.11594864012646552,
+  "epochs_completed": 15,
+  "best_epoch": 12,
+  "best_val_loss": 0.5944687406222026,
+  "final_val_loss": 0.6091271590868632,
+  "total_trainable_parameters": 46223,
+  "total_parameters": 46223,
+  "seed": 42
+}

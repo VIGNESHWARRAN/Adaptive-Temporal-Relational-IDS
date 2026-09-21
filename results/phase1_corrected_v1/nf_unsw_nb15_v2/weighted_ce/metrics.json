@@ -1,0 +1,40 @@
+{
+  "accuracy": 0.9878,
+  "macro_precision": 0.8640416047548292,
+  "macro_recall": 0.9936940041350792,
+  "macro_f1": 0.9181511547500463,
+  "weighted_precision": 0.9911173848439822,
+  "weighted_recall": 0.9878,
+  "weighted_f1": 0.9887211345436686,
+  "training_time_seconds": 102.10356616973877,
+  "epochs_completed": 15,
+  "best_epoch": 14,
+  "best_val_loss": 0.03193052546678422,
+  "final_val_loss": 0.03209228074355051,
+  "per_class_metrics": {
+    "0": {
+      "precision": 1.0,
+      "recall": 0.9873880082701585,
+      "f1_score": 0.9936539861982869,
+      "support": 14510
+    },
+    "1": {
+      "precision": 0.7280832095096582,
+      "recall": 1.0,
+      "f1_score": 0.8426483233018057,
+      "support": 490
+    }
+  },
+  "confusion_matrix": [
+    [
+      14327,
+      183
+    ],
+    [
+      0,
+      490
+    ]
+  ],
+  "cm_plot_path": "results/phase1_corrected_v1\\nf_unsw_nb15_v2\\weighted_ce\\nf_unsw_nb15_v2_weighted_ce_cm.png",
+  "loss_curve_path": "results/phase1_corrected_v1\\nf_unsw_nb15_v2\\weighted_ce\\nf_unsw_nb15_v2_weighted_ce_loss_curve.png"
+}

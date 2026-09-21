@@ -1,0 +1,30 @@
+{
+  "script_sha256": "94393a7a98f688635a2faeaa46586fa3d1d29207b1e51368859ad9ad6cca6e76",
+  "audit_timestamp": "2026-09-19T12:39:34.859842",
+  "sample_limit": 100000,
+  "seed": 42,
+  "duplicate_metric_reconciliation": {
+    "total_scanned_rows": 16232943,
+    "unique_28_feature_vectors": 11464646,
+    "exact_duplicate_rows": 4768297,
+    "duplicate_groups_count": 688600,
+    "conflicting_groups_count": 68182,
+    "definition_a_non_majority_conflicting_rows": 177674,
+    "definition_b_total_rows_in_conflicting_groups": 1570760,
+    "equation_check": "16232943 - 11464646 == 4768297"
+  },
+  "genuine_5tuple_cross_file_overlap": {
+    "status": "NOT COMPUTABLE",
+    "reason": "Missing 5-tuple IP columns in 9 out of 10 daily CSV files"
+  },
+  "fallback_destination_bucket_overlap": {
+    "status": "DESTINATION PORT CONFLATION DIAGNOSTIC",
+    "train_unique_keys": 3082,
+    "test_unique_keys": 3005,
+    "colliding_test_keys": 2990,
+    "pct_colliding_test_keys": 99.5008,
+    "test_rows_affected": 14985,
+    "pct_test_rows_affected": 99.9
+  },
+  "validation_status": "VALIDATION INCOMPLETE \u2014 GENUINE CROSS-FILE FLOW LEAKAGE NOT ESTABLISHED"
+}
