@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adaptive Temporal-Relational IDS | Neural Security Operations Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Ambient Glow Effects -->
+  <div class="ambient-glow cyan-glow"></div>
+  <div class="ambient-glow purple-glow"></div>
+
+  <!-- Main Shell Container -->
+  <div class="app-shell">
+    
+    <!-- Top Cyber Header -->
+    <header class="top-nav">
+      <div class="nav-brand">
+        <div class="brand-shield">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">ADAPTIVE IDS <span class="highlight">//</span> NEURAL SOC</div>
+          <div class="brand-subtitle">Multimodal Temporal-Relational Intrusion Detection System</div>
+        </div>
+      </div>
+
+      <div class="nav-center">
+        <div class="system-status-pill online">
+          <span class="pulse-dot"></span>
+          <span class="status-label">ENGINE ONLINE: FILE-TRIGGER MONITORING</span>
+        </div>
+      </div>
+
+      <div class="nav-controls">
+        <div class="model-badge" title="Trained with Gradient-Adaptive Hybrid Loss">
+          <span class="badge-icon">🧠</span>
+          <span id="activeModelBadge">NF-CSE-CIC-IDS2018-v2 (Concat)</span>
+        </div>
+        <div class="cli-arg-badge" title="Command Line Batch Size Argument">
+          <span class="cli-label">CLI BATCH</span>
+          <span class="cli-val" id="cliBatchDisplay">n = 1</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Threat Alert Banner / DEFCON Bar -->
+    <section class="threat-alert-bar defcon-normal" id="threatAlertBar">
+      <div class="alert-icon-wrap">
+        <span class="alert-icon" id="threatIcon">🟢</span>
+      </div>
+      <div class="alert-content">
+        <div class="threat-headline" id="threatHeadline">DEFCON 5: NORMAL TRAFFIC - ALL SECURE</div>
+        <div class="threat-subtext" id="threatSubtext">System is monitoring incoming network flow CSV records. No active breach detected.</div>
+      </div>
+      <div class="alert-stats">
+        <div class="stat-pill">
+          <span class="stat-label">CURRENT THREAT SCORE</span>
+          <span class="stat-val threat-score" id="threatScoreDisplay">0.0%</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">DEFCON LEVEL</span>
+          <span class="stat-val defcon-level" id="defconLevelDisplay">LEVEL 5</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Control Command Deck -->
+    <section class="control-deck-card">
+      <div class="deck-row main-controls">
+        
+        <!-- Primary Trigger Action -->
+        <div class="trigger-action-group">
+          <button class="btn btn-primary" id="btnTrigger" title="Shortcut: Press Spacebar">
+            <span class="btn-icon">⚡</span>
+            <span class="btn-label">TRIGGER NEXT <span id="btnNCount" class="glow-accent">1</span> FLOWS</span>
+            <span class="key-hint">SPACE</span>
+          </button>
+
+          <button class="btn btn-toggle" id="btnAutoStream">
+            <span class="btn-icon" id="streamIcon">▶</span>
+            <span class="btn-label" id="streamLabel">AUTO-STREAM</span>
+          </button>
+
+          <div class="speed-select-wrap">
+            <label for="streamInterval">INTERVAL:</label>
+            <select id="streamInterval" class="cyber-select-sm">
+              <option value="1000" selected>1.0s</option>
+              <option value="2000">2.0s</option>
+              <option value="3500">3.5s</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Batch Size 'n' Controls -->
+        <div class="batch-controller-group">
+          <div class="group-label">BATCH SIZE (n)</div>
+          <div class="stepper-wrap">
+            <button class="step-btn" id="btnDecN">-1</button>
+            <input type="number" id="inputBatchN" class="batch-input" value="1" min="1" max="100">
+            <button class="step-btn" id="btnIncN">+1</button>
+          </div>
+          <div class="quick-presets">
+            <button class="preset-pill" data-n="1">1</button>
+            <button class="preset-pill" data-n="5">5</button>
+            <button class="preset-pill" data-n="10">10</button>
+            <button class="preset-pill" data-n="25">25</button>
+          </div>
+        </div>
+
+        <!-- File Source Dropdown & Offset Tracker -->
+        <div class="file-source-group">
+          <div class="group-label">INGESTION CSV SOURCE</div>
+          <div class="file-select-row">
+            <select id="selectCsvFile" class="cyber-select">
+              <option value="" disabled selected>Loading CSV files...</option>
+            </select>
+            <button class="btn btn-icon-only" id="btnResetPointer" title="Reset file pointer to row 0">🔄</button>
+            <label class="btn btn-icon-only" id="lblUpload" title="Upload custom CSV to incoming_flows folder">
+              📁
+              <input type="file" id="fileUploadInput" accept=".csv" style="display: none;">
+            </label>
+          </div>
+          <div class="pointer-status-row">
+            <div class="pointer-text">
+              OFFSET: <span id="txtOffset" class="cyan-text">0</span> / <span id="txtTotalRows">0</span> FLOWS
+            </div>
+            <div class="pointer-progress-track">
+              <div class="pointer-progress-fill" id="pointerProgressFill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- High-Impact KPI Metric Cards -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">TOTAL INSPECTED</span>
+          <span class="kpi-icon">📊</span>
+        </div>
+        <div class="kpi-value" id="kpiTotalFlows">0</div>
+        <div class="kpi-meta">Real-time NetFlow records evaluated</div>
+      </div>
+
+      <div class="kpi-card safe-card">
+        <div class="kpi-header">
+          <span class="kpi-title">NORMAL / GOOD FLOWS</span>
+          <span class="kpi-icon">🛡️</span>
+        </div>
+        <div class="kpi-value safe-text" id="kpiGoodFlows">0</div>
+        <div class="kpi-meta"><span id="kpiGoodPct">0.0%</span> of network traffic confirmed safe</div>
+      </div>
+
+      <div class="kpi-card attack-card">
+        <div class="kpi-header">
+          <span class="kpi-title">INTRUSIONS BLOCKED</span>
+          <span class="kpi-icon">🚨</span>
+        </div>
+        <div class="kpi-value attack-text" id="kpiAttackFlows">0</div>
+        <div class="kpi-meta"><span id="kpiAttackPct">0.0%</span> malicious attacks mitigated</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">INFERENCE LATENCY</span>
+          <span class="kpi-icon">⚡</span>
+        </div>
+        <div class="kpi-value cyan-text" id="kpiLatency">0.0 <span class="unit">ms</span></div>
+        <div class="kpi-meta">Dual-modality neural execution speed</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">VERIFIED MODEL ACCURACY</span>
+          <span class="kpi-icon">🎯</span>
+        </div>
+        <div class="kpi-value purple-text" id="kpiAccuracy">99.45<span class="unit">%</span></div>
+        <div class="kpi-meta">Phase 1 Controlled Experiment Benchmark</div>
+      </div>
+    </section>
+
+    <!-- Visualizations & Analytics Deck -->
+    <section class="analytics-grid">
+      
+      <!-- Live Attack Velocity Chart -->
+      <div class="chart-panel">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-dot"></span>
+            <span class="panel-title">REAL-TIME FLOW THREAT STREAM</span>
+          </div>
+          <div class="panel-legend">
+            <span class="legend-item"><span class="legend-dot green"></span> Normal Flow</span>
+            <span class="legend-item"><span class="legend-dot red"></span> Attack Detected</span>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="flowStreamCanvas" width="600" height="180"></canvas>
+        </div>
+      </div>
+
+      <!-- Modality Attention & Attack Signatures -->
+      <div class="modality-panel">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <span class="panel-dot"></span>
+            <span class="panel-title">DUAL-MODALITY ATTENTION & THREAT SIGNATURES</span>
+          </div>
+        </div>
+        <div class="modality-content">
+          <!-- Modality split bars -->
+          <div class="modality-bars">
+            <div class="mod-item">
+              <div class="mod-label-row">
+                <span>Temporal GRU Sequence Dynamics (X_temp)</span>
+                <span id="tempModPct" class="cyan-text">50.0%</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill cyan-fill" id="tempModBar" style="width: 50%;"></div>
+              </div>
+            </div>
+            <div class="mod-item">
+              <div class="mod-label-row">
+                <span>Relational Graph Interaction (X_rel)</span>
+                <span id="relModPct" class="purple-text">50.0%</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill purple-fill" id="relModBar" style="width: 50%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Attack Categories Distribution -->
+          <div class="attack-tags-wrap">
+            <div class="tags-header">DETECTED ATTACK CATEGORIES:</div>
+            <div class="attack-tags-list" id="attackTagsList">
+              <span class="empty-tag">No attacks triggered yet. Ready.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Real-Time Flow Feed Table -->
+    <section class="feed-section">
+      <div class="feed-header">
+        <div class="feed-title-wrap">
+          <span class="feed-title">REAL-TIME NETWORK FLOW TELEMETRY</span>
+          <span class="feed-badge" id="feedCountBadge">0 flows processed</span>
+        </div>
+        
+        <div class="feed-actions">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">ALL</button>
+            <button class="filter-tab" data-filter="attacks">ATTACKS ONLY</button>
+            <button class="filter-tab" data-filter="good">NORMAL ONLY</button>
+          </div>
+          <input type="text" id="feedSearchInput" class="search-input" placeholder="Search IP, Port, Attack...">
+          <button class="btn btn-sm btn-ghost" id="btnClearFeed" title="Clear current table">Clear Feed</button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="cyber-table" id="flowsTable">
+          <thead>
+            <tr>
+              <th>TIME</th>
+              <th>FLOW ID</th>
+              <th>SOURCE -> DESTINATION</th>
+              <th>PROTO / PORT</th>
+              <th>DURATION</th>
+              <th>DETECTION VERDICT</th>
+              <th>ATTACK SIGNATURE</th>
+              <th>CONFIDENCE</th>
+              <th>LATENCY</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody id="flowsTableBody">
+            <tr class="empty-state-row">
+              <td colspan="10">
+                <div class="empty-feed-box">
+                  <div class="empty-icon">📡</div>
+                  <div class="empty-msg">Trigger flows to inspect live network records</div>
+                  <div class="empty-hint">Click <b>TRIGGER NEXT FLOWS</b> or press <b>SPACEBAR</b> to ingest batch from CSV</div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Deep Forensic Flow Inspector Modal -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <span class="modal-icon">🔍</span>
+          <div>
+            <h3 class="modal-title" id="modalFlowTitle">Flow Forensic Analysis</h3>
+            <span class="modal-subtitle" id="modalFlowSubtitle">ID: FL-000000</span>
+          </div>
+        </div>
+        <button class="modal-close" id="btnModalClose">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Verdict Banner -->
+        <div class="modal-verdict-banner" id="modalVerdictBanner">
+          <div class="verdict-primary" id="modalVerdictPrimary">GOOD / BENIGN</div>
+          <div class="verdict-secondary" id="modalVerdictSecondary">Confidence: 99.9%</div>
+        </div>
+
+        <!-- Probabilities & Modality Breakdown -->
+        <div class="modal-prob-grid">
+          <div class="prob-box">
+            <div class="prob-label">Normal (Good) Probability</div>
+            <div class="prob-val safe-text" id="modalGoodProb">0.0%</div>
+          </div>
+          <div class="prob-box">
+            <div class="prob-label">Attack Probability</div>
+            <div class="prob-val attack-text" id="modalAttackProb">0.0%</div>
+          </div>
+          <div class="prob-box">
+            <div class="prob-label">Temporal GRU Weight</div>
+            <div class="prob-val cyan-text" id="modalTempWeight">50.0%</div>
+          </div>
+          <div class="prob-box">
+            <div class="prob-label">Relational GNN Weight</div>
+            <div class="prob-val purple-text" id="modalRelWeight">50.0%</div>
+          </div>
+        </div>
+
+        <!-- Raw Telemetry Table -->
+        <div class="telemetry-section">
+          <div class="telemetry-title">RAW FLOW ATTRIBUTES (FEATURES & METRICS)</div>
+          <div class="telemetry-grid" id="modalTelemetryGrid">
+            <!-- Dynamically populated key-value pairs -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toastAlert">
+    <span class="toast-icon" id="toastIcon">⚠️</span>
+    <span class="toast-msg" id="toastMsg">Alert message</span>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
